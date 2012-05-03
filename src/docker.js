@@ -1,7 +1,7 @@
 // # docker.js
 // ## _A simple documentation generator based on [docco](http://jashkenas.github.com/docco/)_
 // **Docker** is a really simple documentation generator, which originally started out as a
-// pure-javascript port of **docco**, but which eventually gained many extra little features (and 
+// pure-javascript port of **docco**, but which eventually gained many extra little features (and
 // there are plenty more to come) which somewhat break docco's philosophy of being a quick-and-dirty
 // thing.
 //
@@ -97,7 +97,7 @@ Docker.prototype.docFile = function(filename){
       // Otherwise, just queue the file
       self.queueFile(filename);
     }
-  })
+  });
 };
 
 /**
@@ -133,7 +133,7 @@ Docker.prototype.nextFile = function(){
   if(this.fileQueue.length > 0){
     this.generateDoc(this.fileQueue.shift(), function(){
       self.nextFile();
-    })
+    });
   }else{
     // If there are no files left, then flag that we've stopped running
     this.running = false;
@@ -150,7 +150,7 @@ Docker.prototype.nextFile = function(){
  */
 Docker.prototype.canHandleFile = function(filename){
   return path.extname(filename) == '.js';
-}
+};
 
 /**
  * ## Docker.prototype.generateDoc
@@ -171,7 +171,7 @@ Docker.prototype.generateDoc = function(filename, cb){
     self.highlight(sections, filename, function(){
       self.renderHtml(sections, filename, cb);
     });
-  })
+  });
 };
 
 /**
@@ -203,6 +203,7 @@ Docker.prototype.parseSections = function(data, filename){
   };
   var inMultiLineComment = false;
   var multiLine = '';
+  var doxData;
 
   // Loop through all the lines, and parse into sections
   for(var i = 0; i < codeLines.length; i += 1){
@@ -217,11 +218,11 @@ Docker.prototype.parseSections = function(data, filename){
         multiLine += line + '\n';
         inMultiLineComment = false;
         try{
-          var data = dox.parseComments(multiLine)[0];
-          section.docs += this.doxTemplate(data);
+          doxData = dox.parseComments(multiLine)[0];
+          section.docs += this.doxTemplate(doxData);
         }catch(e){
           console.log("Dox error: " + e);
-          section.docs += multiLine
+          section.docs += multiLine;
         }
         multiLine = '';
       }else{
@@ -274,13 +275,13 @@ Docker.prototype.languageParams = function(filename){
         multilineEnd: /\*\//,
         divText: '\n//----{DIVIDER_THING}----\n',
         divHtml: /\n*<span class="c1?">\/\/----\{DIVIDER_THING\}----<\/span>\n*/
-      }
+      };
     // Currently we only support javascript. If we've got here without
     // already having skipped or thrown an error, something's gone wrong.
     default:
       throw 'Unknown language';
   }
-}
+};
 
 /**
  * ## Docker.prototype.highlight
@@ -302,14 +303,14 @@ Docker.prototype.highlight = function(sections, filename, cb){
 
   // Hook up errors, for either when pygments itself throws an error,
   // or for when we're unable to send the code to pygments for some reason
-  pyg.stderr.on('data', function(err){ console.error(err) });
+  pyg.stderr.on('data', function(err){ console.error(err); });
   pyg.stdin.on('error', function(err){
-    console.error('Unable to write to Pygments stdin: ' , err)
+    console.error('Unable to write to Pygments stdin: ' , err);
     process.exit(1);
   });
 
   var out = '';
-  pyg.stdout.on('data', function(data){ out += data.toString() });
+  pyg.stdout.on('data', function(data){ out += data.toString(); });
 
   // Once pygments is done, split the output up into different sections, and
   // allocate them to the relevant section objects.
@@ -322,7 +323,7 @@ Docker.prototype.highlight = function(sections, filename, cb){
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
     }
     cb();
-  })
+  });
 
   // Feed pygments with the code
   if(pyg.stdin.writable){
@@ -353,7 +354,7 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
   // Calculate the location of the input root relative to the output file.
   // This is necessary so we can link to the stylesheet in the output HTML using
   // a relative href rather than an absolute one
-  var outDir = path.dirname(outFile); 
+  var outDir = path.dirname(outFile);
   var relDir = '';
   while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
     relDir += '../';
@@ -366,6 +367,8 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
     relativeDir: relDir
   });
 
+  var self = this;
+
   // Recursively create the output directory, clean out any old version of the
   // output file, then save our new file.
   mkdirp(outDir, function(){
@@ -377,17 +380,15 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
     });
   });
 
-  var self= this;
-
   // Copy in the CSS file for our output if it doesn't already
   // exist in the output directory.
   fs.stat(path.join(this.outDir, 'doc-style.css'), function(err, stat){
     if(err){
       fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
         fs.writeFile(path.join(self.outDir, 'doc-style.css'), file);
-      })
+      });
     }
-  })
+  });
 };
 
 /**
@@ -411,16 +412,16 @@ Docker.prototype.outFile = function(filename){
  * @return {function} Compiled template function
  */
 Docker.prototype.compileTemplate = function(str){
-  return new Function('obj', 'var p=[],print=function(){p.push.apply(p,arguments);};'
-    + 'with(obj){p.push(\'' 
-    + str.replace(/[\r\t\n]/g, " ")
+  return new Function('obj', 'var p=[],print=function(){p.push.apply(p,arguments);};' +
+    'with(obj){p.push(\'' +
+    str.replace(/[\r\t\n]/g, " ")
          .replace(/'(?=[^<]*%>)/g, "\t")
          .split("'").join("\\'")
          .split("\t").join("'")
          .replace(/<%=(.+?)%>/g, "',$1,'")
          .split('<%').join("');")
-         .split('%>').join("p.push('")
-    + "');}return p.join('');");
+         .split('%>').join("p.push('") +
+    "');}return p.join('');");
 };
 
 /**
@@ -440,7 +441,7 @@ Docker.prototype.renderTemplate = function(obj){
     this.__tmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__tmpl(obj);
-}
+};
 
 /**
  * ## Docker.prototype.doxTemplate
@@ -456,4 +457,4 @@ Docker.prototype.doxTemplate = function(obj){
     this.__doxtmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__doxtmpl(obj);
-}
+};
