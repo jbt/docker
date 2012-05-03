@@ -382,7 +382,7 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
   fs.stat(path.join(this.outDir, '_doc-style.css'), function(err, stat){
     if(err){
       fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
-        fs.writeFile(path.join(self.outDir, '_doc-style.css'), file);
+        fs.writeFile(path.join(self.outDir, 'doc-style.css'), file);
       })
     }
   })
