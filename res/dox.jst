@@ -2,10 +2,10 @@
   <div class="summary"><%= description.summary %></div>
   <div class="body"><%= description.body %></div>
 
-  <% if(tags.length){ %>
+  <% if(tags.length){ var hasParams = false, hasReturn = false, hasType = false; %>
     <div class="details">
       <% for(var i = 0; i < tags.length; i += 1){
-        var tag = tags[i], hasParams = false, hasReturn = false, hasType = false;
+        var tag = tags[i];
         if(tag.type == 'param'){
           if(!hasParams){ hasParams = true; %>
             <div class="dox_tag_title">Params</div>
