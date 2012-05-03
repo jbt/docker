@@ -5,6 +5,8 @@
 // there are plenty more to come) which somewhat break docco's philosophy of being a quick-and-dirty
 // thing.
 //
+// Docker source-code can be found on [GitHub](https://github.com/jbt/docker)
+//
 // Take a look at the [original docco project](http://jashkenas.github.com/docco/) to get a feel
 // for the sort of functionality this provices. In short: **Markdown**-based displaying of code comments
 // next to syntax-highlighted code. This page is the result of running docker against itself.
