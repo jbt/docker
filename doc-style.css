@@ -16,7 +16,7 @@ p {
   margin: 0 0 15px 0;
 }
 h1, h2, h3, h4, h5, h6 {
-  margin: 0px 0 15px 0;
+  margin: 0 0 15px 0;
 }
   h1 {
     margin-top: 40px;
@@ -31,24 +31,6 @@ h1, h2, h3, h4, h5, h6 {
   border-left: 1px solid #e5e5ee;
   z-index: -1;
 }
-#projectname {
-  top: 2px;
-  font-style: italic;
-  -webkit-box-shadow: 0 0 25px #777;
-  -moz-box-shadow: 0 0 25px #777;
-  padding: 5px 10px;
-  left: 0;
-  position: fixed;
-  font-size: 18px;
-  left: 50px;
-  background-color: white;      
-}
-  #projectname a {
-    text-decoration: none;
-  }
-    #projectname a:hover {
-      text-decoration: underline;
-    }
 #generated {
   margin: 10px;
   font-size: 80%;
@@ -71,8 +53,12 @@ h1, h2, h3, h4, h5, h6 {
     color: #444;
     overflow: auto;
     -webkit-box-shadow: rgba(0,0,0,0.07) 0 1px 2px inset;
+    -moz-box-shadow: rgba(0,0,0,0.07) 0 1px 2px inset;
+    -o-box-shadow: rgba(0,0,0,0.07) 0 1px 2px inset;
+    box-shadow: rgba(0,0,0,0.07) 0 1px 2px inset;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
+    -o-border-radius: 3px;
     border-radius: 3px;
   }
     #content pre code {
@@ -83,8 +69,13 @@ h1, h2, h3, h4, h5, h6 {
     }
 #jump_to, #jump_page {
   background: white;
-  -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777;
-  -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px;
+  -webkit-box-shadow: 0 0 25px #777;
+  -moz-box-shadow: 0 0 25px #777;
+  -o-box-shadow: 0 0 25px #777;
+  box-shadow: 0 0 25px #777;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-bottom-left-radius: 5px;
   font: 10px Arial;
   cursor: pointer;
   text-align: right;
@@ -129,7 +120,7 @@ h1, h2, h3, h4, h5, h6 {
         }
         #jump_page .source .base_path .separator {
           margin-right: 2px;
-          margin-leftl: 2px;
+          margin-left: 2px;
         }
 #page {
   padding-top:40px;
@@ -174,7 +165,7 @@ table td {
         padding: 10px;
         background-color: #F5F5FF;
         border: 1px solid #E5E5EE;
-        margin-bottom: 10px;      
+        margin-bottom: 10px;
       }
       .docs .dox .dox_tag_title {
         font-weight: bold;
@@ -200,6 +191,10 @@ table td {
         padding: 1px 2px;
         opacity: 0;
         -webkit-transition: opacity 0.2s linear;
+        -moz-transition: opacity 0.2s linear;
+        -ms-transition: opacity 0.2s linear;
+        -o-transition: opacity 0.2s linear;
+        transition: opacity 0.2s linear;
       }
         td.docs:hover .pilcrow {
           opacity: 1;
@@ -219,8 +214,6 @@ table td {
 
 
 /*---------------------- Syntax Highlighting -----------------------------*/
-td.linenos { background-color: #f0f0f0; padding-right: 10px; }
-span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
 body .hll { background-color: #ffffcc }
 body .c { color: #408080; font-style: italic }  /* Comment */
 body .err { border: 1px solid #FF0000 }         /* Error */
