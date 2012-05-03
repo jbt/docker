@@ -18,6 +18,8 @@ Still yet to finialise exactly how the command-line interface should work, but b
 ./docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
 ```
 
+If the `-i` or `-o` options aren't specified, they'll default respectively to `./` and `./doc`.
+
 If the file list given is empty it'll just recurse into `root_source_dir` and run on anything it finds.
 
 Any of the files given can also be directories, in which case it will recurse into them.
