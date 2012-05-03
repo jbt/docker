@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var path = require('path');
-var Docker = require('./src/docker.js')
+var Docker = require('./src/docker.js');
 var args = process.argv = process.argv.slice(2);
 var env = process.env;
 
@@ -40,7 +40,7 @@ while(args.length > 0 && args[0].substring(0,1) == '-'){
 }
 
 var d = new Docker(input_dir, output_dir);
-if(args.length == 0){
+if(args.length === 0){
   d.doc(['./']);
 }else{
   d.doc(args);
