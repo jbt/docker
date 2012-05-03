@@ -1,0 +1,12 @@
+{
+  "author": "JT <jt@gosquared.com>",
+  "name": "docker",
+  "version": "0.0.1",
+  "dependencies": {
+    "mkdirp": "*",
+    "dox": "*"
+  },
+  "bin": {
+    "docker": "./docker"
+  }
+}

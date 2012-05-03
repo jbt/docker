@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title><%= title %></title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="<%= relativeDir %>_doc-style.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    <table cellpadding="0" cellspacing="0">
+      <tbody>
+        <% for (var i=0, l=sections.length; i<l; i++) { %>
+          <% var section = sections[i]; %>
+          <tr id="section-<%= i + 1 %>">
+            <td class="docs">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-<%= i + 1 %>">&#182;</a>
+              </div>
+              <%= section.docHtml %>
+            </td>
+            <td class="code">
+              <%= section.codeHtml %>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

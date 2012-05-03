@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+var path = require('path');
+var Docker = require('./src/docker.js')
+var args = process.argv = process.argv.slice(2);
+var env = process.env;
+
+var current_dir = env.PWD;
+var input_dir = current_dir;
+var output_dir = path.join(current_dir, 'doc');
+
+while(args.length > 0 && args[0].substring(0,1) == '-'){
+  switch(args[0].toLowerCase().replace(/(^\s*|\s*$)/,'')){
+    case '--help':
+    case '-h':
+      console.log('Usage: doc [-i dir1] [-o dir2] file1 [file2] [file3 ...]\n');
+      console.log('Options:\n  -h, --help          print this help text');
+      console.log('  -o, --output_dir    output directory (default ./doc)');
+      console.log('  -i, --input_dir     input directory (default current directory)');
+      process.exit();
+      break;
+    case '-o':
+    case '--output_dir':
+      args.shift();
+      var dir = args.shift();
+      output_dir = path.join(current_dir, dir);
+      break;
+    case '-i':
+    case '--input_dir':
+      args.shift();
+      var dir = args.shift();
+      input_dir = path.join(current_dir, dir);
+      break;
+    default:
+      console.log('Unknown option: ' + args[0]);
+      process.exit(1);
+      break;
+  }
+
+}
+
+var d = new Docker(input_dir, output_dir);
+if(args.length == 0){
+  d.doc(['./']);
+}else{
+  d.doc(args);
+}
