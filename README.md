@@ -4,6 +4,8 @@ A documentation generator built on the foundations of [Docco](http://jashkenas.g
 
 The support available in Docco and Docco-Husky for larger projects consisting of many hundreds of script files was somewhat lacking, so I decided to create my own.
 
+Take a look at this project's [public page](https://jbt.github.com/docker) for an example of what it can do.
+
 ## Installation
 
 Well, I may well even get this on npm at some point. Not yet though as it's such a WIP.
