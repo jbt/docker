@@ -8,7 +8,7 @@
 // Docker source-code can be found on [GitHub](https://github.com/jbt/docker)
 //
 // Take a look at the [original docco project](http://jashkenas.github.com/docco/) to get a feel
-// for the sort of functionality this provices. In short: **Markdown**-based displaying of code comments
+// for the sort of functionality this provides. In short: **Markdown**-based displaying of code comments
 // next to syntax-highlighted code. This page is the result of running docker against itself.
 //
 // The command-line usage of docker is somewhat more useful than that of docco. To use, simply run
