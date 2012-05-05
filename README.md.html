@@ -1,0 +1,33 @@
+<!DOCTYPE html> <html> <head>   <title>README.md</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="doc-style.css" />   <script src="doc-script.js"></script> </head> <body>   <div id="tree_wrapper">     <div id="tree"></div>   </div>   <div id="tree-toggle"></div>   <div id="container">     <div class="docs markdown"><div class="pilwrap" id="docker"><h1><a href="#docker" class="pilcrow">&#182;</a>Docker</h1></div>
+
+<p>A documentation generator built on the foundations of <a href="http://jashkenas.github.com/docco/">Docco</a> and <a href="https://github.com/mbrevoort/docco-husky">Docco-Husky</a>.</p>
+
+<p>The support available in Docco and Docco-Husky for larger projects consisting of many hundreds of script files was somewhat lacking, so I decided to create my own.</p>
+
+<p>Take a look at this project's <a href="http://jbt.github.com/docker">public page</a> for an example of what it can do.</p>
+
+<div class="pilwrap" id="installation"><h2><a href="#installation" class="pilcrow">&#182;</a>Installation</h2></div>
+
+<p>Well, I may well even get this on npm at some point. Not yet though as it's such a WIP.</p>
+
+<p>Requires <a href="http://pygments.org/">Pygments</a></p>
+
+<div class="pilwrap" id="usage"><h2><a href="#usage" class="pilcrow">&#182;</a>Usage</h2></div>
+
+<p>Still yet to finialise exactly how the command-line interface should work, but basically:</p>
+
+<p><code>
+./docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
+</code></p>
+
+<p>If the <code>-i</code> or <code>-o</code> options aren't specified, they'll default respectively to <code>./</code> and <code>./doc</code>.</p>
+
+<p>If the file list given is empty it'll just recurse into <code>root_source_dir</code> and run on anything it finds.</p>
+
+<p>Any of the files given can also be directories, in which case it will recurse into them.</p>
+
+<p>Folder structure inside <code>root_source_dir</code> is preserved into <code>root_doc_dir</code> and file names are simply appended <code>.html</code> for the doc file</p>
+
+<div class="pilwrap" id="important-note"><h3><a href="#important-note" class="pilcrow">&#182;</a>Important note</h3></div>
+
+<p>All files must be inside <code>root_source_dir</code> (or the current pwd if not specified) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.</p></div>   </div>   <script>     makeTree({"files":["README.md"],"dirs":{"src":{"files":["docker.js"]},"res":{"files":["script.js"]},"lib":{"files":["showdown.js"]},"node_modules":{"dirs":{"mkdirp":{"files":["index.js"],"dirs":{"test":{"files":["perm.js","perm_sync.js","umask_sync.js","umask.js","clobber.js","rel.js","mkdirp.js","return_sync.js","sync.js","race.js","chmod.js","return.js"]},"examples":{"files":["pow.js"]}}},"dox":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["dox.js","utils.js"]},"node_modules":{"dirs":{"github-flavored-markdown":{"files":["preview.md","index.md","README.md"],"dirs":{"scripts":{"files":["preview.js","showdown.js"]}}},"commander":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["commander.js"]}}}}}}}}}}}, '', '/home/james/Development/docker/README.md');   </script> </body> </html> 
