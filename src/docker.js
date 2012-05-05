@@ -373,9 +373,9 @@ Docker.prototype.addAnchor = function(section, idx){
     // the name a bit to make it more friendly for IDs, then use that
     section.docHtml = section.docHtml.replace(/(<h[0-9]>)(.*)(<\/h[0-9]>)/g, function(a, start, middle, end){
       var id = middle.replace(/<[^>]*>/g,'').toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
-      return '<div class="pilwrap">'+
+      return '<div class="pilwrap" id="' + id + '">'+
                 start +
-                '<a id="' + id + '" href="#' + id + '" class="pilcrow">&#182;</a>' +
+                '<a href="#' + id + '" class="pilcrow">&#182;</a>' +
                 middle +
                 end +
               '</div>';
