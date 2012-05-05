@@ -15,10 +15,11 @@ next to syntax-highlighted code. This page is the result of running docker again
 <p>The command-line usage of docker is somewhat more useful than that of docco. To use, simply run</p>
 
 <p><code>
-./docker -i path/to/code -o path/to/docs file1.js file2.js
+./docker -i path/to/code -o path/to/docs [a_file.js a_dir]
 </code></p>
 
-<p>Docker will then recurse into the code root directory and document-ize all the files it can.
+<p>Docker will then recurse into the code root directory (or alternatively just the files
+and directories you specify) and document-ize all the files it can.
 The folder structure will be preserved in the document root.</p>
 
 <div class="pilwrap" id="differences-from-docco"><h2><a href="#differences-from-docco" class="pilcrow">&#182;</a>Differences from docco</h2></div>
