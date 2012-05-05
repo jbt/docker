@@ -70,33 +70,57 @@ function nodeClicked(e){
   }
 }
 
+
+/**
+ * ## nodeHtml
+ *
+ * Constructs the markup for a directory in the tree
+ *
+ * @param {string} nodename The node name.
+ * @param {object} node Node object of same format as whole tree.
+ * @param {string} path The path form the base to this node
+ * @param {string} root Relative path from current page to root
+ */
 function nodeHtml(nodename, node, path, root){
+  // Firstly, figure out whether or not the directory is expanded from localStorage
   var isOpen = window.localStorage && window.localStorage['docker_openPath:' + path] == 'yes';
   var out = '<div class="dir' + (isOpen ? ' open' : '') + '" rel="' + path + '">';
   out += '<div class="nodename">' + nodename + '</div>';
   out += '<div class="children">';
 
+  // Loop through all child directories first
   if(node.dirs){
     var dirs = [];
     for(var i in node.dirs){
       if(node.dirs.hasOwnProperty(i)) dirs.push({ name: i, html: nodeHtml(i, node.dirs[i], path + i + '/', root) });
     }
+    // Have to store them in an array first and then sort them alphabetically here
     dirs.sort(function(a, b){ return (a.name > b.name) ? 1 : (a.name == b.name) ? 0 : -1; });
+
     for(var k = 0; k < dirs.length; k += 1) out += dirs[k].html;
   }
 
+  // Now loop through all the child files alphabetically
   if(node.files){
     node.files.sort();
     for(var j = 0; j < node.files.length; j += 1){
       out += '<a class="file" href="' + root + path + node.files[j] + '.html">' + node.files[j] + '</a>';
     }
   }
+
+  // Close things off
   out += '</div></div>';
 
   return out;
 }
 
+/**
+ * ## toggleTree
+ *
+ * Toggles the visibility of the folder tree
+ */
 function toggleTree(){
+  // Do the actual toggling by modifying the class on the body element. That way we can get some nice CSS transitions going.
   if(treeVisible){
     document.body.className = document.body.className.replace(/\s*tree/g,'');
     treeVisible = false;
