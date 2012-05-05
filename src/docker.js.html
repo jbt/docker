@@ -3,9 +3,8 @@
 <div class="pilwrap" id="a-simple-documentation-generator-based-on-docco"><h2><a href="#a-simple-documentation-generator-based-on-docco" class="pilcrow">&#182;</a><em>A simple documentation generator based on <a href="http://jashkenas.github.com/docco/">docco</a></em></h2></div>
 
 <p><strong>Docker</strong> is a really simple documentation generator, which originally started out as a
-pure-javascript port of <strong>docco</strong>, but which eventually gained many extra little features (and
-there are plenty more to come) which somewhat break docco's philosophy of being a quick-and-dirty
-thing.</p>
+pure-javascript port of <strong>docco</strong>, but which eventually gained many extra little features
+which somewhat break docco's philosophy of being a quick-and-dirty thing.</p>
 
 <p>Docker source-code can be found on <a href="https://github.com/jbt/docker">GitHub</a></p>
 
@@ -22,11 +21,18 @@ next to syntax-highlighted code. This page is the result of running docker again
 <p>Docker will then recurse into the code root directory and document-ize all the files it can.
 The folder structure will be preserved in the document root.</p>
 
-<div class="pilwrap" id="jsdoc-support"><h2><a href="#jsdoc-support" class="pilcrow">&#182;</a>jsDoc support</h2></div>
+<div class="pilwrap" id="differences-from-docco"><h2><a href="#differences-from-docco" class="pilcrow">&#182;</a>Differences from docco</h2></div>
 
-<p>The main difference from docco is the added support for <strong>jsDoc</strong>-style code comments, which
+<p>The main differences from docco are:</p>
+
+<ul>
+<li><p><strong>jsDoc support</strong>: support for <strong>jsDoc</strong>-style code comments, which
 is provided by way of <a href="https://github.com/visionmedia/dox">Dox</a>. You can see some examples of
-the sort of output you get below.</p>
+the sort of output you get below.</p></li>
+<li><p><strong>Folder Tree</strong>: collabsible folder tree suitable for browsing and navigating the many code files
+that constitute a large-scale project</p></li>
+<li><p><strong>Markdown File Support</strong>: support for plain markdown files, like the <a href="../README.md.html">README</a> for this project.</p></li>
+</ul>
 
 <p>So let's get started!</p>         </td>         <td class="code">           <div class="highlight"><pre></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap" id="node-modules"><h2><a href="#node-modules" class="pilcrow">&#182;</a>Node Modules</h2></div>
 
