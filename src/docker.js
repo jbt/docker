@@ -1,9 +1,8 @@
 // # docker.js
 // ## _A simple documentation generator based on [docco](http://jashkenas.github.com/docco/)_
 // **Docker** is a really simple documentation generator, which originally started out as a
-// pure-javascript port of **docco**, but which eventually gained many extra little features (and
-// there are plenty more to come) which somewhat break docco's philosophy of being a quick-and-dirty
-// thing.
+// pure-javascript port of **docco**, but which eventually gained many extra little features
+// which somewhat break docco's philosophy of being a quick-and-dirty thing.
 //
 // Docker source-code can be found on [GitHub](https://github.com/jbt/docker)
 //
@@ -20,11 +19,17 @@
 // Docker will then recurse into the code root directory and document-ize all the files it can.
 // The folder structure will be preserved in the document root.
 //
-// ## jsDoc support
-// The main difference from docco is the added support for **jsDoc**-style code comments, which
+// ## Differences from docco
+// The main differences from docco are:
+//
+//  - **jsDoc support**: support for **jsDoc**-style code comments, which
 // is provided by way of [Dox](https://github.com/visionmedia/dox). You can see some examples of
 // the sort of output you get below.
 //
+//  - **Folder Tree**: collabsible folder tree suitable for browsing and navigating the many code files
+// that constitute a large-scale project
+//
+//  - **Markdown File Support**: support for plain markdown files, like the [README](../README.md.html) for this project.
 //
 // So let's get started!
 
