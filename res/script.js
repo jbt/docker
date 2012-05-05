@@ -63,7 +63,7 @@ function nodeClicked(e){
   var path = t.getAttribute('rel');
   if(t.className.indexOf('open') !== -1){
     t.className=t.className.replace(/\s*open/g,'');
-    if(window.localStorage) window.localStorage['docker_openPath:' + path] = 'no';
+    if(window.localStorage) window.localStorage.removeItem('docker_openPath:' + path);
   }else{
     t.className += ' open';
     if(window.localStorage) window.localStorage['docker_openPath:' + path] = 'yes';
@@ -128,5 +128,11 @@ function toggleTree(){
     document.body.className += ' tree';
     treeVisible = true;
   }
-  if(window.localStorage) window.localStorage.docker_showTree = treeVisible ? 'yes' : 'no';
+  if(window.localStorage){
+    if(treeVisible){
+      window.localStorage.docker_showTree = 'yes';
+    }else{
+      window.localStorage.removeItem('docker_showTree');
+    }
+  }
 }
