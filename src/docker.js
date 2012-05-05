@@ -13,10 +13,11 @@
 // The command-line usage of docker is somewhat more useful than that of docco. To use, simply run
 //
 // ```
-// ./docker -i path/to/code -o path/to/docs file1.js file2.js
+// ./docker -i path/to/code -o path/to/docs [a_file.js a_dir]
 // ```
 //
-// Docker will then recurse into the code root directory and document-ize all the files it can.
+// Docker will then recurse into the code root directory (or alternatively just the files
+// and directories you specify) and document-ize all the files it can.
 // The folder structure will be preserved in the document root.
 //
 // ## Differences from docco
