@@ -240,6 +240,9 @@ Docker.prototype.parseSections = function(data, filename){
           doxData.description.summary = doxData.description.summary.replace(/<br\s*\/?>/g,'\n');
           doxData.description.body = doxData.description.body.replace(/<br\s*\/?>/g,'\n');
           doxData.description.full = doxData.description.full.replace(/<br\s*\/?>/g,'\n');
+          doxData.md = function(a){
+            return showdown.makeHtml(a.replace(/(^\s*|\s*$)/,'')).replace(/<\/?p>/g,'');
+          };
           section.docs += this.doxTemplate(doxData);
         }catch(e){
           console.log("Dox error: " + e);
@@ -417,7 +420,9 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
   var html = this.renderTemplate({
     title: path.basename(filename),
     sections: sections,
-    relativeDir: relDir
+    relativeDir: relDir,
+    tree: JSON.stringify(this.tree),
+    filename: filename
   });
 
   var self = this;
@@ -433,14 +438,16 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
     });
   });
 
-  // Copy in the CSS file for our output if it doesn't already
-  // exist in the output directory.
-  fs.stat(path.join(this.outDir, 'doc-style.css'), function(err, stat){
-    if(err){
-      fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
-        fs.writeFile(path.join(self.outDir, 'doc-style.css'), file);
-      });
-    }
+  // Copy in the CSS and JT files to the output directory
+  fs.unlink(path.join(this.outDir, 'doc-style.css'), function(err, stat){
+    fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
+      fs.writeFile(path.join(self.outDir, 'doc-style.css'), file);
+    });
+  });
+  fs.unlink(path.join(this.outDir, 'doc-script.js'), function(err, stat){
+    fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
+      fs.writeFile(path.join(self.outDir, 'doc-script.js'), file);
+    });
   });
 };
 

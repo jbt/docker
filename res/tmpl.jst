@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-
 <html>
 <head>
   <title><%= title %></title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="<%= relativeDir %>doc-style.css" />
+  <script src="<%= relativeDir %>doc-script.js"></script>
 </head>
 <body>
+  <div id="tree_wrapper">
+    <div id="tree"></div>
+  </div>
+  <div id="tree-toggle"></div>
   <div id="container">
     <div id="background"></div>
     <table cellpadding="0" cellspacing="0">
@@ -25,5 +29,8 @@
       </tbody>
     </table>
   </div>
+  <script>
+    makeTree(<%= tree %>, '<%= relativeDir %>', '<%= filename %>');
+  </script>
 </body>
 </html>
