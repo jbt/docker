@@ -277,10 +277,6 @@ td.docs, th.docs {
 .pilwrap {
   position: relative;
 }
-.pilwrap a{
-  text-decoration: none;
-  color: black;
-}
 .pilcrow {
   font: 12px Arial;
   text-decoration: none;
