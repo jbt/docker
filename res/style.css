@@ -200,7 +200,7 @@ table td {
         -o-transition: opacity 0.2s linear;
         transition: opacity 0.2s linear;
       }
-        td.docs:hover .pilcrow {
+        .pilwrap:hover .pilcrow {
           opacity: 1;
         }
   td.code, th.code {

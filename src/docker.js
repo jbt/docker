@@ -371,18 +371,18 @@ Docker.prototype.addAnchor = function(section, idx){
   if(section.docHtml.match(/<h[0-9]>/)){
     // If there is a heading tag, pick out the first one (likely the most important), sanitize
     // the name a bit to make it more friendly for IDs, then use that
-    section.docHtml = section.docHtml.replace(new RegExp('<h[0-9]>(.*)</h[0-9]>'), function(a, b){
-      var id = b.toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
-      section.id = id;
+    section.docHtml = section.docHtml.replace(/(<h[0-9]>)(.*)(<\/h[0-9]>)/g, function(a, start, middle, end){
+      var id = middle.replace(/<[^>]*>/g,'').toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
       return '<div class="pilwrap">'+
-                '<a href="#' + id + '"><span class="pilcrow">&#182;</span>' +
-                a +
-              '</a></div>';
+                start +
+                '<a id="' + id + '" href="#' + id + '" class="pilcrow">&#182;</a>' +
+                middle +
+                end +
+              '</div>';
     });
   }else{
     // If however we can't find a heading, then just use the section index instead.
-    section.id = 'section-' + (idx + 1);
-    section.docHtml = '<div class="pilwrap"><a class="pilcrow" href="#' + section.id + '">&#182;</a></div>' + section.docHtml;
+    section.docHtml = '<div class="pilwrap"><a class="pilcrow" href="#' + section.id + '" id="section-' +(idx + 1) +'">&#182;</a></div>' + section.docHtml;
   }
 };
 
