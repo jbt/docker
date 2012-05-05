@@ -359,6 +359,32 @@ Docker.prototype.highlight = function(sections, filename, cb){
   }
 };
 
+/**
+ * ## Docker.prototype.addAnchor
+ *
+ * Automatically assign an id to each section based on any headings.
+ *
+ * @param {object} section The section object to look at
+ * @param {number} idx The index of the section in the whole array.
+ */
+Docker.prototype.addAnchor = function(section, idx){
+  if(section.docHtml.match(/<h[0-9]>/)){
+    // If there is a heading tag, pick out the first one (likely the most important), sanitize
+    // the name a bit to make it more friendly for IDs, then use that
+    section.docHtml = section.docHtml.replace(new RegExp('<h[0-9]>(.*)</h[0-9]>'), function(a, b){
+      var id = b.toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
+      section.id = id;
+      return '<div class="pilwrap">'+
+                '<a href="#' + id + '"><span class="pilcrow">&#182;</span>' +
+                a +
+              '</a></div>';
+    });
+  }else{
+    // If however we can't find a heading, then just use the section index instead.
+    section.id = 'section-' + (idx + 1);
+    section.docHtml = '<div class="pilwrap"><a class="pilcrow" href="#' + section.id + '">&#182;</a></div>' + section.docHtml;
+  }
+};
 
 /**
  * ## Docker.prototype.renderHtml
@@ -381,6 +407,10 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
   var relDir = '';
   while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
     relDir += '../';
+  }
+
+  for(var i = 0; i < sections.length; i += 1){
+    this.addAnchor(sections[i], i);
   }
 
   // Render the html file using our template

@@ -13,11 +13,8 @@
       <tbody>
         <% for (var i=0, l=sections.length; i<l; i++) { %>
           <% var section = sections[i]; %>
-          <tr id="section-<%= i + 1 %>">
+          <tr id="<%= section.id %>">
             <td class="docs">
-              <div class="pilwrap">
-                <a class="pilcrow" href="#section-<%= i + 1 %>">&#182;</a>
-              </div>
               <%= section.docHtml %>
             </td>
             <td class="code">
