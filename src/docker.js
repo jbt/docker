@@ -112,7 +112,8 @@ Docker.prototype.queueFile = function(filename){
   filename = filename.replace(/^\//,'');
   var bits = filename.split('/');
 
-  // Loop through all the directories and process the folder structure into `this.tree`
+  // Loop through all the directories and process the folder structure into `this.tree`.
+  //
   // `this.tree` takes the format:
   //
   //     {
@@ -232,6 +233,13 @@ Docker.prototype.parseSections = function(data, filename){
         inMultiLineComment = false;
         try{
           doxData = dox.parseComments(multiLine)[0];
+          // These three lines are because dox uses **GitHub-Flavored Markdown**, which treats
+          // all newlines as line breaks in the output, which isn't what we want. So switch them
+          // back to newlines and let showdown take care of the rest. This is just a simpler alternative
+          // to running a fork of dox using vanilla Markdown.
+          doxData.description.summary = doxData.description.summary.replace(/<br\s*\/?>/g,'\n');
+          doxData.description.body = doxData.description.body.replace(/<br\s*\/?>/g,'\n');
+          doxData.description.full = doxData.description.full.replace(/<br\s*\/?>/g,'\n');
           section.docs += this.doxTemplate(doxData);
         }catch(e){
           console.log("Dox error: " + e);
@@ -275,9 +283,11 @@ Docker.prototype.parseSections = function(data, filename){
 Docker.prototype.languageParams = function(filename){
   switch(path.extname(filename)){
     case '.js':
-      // `commentRegex` is for single-line comments, `multilineStart` and `multilineEnd` are for multiline comments
+      // `commentRegex` is for single-line comments, `multilineStart` and `multilineEnd` are for multiline comments.
+      //
       // `commentsIgnore` is for comments that should be stripped completely and not document-ized.
-      // `divText` is a generic divider so sections can be fed into **pygments** together
+      //
+      // `divText` is a generic divider so sections can be fed into **pygments** together, and
       // `divHtml` is the corresponding divider to look for in the output
       return {
         name: 'javascript',
@@ -300,8 +310,8 @@ Docker.prototype.languageParams = function(filename){
  * ## Docker.prototype.highlight
  *
  * Highlights all the sections of a file using **pygments**
- * Given an array of section objects, loop through them, and for each section,
- * generate pretty html for the comments and the code, and put them in
+ * Given an array of section objects, loop through them, and for each
+ * section generate pretty html for the comments and the code, and put them in
  * `docHtml` and `codeHtml` respectively
  *
  * @param {Array} sections Array of section objects
