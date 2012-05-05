@@ -524,16 +524,18 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
  */
 Docker.prototype.copySharedResources = function(){
   var self = this;
-  fs.unlink(path.join(this.outDir, 'doc-style.css'), function(err, stat){
-    fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
-      fs.writeFile(path.join(self.outDir, 'doc-style.css'), file);
+  function copy(from, to){
+    fs.unlink(path.join(this.outDir, to), function(err, stat){
+      fs.readFile(path.join(path.dirname(__filename),'../', from), function(err, file){
+        fs.writeFile(path.join(self.outDir, to), file, function(){
+          console.log('Copied ' + from + ' to ' + to);
+        });
+      });
     });
-  });
-  fs.unlink(path.join(this.outDir, 'doc-script.js'), function(err, stat){
-    fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
-      fs.writeFile(path.join(self.outDir, 'doc-script.js'), file);
-    });
-  });
+  }
+
+  copy('res/style.css', 'doc-style.css');
+  copy('res/script.js', 'doc-script.js');
 };
 
 /**
