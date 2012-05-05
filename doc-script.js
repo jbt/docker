@@ -14,7 +14,7 @@ var treeVisible = (window.localStorage && window.localStorage.docker_showTree ==
  *
  * Consructs the folder tree view
  *
- * @param {object} treeData Folder structure as in [queueFile](../src/docker.js#docker.prototype.queuefile)
+ * @param {object} treeData Folder structure as in [queueFile](../src/docker.js.html#docker.prototype.queuefile)
  * @param {string} root Path from current file to root (ie `'../../'` etc.)
  * @param {string} filename The current file name
  */
