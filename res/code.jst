@@ -1,0 +1,16 @@
+<div id="background"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    <% for (var i=0, l=sections.length; i<l; i++) { %>
+      <% var section = sections[i]; %>
+      <tr>
+        <td class="docs">
+          <%= section.docHtml %>
+        </td>
+        <td class="code">
+          <%= section.codeHtml %>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

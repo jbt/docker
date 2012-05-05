@@ -173,6 +173,10 @@ table td {
   border: 0;
   outline: 0;
 }
+.docs.markdown{
+  padding: 10px 50px;
+  background: #fff;
+}
 td.docs, th.docs {
   max-width: 450px;
   min-width: 450px;

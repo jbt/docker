@@ -151,6 +151,8 @@ Docker.prototype.processNextFile = function(){
     this.generateDoc(this.files.shift(), function(){
       self.processNextFile();
     });
+  }else{
+    this.copySharedResources();
   }
 };
 
@@ -158,12 +160,12 @@ Docker.prototype.processNextFile = function(){
  * ## Docker.prototype.canHandleFile
  *
  * Check to see whether or not we can process a given file
- * For now, we can only do javascript files
+ * For now, we can only do javascript and markdown files
  *
  * @param {string} filename File name to test
  */
 Docker.prototype.canHandleFile = function(filename){
-  return path.extname(filename) == '.js';
+  return ['.js', '.md', 'markdown'].indexOf(path.extname(filename)) !== -1;
 };
 
 /**
@@ -181,10 +183,18 @@ Docker.prototype.generateDoc = function(filename, cb){
   filename = path.join(this.inDir, filename);
   fs.readFile(filename, 'utf-8', function(err, data){
     if(err) throw err;
-    var sections = self.parseSections(data, filename);
-    self.highlight(sections, filename, function(){
-      self.renderHtml(sections, filename, cb);
-    });
+    var l = self.languageParams(filename);
+    switch(l.type){
+      case 'code':
+        var sections = self.parseSections(data, filename);
+        self.highlight(sections, filename, function(){
+          self.renderCodeHtml(sections, filename, cb);
+        });
+        break;
+      case 'markdown':
+        self.renderMarkdownHtml(data, filename, cb);
+        break;
+    }
   });
 };
 
@@ -294,6 +304,7 @@ Docker.prototype.languageParams = function(filename){
       // `divHtml` is the corresponding divider to look for in the output
       return {
         name: 'javascript',
+        type: 'code',
         comment: '//',
         commentRegex: /^\s*\/\/\s?/,
         commentsIgnore: /^\s*\/\/=/,
@@ -302,8 +313,12 @@ Docker.prototype.languageParams = function(filename){
         divText: '\n//----{DIVIDER_THING}----\n',
         divHtml: /\n*<span class="c1?">\/\/----\{DIVIDER_THING\}----<\/span>\n*/
       };
-    // Currently we only support javascript. If we've got here without
-    // already having skipped or thrown an error, something's gone wrong.
+    case '.md':
+    case '.markdown':
+      return {
+        name: 'markdown',
+        type: 'markdown'
+      };
     default:
       throw 'Unknown language';
   }
@@ -363,18 +378,18 @@ Docker.prototype.highlight = function(sections, filename, cb){
 };
 
 /**
- * ## Docker.prototype.addAnchor
+ * ## Docker.prototype.addAnchors
  *
  * Automatically assign an id to each section based on any headings.
  *
  * @param {object} section The section object to look at
  * @param {number} idx The index of the section in the whole array.
  */
-Docker.prototype.addAnchor = function(section, idx){
-  if(section.docHtml.match(/<h[0-9]>/)){
+Docker.prototype.addAnchors = function(docHtml, idx){
+  if(docHtml.match(/<h[0-9]>/)){
     // If there is a heading tag, pick out the first one (likely the most important), sanitize
     // the name a bit to make it more friendly for IDs, then use that
-    section.docHtml = section.docHtml.replace(/(<h[0-9]>)(.*)(<\/h[0-9]>)/g, function(a, start, middle, end){
+    docHtml = docHtml.replace(/(<h[0-9]>)(.*)(<\/h[0-9]>)/g, function(a, start, middle, end){
       var id = middle.replace(/<[^>]*>/g,'').toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
       return '<div class="pilwrap" id="' + id + '">'+
                 start +
@@ -385,12 +400,13 @@ Docker.prototype.addAnchor = function(section, idx){
     });
   }else{
     // If however we can't find a heading, then just use the section index instead.
-    section.docHtml = '<div class="pilwrap"><a class="pilcrow" href="#' + section.id + '" id="section-' +(idx + 1) +'">&#182;</a></div>' + section.docHtml;
+    docHtml = '<div class="pilwrap"><a class="pilcrow" href="#section-' + (idx+1)+ '" id="section-' +(idx + 1) +'">&#182;</a></div>' + docHtml;
   }
+  return docHtml;
 };
 
 /**
- * ## Docker.prototype.renderHtml
+ * ## Docker.prototype.renderCodeHtml
  *
  * Given an array of sections, render them all out to a nice HTML file
  *
@@ -398,7 +414,7 @@ Docker.prototype.addAnchor = function(section, idx){
  * @param {string} filename Name of the file being processed
  * @param {function} cb Callback function to fire when we're done
  */
-Docker.prototype.renderHtml = function(sections, filename, cb){
+Docker.prototype.renderCodeHtml = function(sections, filename, cb){
 
   // Decide which path to store the output on.
   var outFile = this.outFile(filename);
@@ -413,14 +429,17 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
   }
 
   for(var i = 0; i < sections.length; i += 1){
-    this.addAnchor(sections[i], i);
+    sections[i].docHtml = this.addAnchors(sections[i].docHtml, i);
   }
 
   // Render the html file using our template
+  var content = this.codeFileTemplate({
+    sections: sections
+  });
   var html = this.renderTemplate({
     title: path.basename(filename),
-    sections: sections,
     relativeDir: relDir,
+    content: content,
     tree: JSON.stringify(this.tree),
     filename: filename
   });
@@ -437,8 +456,69 @@ Docker.prototype.renderHtml = function(sections, filename, cb){
       });
     });
   });
+};
 
-  // Copy in the CSS and JT files to the output directory
+/**
+ * ## Docker.prototype.renderMarkdownHtml
+ *
+ * Renders the output for a Markdown file into HTML
+ *
+ * @param {string} content The markdown file content
+ * @param {string} filename Name of the file being processed
+ * @param {function} cb Callback function to fire when we're done
+ */
+Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
+  // Run the markdown through *showdown*
+  content = showdown.makeHtml(content);
+
+  // Add anchors to all headings
+  content = this.addAnchors(content,0);
+
+  // Wrap up with necessary classes
+  content = '<div class="docs markdown">' + content + '</div>';
+
+  // Decide which path to store the output on.
+  var outFile = this.outFile(filename);
+
+  // Calculate the location of the input root relative to the output file.
+  // This is necessary so we can link to the stylesheet in the output HTML using
+  // a relative href rather than an absolute one
+  var outDir = path.dirname(outFile);
+  var relDir = '';
+  while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
+    relDir += '../';
+  }
+
+  // Render the html file using our template
+  var html = this.renderTemplate({
+    title: path.basename(filename),
+    relativeDir: relDir,
+    content: content,
+    tree: JSON.stringify(this.tree),
+    filename: filename
+  });
+
+  var self = this;
+
+  // Recursively create the output directory, clean out any old version of the
+  // output file, then save our new file.
+  mkdirp(outDir, function(){
+    fs.unlink(outFile, function(){
+      fs.writeFile(outFile, html, function(){
+        console.log('Generated: ' + outFile.replace(self.outDir,''));
+        cb();
+      });
+    });
+  });
+};
+
+/**
+ * ## Docker.prototype.copySharedResources
+ *
+ * Copies the shared CSS and JS files to the output directories
+ */
+Docker.prototype.copySharedResources = function(){
+  var self = this;
   fs.unlink(path.join(this.outDir, 'doc-style.css'), function(err, stat){
     fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
       fs.writeFile(path.join(self.outDir, 'doc-style.css'), file);
@@ -501,6 +581,22 @@ Docker.prototype.renderTemplate = function(obj){
     this.__tmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__tmpl(obj);
+};
+
+/**
+ * ## Docker.prototype.codeFileTemplate
+ *
+ * Renders the content for a code file's doc page
+ *
+ * @param {object} obj Object containing parameters for the template
+ * @return {string} Rendered content
+ */
+Docker.prototype.codeFileTemplate = function(obj){
+  if(!this.__codeTmpl){
+    var tmplFile = path.join(path.dirname(__filename),'../res/code.jst');
+    this.__codeTmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
+  }
+  return this.__codeTmpl(obj);
 };
 
 /**
