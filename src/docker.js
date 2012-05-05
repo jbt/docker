@@ -52,7 +52,9 @@ var Docker = module.exports =function(inDir, outDir){
   this.inDir = inDir.replace(/\/$/,'');
   this.outDir = outDir;
   this.running = false;
-  this.fileQueue = [];
+  this.scanQueue = [];
+  this.files = [];
+  this.tree = {};
 };
 
 /**
@@ -64,79 +66,90 @@ var Docker = module.exports =function(inDir, outDir){
  * @param {Array} files Array of file paths relative to the `inDir` to generate documentation for.
  */
 Docker.prototype.doc = function(files){
-  for(var i = 0; i < files.length; i += 1){
-    this.docFile(files[i]);
-  }
+  this.scanQueue = files;
+  this.addNextFile();
 };
 
 /**
- * ## Docker.prototype.docFile
+ * ## Docker.prototype.addNextFile
  *
- * Generate documentation for a particular file.
- *
- * Checks to see if the given filename is actually a directory, and if it is,
- * then finds all children and queues those. Otherwise, queues the file for generation
- *
- * @this Docker
- * @param {string} filename File name relative to `inDir` to generate documentation for
+ * Process the next file on the scan queue. If it's a directory, list all the children and queue those.
+ * If it's a file, add it to the queue.
  */
-Docker.prototype.docFile = function(filename){
-  var self = this;
-  fs.stat(path.join(this.inDir, filename), function(err, stat){
-    // If the file we have is actually a directory, find all the files
-    // in that directory and queue those as well.
-    if(stat && stat.isDirectory()){
-      fs.readdir(path.join(self.inDir, filename), function(err, list){
-        var files = [];
-        for(var i = 0; i < list.length; i += 1){
-          files.push(path.join(filename, list[i]));
-        }
-        self.doc(files);
-      });
-    }else{
-      // Otherwise, just queue the file
-      self.queueFile(filename);
-    }
-  });
+Docker.prototype.addNextFile = function(){
+  if(this.scanQueue.length > 0){
+    var self = this, filename = this.scanQueue.shift();
+    fs.stat(path.join(this.inDir, filename), function(err, stat){
+      if(stat && stat.isDirectory()){
+        // Find all children of the directory and queue those
+        fs.readdir(path.join(self.inDir, filename), function(err, list){
+          for(var i = 0; i < list.length; i += 1) self.scanQueue.push(path.join(filename, list[i]));
+            self.addNextFile();
+        });
+      }else{
+        self.queueFile(filename);
+        self.addNextFile();
+      }
+    });
+  }else{
+    // Once we're done scanning all the files, start processing them in order.
+    this.processNextFile();
+  }
 };
 
 /**
  * ## Docker.prototype.queueFile
  *
- * Queue a file for documentation generation.
+ * Queues a file for processing, and additionally stores it in the folder tree
  *
- * As docker uses a few asynchronous processes, instead of immediately
- * rushing off and generate documentation for all files as soon as we
- * get them, put them in a queue and loop through them one-by-one
- *
- * @this Docker
- * @param {string} filename File name to queue for documentation
+ * @param {string} filename Name of the file to queue
  */
 Docker.prototype.queueFile = function(filename){
-  // If we can't actually process the file, ignore it
   if(!this.canHandleFile(filename)) return;
-  this.fileQueue.push(filename);
+  this.files.push(filename);
 
-  // If we're not actually in the process of generating documentation, start.
-  if(!this.running) this.nextFile();
+  // Split the file's path into the individual directories
+  filename = filename.replace(/^\//,'');
+  var bits = filename.split('/');
+
+  // Loop through all the directories and process the folder structure into `this.tree`
+  // `this.tree` takes the format:
+  //
+  //     {
+  //        dirs: {
+  //          'child_dir_name': { [Object of same format as tree] },
+  //          'other_child_name': etc...
+  //        },
+  //        files: [
+  //          'filename.js',
+  //          'filename2.js',
+  //          etc...
+  //        ]
+  //      }
+  //
+  var currDir  = this.tree;
+  for(var i = 0; i < bits.length - 1; i += 1){
+    if(!currDir.dirs) currDir.dirs = {};
+    if(!currDir.dirs[bits[i]])currDir.dirs[bits[i]] = {};
+    currDir = currDir.dirs[bits[i]];
+  }
+  if(!currDir.files) currDir.files = [];
+  currDir.files.push(bits[bits.length-1]);
 };
 
 /**
- * ## Docker.prototype.nextFile
+ * ## Docker.prototype.processNextFile
  *
  * Take the next file off the queue and process it
  */
-Docker.prototype.nextFile = function(){
+Docker.prototype.processNextFile = function(){
   var self = this;
 
   // If we still have files on the queue, process the first one
-  if(this.fileQueue.length > 0){
-    this.generateDoc(this.fileQueue.shift(), function(){
-      self.nextFile();
+  if(this.files.length > 0){
+    this.generateDoc(this.files.shift(), function(){
+      self.processNextFile();
     });
-  }else{
-    // If there are no files left, then flag that we've stopped running
-    this.running = false;
   }
 };
 
