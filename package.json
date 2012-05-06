@@ -3,10 +3,20 @@
   "name": "docker",
   "version": "0.0.1",
   "dependencies": {
-    "mkdirp": "*",
-    "dox": "*"
+    "mkdirp": "0.3.2",
+    "dox": "0.1.2"
   },
   "bin": {
     "docker": "./docker"
-  }
+  },
+  "engines": {
+    "node": ">=0.4.11"
+  },
+  "description": "Static documentation generator based on docco",
+  "homepage": "http://jbt.github.com/docker",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jbt/docker.git"
+  },
+  "main": "./src/docker.js"
 }
