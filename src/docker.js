@@ -444,7 +444,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
     relativeDir: relDir,
     content: content,
     tree: JSON.stringify(this.tree),
-    filename: filename
+    filename: filename.replace(this.inDir,'').replace(/^\//,'')
   });
 
   var self = this;
@@ -498,7 +498,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
     relativeDir: relDir,
     content: content,
     tree: JSON.stringify(this.tree),
-    filename: filename
+    filename: filename.replace(this.inDir,'').replace(/^\//,'')
   });
 
   var self = this;
