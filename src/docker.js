@@ -561,7 +561,7 @@ Docker.prototype.compileTemplate = function(str){
     'with(obj){p.push(\'' +
     str.replace(/[\r\t]/g, " ")
        .replace(/(>)\s*\n+(\s*<)/g,'$1\n$2')
-       .replace(/%>\s*\n*\s*<%/g,'')
+       .replace(/%>\s*\n*\s*<%(?:[^=])/g,'')
        .replace(/%>\s*(?=\n)/g,'%>')
        .replace(/(?=\n)\s*<%/g,'<%')
        .replace(/\n/g,"~K")
