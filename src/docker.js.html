@@ -351,7 +351,7 @@ For now, we can only do javascript and markdown files</p>
 </div>
         </td>
         <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">canHandleFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
-  <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.md&#39;</span><span class="p">,</span> <span class="s1">&#39;markdown&#39;</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">filename</span><span class="p">))</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.md&#39;</span><span class="p">,</span> <span class="s1">&#39;.markdown&#39;</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">filename</span><span class="p">))</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1299,7 +1299,7 @@ is the easiest way for now.</p>
 </table>
   </div>
   <script>
-    makeTree({"files":["README.md"],"dirs":{"src":{"files":["docker.js"]},"res":{"files":["script.js"]},"lib":{"files":["showdown.js"]},"node_modules":{"dirs":{"mkdirp":{"files":["index.js"],"dirs":{"test":{"files":["perm.js","perm_sync.js","umask_sync.js","umask.js","clobber.js","rel.js","mkdirp.js","return_sync.js","sync.js","race.js","chmod.js","return.js"]},"examples":{"files":["pow.js"]}}},"dox":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["dox.js","utils.js"]},"node_modules":{"dirs":{"github-flavored-markdown":{"files":["preview.md","index.md","README.md"],"dirs":{"scripts":{"files":["preview.js","showdown.js"]}}},"commander":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["commander.js"]}}}}}}}}}}}, '../', 'src/docker.js');
+    makeTree({"files":["README.md"],"dirs":{"src":{"files":["docker.js"]},"res":{"files":["script.js"]},"lib":{"files":["showdown.js"]},"node_modules":{"dirs":{"mkdirp":{"files":["README.markdown","index.js"],"dirs":{"test":{"files":["perm.js","perm_sync.js","umask_sync.js","umask.js","clobber.js","rel.js","mkdirp.js","return_sync.js","sync.js","race.js","chmod.js","return.js"]},"examples":{"files":["pow.js"]}}},"dox":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["dox.js","utils.js"]},"node_modules":{"dirs":{"github-flavored-markdown":{"files":["preview.md","index.md","README.md"],"dirs":{"scripts":{"files":["preview.js","showdown.js"]}}},"commander":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["commander.js"]}}}}}}}}}}}, '../', 'src/docker.js');
   </script>
 </body>
 </html>
