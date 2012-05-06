@@ -15,9 +15,23 @@
 <table cellpadding="0" cellspacing="0">
   <tbody>
       <tr>
-        <td class="docs"><div class="pilwrap" id="docker.js"><h1><a href="#docker.js" class="pilcrow">&#182;</a>docker.js</h1></div>
+        <td class="docs">
+<div class="pilwrap" id="docker.js">
+  <h1>
+    <a href="#docker.js" class="pilcrow">&#182;</a>
+    docker.js
+  </h1>
+</div>
 
-<div class="pilwrap" id="a-simple-documentation-generator-based-on-docco"><h2><a href="#a-simple-documentation-generator-based-on-docco" class="pilcrow">&#182;</a><em>A simple documentation generator based on <a href="http://jashkenas.github.com/docco/">docco</a></em></h2></div>
+
+
+<div class="pilwrap" id="a-simple-documentation-generator-based-on-docco">
+  <h2>
+    <a href="#a-simple-documentation-generator-based-on-docco" class="pilcrow">&#182;</a>
+    <em>A simple documentation generator based on <a href="http://jashkenas.github.com/docco/">docco</a></em>
+  </h2>
+</div>
+
 
 <p><strong>Docker</strong> is a really simple documentation generator, which originally started out as a
 pure-javascript port of <strong>docco</strong>, but which eventually gained many extra little features
@@ -38,7 +52,14 @@ next to syntax-highlighted code. This page is the result of running docker again
 and directories you specify) and document-ize all the files it can.
 The folder structure will be preserved in the document root.</p>
 
-<div class="pilwrap" id="differences-from-docco"><h2><a href="#differences-from-docco" class="pilcrow">&#182;</a>Differences from docco</h2></div>
+
+<div class="pilwrap" id="differences-from-docco">
+  <h2>
+    <a href="#differences-from-docco" class="pilcrow">&#182;</a>
+    Differences from docco
+  </h2>
+</div>
+
 
 <p>The main differences from docco are:</p>
 
@@ -57,7 +78,14 @@ that constitute a large-scale project</p></li>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap" id="node-modules"><h2><a href="#node-modules" class="pilcrow">&#182;</a>Node Modules</h2></div>
+        <td class="docs">
+<div class="pilwrap" id="node-modules">
+  <h2>
+    <a href="#node-modules" class="pilcrow">&#182;</a>
+    Node Modules
+  </h2>
+</div>
+
 
 <p>Include all the necessay node modules.</p>
         </td>
@@ -71,7 +99,14 @@ that constitute a large-scale project</p></li>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker-constructor"><h2><a href="#docker-constructor" class="pilcrow">&#182;</a>Docker Constructor</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker-constructor">
+  <h2>
+    <a href="#docker-constructor" class="pilcrow">&#182;</a>
+    Docker Constructor
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Creates a new docker instance. All methods are called on one instance of this object.</p>
   </div>
@@ -102,7 +137,14 @@ that constitute a large-scale project</p></li>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.doc"><h2><a href="#docker.prototype.doc" class="pilcrow">&#182;</a>Docker.prototype.doc</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.doc">
+  <h2>
+    <a href="#docker.prototype.doc" class="pilcrow">&#182;</a>
+    Docker.prototype.doc
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Generate documentation for a bunch of files</p>
   </div>
@@ -124,7 +166,14 @@ that constitute a large-scale project</p></li>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.addnextfile"><h2><a href="#docker.prototype.addnextfile" class="pilcrow">&#182;</a>Docker.prototype.addNextFile</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.addnextfile">
+  <h2>
+    <a href="#docker.prototype.addnextfile" class="pilcrow">&#182;</a>
+    Docker.prototype.addNextFile
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Process the next file on the scan queue. If it's a directory, list all the children and queue those.
 If it's a file, add it to the queue.</p>
@@ -139,7 +188,11 @@ If it's a file, add it to the queue.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-6" id="section-6">&#182;</a></div><p>Find all children of the directory and queue those</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Find all children of the directory and queue those</p>
         </td>
         <td class="code"><div class="highlight"><pre>        <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">list</span><span class="p">){</span>
           <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">self</span><span class="p">.</span><span class="nx">scanQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
@@ -154,7 +207,11 @@ If it's a file, add it to the queue.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-7" id="section-7">&#182;</a></div><p>Once we're done scanning all the files, start processing them in order.</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Once we're done scanning all the files, start processing them in order.</p>
         </td>
         <td class="code"><div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">processNextFile</span><span class="p">();</span>
   <span class="p">}</span>
@@ -163,7 +220,14 @@ If it's a file, add it to the queue.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.queuefile"><h2><a href="#docker.prototype.queuefile" class="pilcrow">&#182;</a>Docker.prototype.queueFile</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.queuefile">
+  <h2>
+    <a href="#docker.prototype.queuefile" class="pilcrow">&#182;</a>
+    Docker.prototype.queueFile
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Queues a file for processing, and additionally stores it in the folder tree</p>
   </div>
@@ -183,14 +247,22 @@ If it's a file, add it to the queue.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-9" id="section-9">&#182;</a></div><p>Split the file's path into the individual directories</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Split the file's path into the individual directories</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">filename</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">bits</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-10" id="section-10">&#182;</a></div><p>Loop through all the directories and process the folder structure into <code>this.tree</code>.</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Loop through all the directories and process the folder structure into <code>this.tree</code>.</p>
 
 <p><code>this.tree</code> takes the format:</p>
 
@@ -220,7 +292,14 @@ If it's a file, add it to the queue.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.processnextfile"><h2><a href="#docker.prototype.processnextfile" class="pilcrow">&#182;</a>Docker.prototype.processNextFile</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.processnextfile">
+  <h2>
+    <a href="#docker.prototype.processnextfile" class="pilcrow">&#182;</a>
+    Docker.prototype.processNextFile
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Take the next file off the queue and process it</p>
   </div>
@@ -231,7 +310,11 @@ If it's a file, add it to the queue.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-12" id="section-12">&#182;</a></div><p>If we still have files on the queue, process the first one</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>If we still have files on the queue, process the first one</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">generateDoc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">shift</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(){</span>
@@ -245,7 +328,14 @@ If it's a file, add it to the queue.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.canhandlefile"><h2><a href="#docker.prototype.canhandlefile" class="pilcrow">&#182;</a>Docker.prototype.canHandleFile</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.canhandlefile">
+  <h2>
+    <a href="#docker.prototype.canhandlefile" class="pilcrow">&#182;</a>
+    Docker.prototype.canHandleFile
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Check to see whether or not we can process a given file
 For now, we can only do javascript and markdown files</p>
@@ -267,9 +357,23 @@ For now, we can only do javascript and markdown files</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.generatedoc"><h2><a href="#docker.prototype.generatedoc" class="pilcrow">&#182;</a>Docker.prototype.generateDoc</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.generatedoc">
+  <h2>
+    <a href="#docker.prototype.generatedoc" class="pilcrow">&#182;</a>
+    Docker.prototype.generateDoc
+  </h2>
+</div>
 
-<div class="pilwrap" id="this-is-where-the-magic-happens"><h3><a href="#this-is-where-the-magic-happens" class="pilcrow">&#182;</a><em>This is where the magic happens</em></h3></div>
+
+
+<div class="pilwrap" id="this-is-where-the-magic-happens">
+  <h3>
+    <a href="#this-is-where-the-magic-happens" class="pilcrow">&#182;</a>
+    <em>This is where the magic happens</em>
+  </h3>
+</div>
+
   </div>
   <div class="body"><p>Generate the documentation for a file</p>
   </div>
@@ -312,7 +416,14 @@ For now, we can only do javascript and markdown files</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.parsesections"><h2><a href="#docker.prototype.parsesections" class="pilcrow">&#182;</a>Docker.prototype.parseSections</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.parsesections">
+  <h2>
+    <a href="#docker.prototype.parsesections" class="pilcrow">&#182;</a>
+    Docker.prototype.parseSections
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Parse the content of a file into individual sections.
 A section is defined to be one block of code with an accompanying comment</p>
@@ -352,7 +463,11 @@ A section is defined to be one block of code with an accompanying comment</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-16" id="section-16">&#182;</a></div><p>Fetch language-specific parameters for this code file</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>Fetch language-specific parameters for this code file</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span>
@@ -370,21 +485,33 @@ A section is defined to be one block of code with an accompanying comment</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-17" id="section-17">&#182;</a></div><p>Loop through all the lines, and parse into sections</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Loop through all the lines, and parse into sections</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">codeLines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">codeLines</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-18" id="section-18">&#182;</a></div><p>If we are currently in a multiline comment, behave differently</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>If we are currently in a multiline comment, behave differently</p>
         </td>
         <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">inMultiLineComment</span><span class="p">){</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multilineEnd</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-19" id="section-19">&#182;</a></div><p>Once we have reached the end of the multiline, take the whole content
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>Once we have reached the end of the multiline, take the whole content
 of the multiline comment, and pass it through <strong>dox</strong>, which will then
 extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
@@ -395,7 +522,11 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-20" id="section-20">&#182;</a></div><p>Don't let dox do any markdown parsing. We'll do that all ourselves with md above</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>Don't let dox do any markdown parsing. We'll do that all ourselves with md above</p>
         </td>
         <td class="code"><div class="highlight"><pre>          <span class="nx">doxData</span><span class="p">.</span><span class="nx">md</span> <span class="o">=</span> <span class="nx">md</span><span class="p">;</span>
           <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">doxTemplate</span><span class="p">(</span><span class="nx">doxData</span><span class="p">);</span>
@@ -411,7 +542,11 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-21" id="section-21">&#182;</a></div><p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
         </td>
         <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
@@ -423,7 +558,11 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-22" id="section-22">&#182;</a></div><p>This is for single-line comments. Again, store away the last section and start a new one</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>This is for single-line comments. Again, store away the last section and start a new one</p>
         </td>
         <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
@@ -441,7 +580,14 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.languageparams"><h2><a href="#docker.prototype.languageparams" class="pilcrow">&#182;</a>Docker.prototype.languageParams</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.languageparams">
+  <h2>
+    <a href="#docker.prototype.languageparams" class="pilcrow">&#182;</a>
+    Docker.prototype.languageParams
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Provides language-specific params for a given file name.</p>
   </div>
@@ -467,7 +613,11 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-24" id="section-24">&#182;</a></div><p><code>commentRegex</code> is for single-line comments, <code>multilineStart</code> and <code>multilineEnd</code> are for multiline comments.</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p><code>commentRegex</code> is for single-line comments, <code>multilineStart</code> and <code>multilineEnd</code> are for multiline comments.</p>
 
 <p><code>commentsIgnore</code> is for comments that should be stripped completely and not document-ized.</p>
 
@@ -499,7 +649,14 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.highlight"><h2><a href="#docker.prototype.highlight" class="pilcrow">&#182;</a>Docker.prototype.highlight</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.highlight">
+  <h2>
+    <a href="#docker.prototype.highlight" class="pilcrow">&#182;</a>
+    Docker.prototype.highlight
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Highlights all the sections of a file using <strong>pygments</strong>
 Given an array of section objects, loop through them, and for each
@@ -531,13 +688,21 @@ section generate pretty html for the comments and the code, and put them in
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-26" id="section-26">&#182;</a></div><p>Spawn a new <strong>pygments</strong> process</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>Spawn a new <strong>pygments</strong> process</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">pyg</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;pygmentize&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;-l&#39;</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding=utf-8,tabsize=2&#39;</span><span class="p">]);</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-27" id="section-27">&#182;</a></div><p>Hook up errors, for either when pygments itself throws an error,
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="p">});</span>
@@ -551,7 +716,11 @@ or for when we're unable to send the code to pygments for some reason</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-28" id="section-28">&#182;</a></div><p>Once pygments is done, split the output up into different sections, and
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>Once pygments is done, split the output up into different sections, and
 allocate them to the relevant section objects.
 Also parse the comment text using <strong>showdown</strong></p>
         </td>
@@ -567,7 +736,11 @@ Also parse the comment text using <strong>showdown</strong></p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-29" id="section-29">&#182;</a></div><p>Feed pygments with the code</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>Feed pygments with the code</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">writable</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="p">[];</span>
@@ -582,7 +755,14 @@ Also parse the comment text using <strong>showdown</strong></p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.addanchors"><h2><a href="#docker.prototype.addanchors" class="pilcrow">&#182;</a>Docker.prototype.addAnchors</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.addanchors">
+  <h2>
+    <a href="#docker.prototype.addanchors" class="pilcrow">&#182;</a>
+    Docker.prototype.addAnchors
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Automatically assign an id to each section based on any headings.</p>
   </div>
@@ -606,25 +786,33 @@ Also parse the comment text using <strong>showdown</strong></p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-31" id="section-31">&#182;</a></div><p>If there is a heading tag, pick out the first one (likely the most important), sanitize
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
         </td>
         <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">docHtml</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(&lt;h[0-9]&gt;)(.*)(&lt;\/h[0-9]&gt;)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">middle</span><span class="p">,</span> <span class="nx">end</span><span class="p">){</span>
       <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">middle</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;[^&gt;]*&gt;/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[^a-zA-Z0-9\_\.]/g</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">);</span>
-      <span class="k">return</span> <span class="s1">&#39;&lt;div class=&quot;pilwrap&quot; id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span>
+      <span class="k">return</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot; id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;\n  &#39;</span><span class="o">+</span>
                 <span class="nx">start</span> <span class="o">+</span>
-                <span class="s1">&#39;&lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot; class=&quot;pilcrow&quot;&gt;&amp;#182;&lt;/a&gt;&#39;</span> <span class="o">+</span>
-                <span class="nx">middle</span> <span class="o">+</span>
+                <span class="s1">&#39;\n    &lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot; class=&quot;pilcrow&quot;&gt;&amp;#182;&lt;/a&gt;\n    &#39;</span> <span class="o">+</span>
+                <span class="nx">middle</span> <span class="o">+</span> <span class="s1">&#39;\n  &#39;</span> <span class="o">+</span>
                 <span class="nx">end</span> <span class="o">+</span>
-              <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
+              <span class="s1">&#39;\n&lt;/div&gt;\n&#39;</span><span class="p">;</span>
     <span class="p">});</span>
   <span class="p">}</span><span class="k">else</span><span class="p">{</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-32" id="section-32">&#182;</a></div><p>If however we can't find a heading, then just use the section index instead.</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;pilwrap&quot;&gt;&lt;a class=&quot;pilcrow&quot; href=&quot;#section-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;&quot; id=&quot;section-&#39;</span> <span class="o">+</span><span class="p">(</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&amp;#182;&lt;/a&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span> <span class="nx">docHtml</span><span class="p">;</span>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot;&gt;\n  &lt;a class=&quot;pilcrow&quot; href=&quot;#section-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;&quot; id=&quot;section-&#39;</span> <span class="o">+</span><span class="p">(</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&amp;#182;&lt;/a&gt;\n&lt;/div&gt;\n&#39;</span> <span class="o">+</span> <span class="nx">docHtml</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">docHtml</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
@@ -632,7 +820,14 @@ the name a bit to make it more friendly for IDs, then use that</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.rendercodehtml"><h2><a href="#docker.prototype.rendercodehtml" class="pilcrow">&#182;</a>Docker.prototype.renderCodeHtml</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.rendercodehtml">
+  <h2>
+    <a href="#docker.prototype.rendercodehtml" class="pilcrow">&#182;</a>
+    Docker.prototype.renderCodeHtml
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Given an array of sections, render them all out to a nice HTML file</p>
   </div>
@@ -660,13 +855,21 @@ the name a bit to make it more friendly for IDs, then use that</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-34" id="section-34">&#182;</a></div><p>Decide which path to store the output on.</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>Decide which path to store the output on.</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-35" id="section-35">&#182;</a></div><p>Calculate the location of the input root relative to the output file.
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
 a relative href rather than an absolute one</p>
         </td>
@@ -682,7 +885,11 @@ a relative href rather than an absolute one</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-36" id="section-36">&#182;</a></div><p>Render the html file using our template</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>Render the html file using our template</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">codeFileTemplate</span><span class="p">({</span>
     <span class="nx">sections</span><span class="o">:</span> <span class="nx">sections</span>
@@ -699,7 +906,11 @@ a relative href rather than an absolute one</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-37" id="section-37">&#182;</a></div><p>Recursively create the output directory, clean out any old version of the
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
@@ -715,7 +926,14 @@ output file, then save our new file.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.rendermarkdownhtml"><h2><a href="#docker.prototype.rendermarkdownhtml" class="pilcrow">&#182;</a>Docker.prototype.renderMarkdownHtml</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.rendermarkdownhtml">
+  <h2>
+    <a href="#docker.prototype.rendermarkdownhtml" class="pilcrow">&#182;</a>
+    Docker.prototype.renderMarkdownHtml
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Renders the output for a Markdown file into HTML</p>
   </div>
@@ -743,31 +961,51 @@ output file, then save our new file.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-39" id="section-39">&#182;</a></div><p>Run the markdown through <em>showdown</em></p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<p>Run the markdown through <em>showdown</em></p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-40" id="section-40">&#182;</a></div><p>Add anchors to all headings</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+</div>
+<p>Add anchors to all headings</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-41" id="section-41">&#182;</a></div><p>Wrap up with necessary classes</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+</div>
+<p>Wrap up with necessary classes</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;docs markdown&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">content</span> <span class="o">+</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-42" id="section-42">&#182;</a></div><p>Decide which path to store the output on.</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+</div>
+<p>Decide which path to store the output on.</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-43" id="section-43">&#182;</a></div><p>Calculate the location of the input root relative to the output file.
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
 a relative href rather than an absolute one</p>
         </td>
@@ -779,7 +1017,11 @@ a relative href rather than an absolute one</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-44" id="section-44">&#182;</a></div><p>Render the html file using our template</p>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>Render the html file using our template</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">({</span>
     <span class="nx">title</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
@@ -793,7 +1035,11 @@ a relative href rather than an absolute one</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-45" id="section-45">&#182;</a></div><p>Recursively create the output directory, clean out any old version of the
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
@@ -809,7 +1055,14 @@ output file, then save our new file.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.copysharedresources"><h2><a href="#docker.prototype.copysharedresources" class="pilcrow">&#182;</a>Docker.prototype.copySharedResources</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.copysharedresources">
+  <h2>
+    <a href="#docker.prototype.copysharedresources" class="pilcrow">&#182;</a>
+    Docker.prototype.copySharedResources
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Copies the shared CSS and JS files to the output directories</p>
   </div>
@@ -834,7 +1087,14 @@ output file, then save our new file.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.outfile"><h2><a href="#docker.prototype.outfile" class="pilcrow">&#182;</a>Docker.prototype.outFile</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.outfile">
+  <h2>
+    <a href="#docker.prototype.outfile" class="pilcrow">&#182;</a>
+    Docker.prototype.outFile
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Generates the output path for a given input file</p>
   </div>
@@ -861,7 +1121,14 @@ output file, then save our new file.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.compiletemplate"><h2><a href="#docker.prototype.compiletemplate" class="pilcrow">&#182;</a>Docker.prototype.compileTemplate</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.compiletemplate">
+  <h2>
+    <a href="#docker.prototype.compiletemplate" class="pilcrow">&#182;</a>
+    Docker.prototype.compileTemplate
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Tiny template compilation function</p>
   </div>
@@ -904,7 +1171,14 @@ output file, then save our new file.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.rendertemplate"><h2><a href="#docker.prototype.rendertemplate" class="pilcrow">&#182;</a>Docker.prototype.renderTemplate</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.rendertemplate">
+  <h2>
+    <a href="#docker.prototype.rendertemplate" class="pilcrow">&#182;</a>
+    Docker.prototype.renderTemplate
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Renders the HTML for an output page with given parameters</p>
   </div>
@@ -928,7 +1202,11 @@ output file, then save our new file.</p>
         </td>
       </tr>
       <tr>
-        <td class="docs"><div class="pilwrap"><a class="pilcrow" href="#section-50" id="section-50">&#182;</a></div><p>If we haven't already loaded the template, load it now.
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+</div>
+<p>If we haven't already loaded the template, load it now.
 It's a bit messy to be using readFileSync I know, but this
 is the easiest way for now.</p>
         </td>
@@ -942,7 +1220,14 @@ is the easiest way for now.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.codefiletemplate"><h2><a href="#docker.prototype.codefiletemplate" class="pilcrow">&#182;</a>Docker.prototype.codeFileTemplate</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.codefiletemplate">
+  <h2>
+    <a href="#docker.prototype.codefiletemplate" class="pilcrow">&#182;</a>
+    Docker.prototype.codeFileTemplate
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Renders the content for a code file's doc page</p>
   </div>
@@ -973,7 +1258,14 @@ is the easiest way for now.</p>
       </tr>
       <tr>
         <td class="docs"><div class="dox">
-  <div class="summary"><div class="pilwrap" id="docker.prototype.doxtemplate"><h2><a href="#docker.prototype.doxtemplate" class="pilcrow">&#182;</a>Docker.prototype.doxTemplate</h2></div>
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.doxtemplate">
+  <h2>
+    <a href="#docker.prototype.doxtemplate" class="pilcrow">&#182;</a>
+    Docker.prototype.doxTemplate
+  </h2>
+</div>
+
   </div>
   <div class="body"><p>Renders the output of <strong>dox</strong> into a format suitable for compilation</p>
   </div>
