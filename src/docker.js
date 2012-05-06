@@ -171,7 +171,7 @@ Docker.prototype.processNextFile = function(){
  * @param {string} filename File name to test
  */
 Docker.prototype.canHandleFile = function(filename){
-  return ['.js', '.md', 'markdown'].indexOf(path.extname(filename)) !== -1;
+  return ['.js', '.md', '.markdown'].indexOf(path.extname(filename)) !== -1;
 };
 
 /**
