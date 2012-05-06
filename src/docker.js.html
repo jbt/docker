@@ -1153,7 +1153,7 @@ output file, then save our new file.</p>
     <span class="s1">&#39;with(obj){p.push(\&#39;&#39;</span> <span class="o">+</span>
     <span class="nx">str</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\r\t]/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(&gt;)\s*\n+(\s*&lt;)/g</span><span class="p">,</span><span class="s1">&#39;$1\n$2&#39;</span><span class="p">)</span>
-       <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%&gt;\s*\n*\s*&lt;%/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+       <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%&gt;\s*\n*\s*&lt;%(?:[^=])/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/%&gt;\s*(?=\n)/g</span><span class="p">,</span><span class="s1">&#39;%&gt;&#39;</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(?=\n)\s*&lt;%/g</span><span class="p">,</span><span class="s1">&#39;&lt;%&#39;</span><span class="p">)</span>
        <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\n/g</span><span class="p">,</span><span class="s2">&quot;~K&quot;</span><span class="p">)</span>
