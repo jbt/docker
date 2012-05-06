@@ -394,16 +394,16 @@ Docker.prototype.addAnchors = function(docHtml, idx){
     // the name a bit to make it more friendly for IDs, then use that
     docHtml = docHtml.replace(/(<h[0-9]>)(.*)(<\/h[0-9]>)/g, function(a, start, middle, end){
       var id = middle.replace(/<[^>]*>/g,'').toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
-      return '<div class="pilwrap" id="' + id + '">'+
+      return '\n<div class="pilwrap" id="' + id + '">\n  '+
                 start +
-                '<a href="#' + id + '" class="pilcrow">&#182;</a>' +
-                middle +
+                '\n    <a href="#' + id + '" class="pilcrow">&#182;</a>\n    ' +
+                middle + '\n  ' +
                 end +
-              '</div>';
+              '\n</div>\n';
     });
   }else{
     // If however we can't find a heading, then just use the section index instead.
-    docHtml = '<div class="pilwrap"><a class="pilcrow" href="#section-' + (idx+1)+ '" id="section-' +(idx + 1) +'">&#182;</a></div>' + docHtml;
+    docHtml = '\n<div class="pilwrap">\n  <a class="pilcrow" href="#section-' + (idx+1)+ '" id="section-' +(idx + 1) +'">&#182;</a>\n</div>\n' + docHtml;
   }
   return docHtml;
 };
