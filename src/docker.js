@@ -559,13 +559,20 @@ Docker.prototype.outFile = function(filename){
 Docker.prototype.compileTemplate = function(str){
   return new Function('obj', 'var p=[],print=function(){p.push.apply(p,arguments);};' +
     'with(obj){p.push(\'' +
-    str.replace(/[\r\t\n]/g, " ")
-         .replace(/'(?=[^<]*%>)/g, "\t")
-         .split("'").join("\\'")
-         .split("\t").join("'")
-         .replace(/<%=(.+?)%>/g, "',$1,'")
-         .split('<%').join("');")
-         .split('%>').join("p.push('") +
+    str.replace(/[\r\t]/g, " ")
+       .replace(/(>)\s*\n+(\s*<)/g,'$1\n$2')
+       .replace(/%>\s*\n*\s*<%/g,'')
+       .replace(/%>\s*(?=\n)/g,'%>')
+       .replace(/(?=\n)\s*<%/g,'<%')
+       .replace(/\n/g,"~K")
+       .replace(/~K(?=[^%]*%>)/g, " ")
+       .replace(/~K/g, '\\n')
+       .replace(/'(?=[^<]*%>)/g, "\t")
+       .split("'").join("\\'")
+       .split("\t").join("'")
+       .replace(/<%=(.+?)%>/g, "',$1,'")
+       .split('<%').join("');")
+       .split('%>').join("p.push('") +
     "');}return p.join('');");
 };
 
