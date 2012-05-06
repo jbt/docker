@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "dependencies": {
     "mkdirp": "0.3.2",
-    "dox": "0.1.2"
+    "dox": "0.1.2",
+    "commander": "0.2.1"
   },
   "bin": {
     "docker": "./docker"
