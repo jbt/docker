@@ -7,8 +7,8 @@ var program = require('commander');
 
 program
   .version('0.0.1')
-  .option('-i, --input_dir [value]', 'Input directory (defaults to current dir)')
-  .option('-o, --output_dir [value]', 'Output directory (defaults to ./doc)')
+  .option('-i, --input_dir <dir>', 'Input directory (defaults to current dir)')
+  .option('-o, --output_dir <dir>', 'Output directory (defaults to ./doc)')
   .parse(process.argv);
 
 var d = new Docker(program.input_dir || pwd, program.output_dir || path.join(pwd, 'doc'));
