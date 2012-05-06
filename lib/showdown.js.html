@@ -214,13 +214,14 @@ to make the other regex more complicated.</p>         </td>         <td class="c
 <span class="p">};</span>
 
 <span class="kd">var</span> <span class="nx">_RunBlockGamut</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-43" id="section-43">&#182;</a></div><p>These are all the transformations that form block-level
-tags like paragraphs, headers, and list items.</p>         </td>         <td class="code">           <div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">_DoHeaders</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-44" id="section-44">&#182;</a></div><p>Do Horizontal Rules:</p>         </td>         <td class="code">           <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">hashBlock</span><span class="p">(</span><span class="s2">&quot;&lt;hr /&gt;&quot;</span><span class="p">);</span>
+tags like paragraphs, headers, and list items.</p>         </td>         <td class="code">           <div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">_DoCodeBlocks</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+
+  <span class="nx">text</span> <span class="o">=</span> <span class="nx">_DoHeaders</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-44" id="section-44">&#182;</a></div><p>Do Horizontal Rules:</p>         </td>         <td class="code">           <div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">hashBlock</span><span class="p">(</span><span class="s2">&quot;&lt;hr /&gt;&quot;</span><span class="p">);</span>
   <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[ ]{0,2}([ ]?\*[ ]?){3,}[ \t]*$/gm</span><span class="p">,</span><span class="nx">key</span><span class="p">);</span>
   <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[ ]{0,2}([ ]?\-[ ]?){3,}[ \t]*$/gm</span><span class="p">,</span><span class="nx">key</span><span class="p">);</span>
   <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[ ]{0,2}([ ]?\_[ ]?){3,}[ \t]*$/gm</span><span class="p">,</span><span class="nx">key</span><span class="p">);</span>
 
   <span class="nx">text</span> <span class="o">=</span> <span class="nx">_DoLists</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-  <span class="nx">text</span> <span class="o">=</span> <span class="nx">_DoCodeBlocks</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
   <span class="nx">text</span> <span class="o">=</span> <span class="nx">_DoBlockQuotes</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-45" id="section-45">&#182;</a></div><p>We already ran _HashHTMLBlocks() before, in Markdown(), but that
 was to escape raw HTML in the original Markdown source. This time,
 we're escaping the markup we've just created, so that we don't wrap
@@ -622,26 +623,30 @@ starting cardinal number; e.g. "1." or "a.".</p>         </td>         <td class
 <span class="kd">var</span> <span class="nx">_DoCodeSpans</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-92" id="section-92">&#182;</a></div><ul>
 <li><p>Backtick quotes are used for <code></code> spans.</p></li>
 <li><p>You can use multiple backticks as the delimiters if you want to
-include literal backticks in the code span. So, this input:</p>
+include literal backticks in the code span. So, this input:</p></li>
+</ul>
 
-<p>Just type <code>foo `bar` baz</code> at the prompt.</p>
+<pre><code>Just type ``foo `bar` baz`` at the prompt.
 
-<p>Will translate to:</p>
+Will translate to:
 
-<p>Just type <code>foo `bar` baz</code> at the prompt.</p>
+&lt;p&gt;Just type &lt;code&gt;foo `bar` baz&lt;/code&gt; at the prompt.&lt;/p&gt;
+</code></pre>
 
 <p>There's no arbitrary limit to the number of backticks you
-can use as delimters. If you need three consecutive backticks
-in your code, use four for delimiters, etc.</p>
+ can use as delimters. If you need three consecutive backticks
+ in your code, use four for delimiters, etc.</p>
 
-<ul><li>You can use spaces to get literal backticks at the edges:</li></ul>
+<ul>
+<li>You can use spaces to get literal backticks at the edges:</li>
+</ul>
 
-<p>... type <code>`bar`</code> ...</p>
+<pre><code>... type `` `bar` `` ...
 
-<p>Turns to:</p>
+Turns to:
 
-<p>... type <code><code>bar</code></code> ...</p></li>
-</ul>         </td>         <td class="code">           <div class="highlight"><pre></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-93" id="section-93">&#182;</a></div><div class="dox">   <div class="summary">   <p>text = text.replace(/
+... type &lt;code&gt;`bar`&lt;/code&gt; ...
+</code></pre>         </td>         <td class="code">           <div class="highlight"><pre></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-93" id="section-93">&#182;</a></div><div class="dox">   <div class="summary">   <p>text = text.replace(/
       (^|[^\])         // Character before opening <code>can't be a backslash
       (</code>+)            // $2 = Opening run of <code>
       (             // $3 = The code block
@@ -775,7 +780,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>         </
 
 <span class="kd">var</span> <span class="nx">_DoAutoLinks</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
 
-  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;((https?|ftp|dict):[^&#39;&quot;&gt;\s]+)&gt;/gi</span><span class="p">,</span><span class="s2">&quot;&lt;a href=\&quot;$1\&quot;&gt;$1&lt;/a&gt;&quot;</span><span class="p">);</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-114" id="section-114">&#182;</a></div><p>Email addresses: <a href="&#x6D;a&#x69;&#x6C;&#x74;&#111;:&#97;&#100;&#x64;&#x72;&#101;&#115;&#x73;&#x40;&#x64;&#x6F;&#109;&#97;&#x69;&#x6E;.f&#x6F;&#x6F;">&#97;&#100;&#x64;&#x72;&#101;&#115;&#x73;&#x40;&#x64;&#x6F;&#109;&#97;&#x69;&#x6E;.f&#x6F;&#x6F;</a></p>         </td>         <td class="code">           <div class="highlight"><pre></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-115" id="section-115">&#182;</a></div><div class="dox">   <div class="summary">   <p>text = text.replace(/
+  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;((https?|ftp|dict):[^&#39;&quot;&gt;\s]+)&gt;/gi</span><span class="p">,</span><span class="s2">&quot;&lt;a href=\&quot;$1\&quot;&gt;$1&lt;/a&gt;&quot;</span><span class="p">);</span></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-114" id="section-114">&#182;</a></div><p>Email addresses: <a href="&#x6D;&#x61;&#x69;&#x6C;&#x74;&#111;:&#x61;&#100;&#100;&#114;&#101;&#x73;&#115;&#64;&#100;&#111;&#x6D;&#97;&#x69;&#110;&#x2E;&#102;&#x6F;&#111;">&#x61;&#100;&#100;&#114;&#101;&#x73;&#115;&#64;&#100;&#111;&#x6D;&#97;&#x69;&#110;&#x2E;&#102;&#x6F;&#111;</a></p>         </td>         <td class="code">           <div class="highlight"><pre></pre></div>         </td>       </tr>                   <tr>         <td class="docs">           <div class="pilwrap"><a class="pilcrow" href="#section-115" id="section-115">&#182;</a></div><div class="dox">   <div class="summary">   <p>text = text.replace(/
       &lt;
       (?:mailto:)?
       (
