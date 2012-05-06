@@ -235,6 +235,11 @@ Docker.prototype.parseSections = function(data, filename){
   var multiLine = '';
   var doxData;
 
+  function md(a, stripParas){
+    var h = showdown.makeHtml(a.replace(/(^\s*|\s*$)/,''));
+    return stripParas ? h.replace(/<\/?p>/g,'') : h;
+  }
+
   // Loop through all the lines, and parse into sections
   for(var i = 0; i < codeLines.length; i += 1){
     var line = codeLines[i];
@@ -248,17 +253,9 @@ Docker.prototype.parseSections = function(data, filename){
         multiLine += line + '\n';
         inMultiLineComment = false;
         try{
-          doxData = dox.parseComments(multiLine)[0];
-          // These three lines are because dox uses **GitHub-Flavored Markdown**, which treats
-          // all newlines as line breaks in the output, which isn't what we want. So switch them
-          // back to newlines and let showdown take care of the rest. This is just a simpler alternative
-          // to running a fork of dox using vanilla Markdown.
-          doxData.description.summary = doxData.description.summary.replace(/<br\s*\/?>/g,'\n');
-          doxData.description.body = doxData.description.body.replace(/<br\s*\/?>/g,'\n');
-          doxData.description.full = doxData.description.full.replace(/<br\s*\/?>/g,'\n');
-          doxData.md = function(a){
-            return showdown.makeHtml(a.replace(/(^\s*|\s*$)/,'')).replace(/<\/?p>/g,'');
-          };
+          doxData = dox.parseComments(multiLine, {raw: true})[0];
+          // Don't let dox do any markdown parsing. We'll do that all ourselves with md above
+          doxData.md = md;
           section.docs += this.doxTemplate(doxData);
         }catch(e){
           console.log("Dox error: " + e);

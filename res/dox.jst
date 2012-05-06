@@ -1,6 +1,10 @@
 <div class="dox">
-  <div class="summary"><%= description.summary %></div>
-  <div class="body"><%= description.body %></div>
+  <div class="summary">
+  <%= md(description.summary) %>
+  </div>
+  <div class="body">
+  <%= md(description.body) %>
+  </div>
 
   <% if(tags.length){ var hasParams = false, hasReturn = false, hasType = false; %>
     <div class="details">
@@ -18,7 +22,7 @@
               <% } %>
             <% } %>
             <% if(tag.description){ %>
-              <span><%= md(tag.description) %></span>
+              <span><%= md(tag.description, true) %></span>
             <% } %>
           </div>
         <% }
@@ -35,7 +39,7 @@
               <% } %>
             <% } %>
             <% if(tag.description){ %>
-              <span><%= md(tag.description) %></span>
+              <span><%= md(tag.description, true) %></span>
             <% } %>
           </div>
         <% }
