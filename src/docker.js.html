@@ -122,12 +122,18 @@ that constitute a large-scale project</p></li>
       <span class="dox_type">string</span>
       <span>The directory into which to put all the doc pages</span>
     </div>
+    <div class="dox_tag_detail">
+      <span>onlyUpdated</span>
+      <span class="dox_type">boolean</span>
+      <span>Whether to only process files that have been updated</span>
+    </div>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">outDir</span><span class="p">){</span>
+        <td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">outDir</span><span class="p">,</span> <span class="nx">onlyUpdated</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">inDir</span> <span class="o">=</span> <span class="nx">inDir</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span> <span class="o">=</span> <span class="nx">outDir</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">onlyUpdated</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">scanQueue</span> <span class="o">=</span> <span class="p">[];</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">files</span> <span class="o">=</span> <span class="p">[];</span>
@@ -396,20 +402,114 @@ For now, we can only do javascript and markdown files</p>
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
   <span class="nx">filename</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
-  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
-    <span class="k">switch</span><span class="p">(</span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="p">){</span>
-      <span class="k">case</span> <span class="s1">&#39;code&#39;</span><span class="o">:</span>
-        <span class="kd">var</span> <span class="nx">sections</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">parseSections</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">highlight</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-          <span class="nx">self</span><span class="p">.</span><span class="nx">renderCodeHtml</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="p">});</span>
-        <span class="k">break</span><span class="p">;</span>
-      <span class="k">case</span> <span class="s1">&#39;markdown&#39;</span><span class="o">:</span>
-        <span class="nx">self</span><span class="p">.</span><span class="nx">renderMarkdownHtml</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
-    <span class="p">}</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">decideWhetherToProcess</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">shouldProcess</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">shouldProcess</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">();</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+      <span class="k">switch</span><span class="p">(</span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="p">){</span>
+        <span class="k">case</span> <span class="s1">&#39;code&#39;</span><span class="o">:</span>
+          <span class="kd">var</span> <span class="nx">sections</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">parseSections</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
+          <span class="nx">self</span><span class="p">.</span><span class="nx">highlight</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">renderCodeHtml</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+          <span class="p">});</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s1">&#39;markdown&#39;</span><span class="o">:</span>
+          <span class="nx">self</span><span class="p">.</span><span class="nx">renderMarkdownHtml</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.decidewhethertoprocess">
+  <h2>
+    <a href="#docker.prototype.decidewhethertoprocess" class="pilcrow">&#182;</a>
+    Docker.prototype.decideWhetherToProcess
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Decide whether or not a file should be processed. If the <code>onlyUpdated</code>
+flag was set on initialization, only allow processing of files that
+are newer than their counterpart generated doc file.</p>
+
+<p>Fires a callback function with either true or false depending on whether
+or not the file should be processed</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>filename</span>
+      <span class="dox_type">string</span>
+      <span>The name of the file to check</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>callback</span>
+      <span class="dox_type">function</span>
+      <span>Callback function</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">decideWhetherToProcess</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>If we should be processing all files, then yes, we should process this one</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span><span class="p">)</span> <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Find the doc this file would be compiled to</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>Stat the files</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">outStat</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>If the output file doesn't exist, then definitely process this file</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">code</span> <span class="o">==</span> <span class="s1">&#39;ENOENT&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">inStat</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>Process the file if the input is newer than the output</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>      <span class="nx">callback</span><span class="p">(</span><span class="o">+</span><span class="nx">inStat</span><span class="p">.</span><span class="nx">mtime</span> <span class="o">&gt;</span> <span class="o">+</span><span class="nx">outStat</span><span class="p">.</span><span class="nx">mtime</span><span class="p">);</span>
+    <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -465,7 +565,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>Fetch language-specific parameters for this code file</p>
         </td>
@@ -487,7 +587,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>Loop through all the lines, and parse into sections</p>
         </td>
@@ -498,7 +598,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>If we are currently in a multiline comment, behave differently</p>
         </td>
@@ -509,7 +609,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>Once we have reached the end of the multiline, take the whole content
 of the multiline comment, and pass it through <strong>dox</strong>, which will then
@@ -524,7 +624,7 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <p>Don't let dox do any markdown parsing. We'll do that all ourselves with md above</p>
         </td>
@@ -544,7 +644,7 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
         </td>
@@ -560,7 +660,7 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>This is for single-line comments. Again, store away the last section and start a new one</p>
         </td>
@@ -615,7 +715,7 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p><code>commentRegex</code> is for single-line comments, <code>multilineStart</code> and <code>multilineEnd</code> are for multiline comments.</p>
 
@@ -690,7 +790,7 @@ section generate pretty html for the comments and the code, and put them in
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>Spawn a new <strong>pygments</strong> process</p>
         </td>
@@ -700,7 +800,7 @@ section generate pretty html for the comments and the code, and put them in
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
@@ -718,7 +818,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>Once pygments is done, split the output up into different sections, and
 allocate them to the relevant section objects.
@@ -738,7 +838,7 @@ Also parse the comment text using <strong>showdown</strong></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>Feed pygments with the code</p>
         </td>
@@ -788,7 +888,7 @@ Also parse the comment text using <strong>showdown</strong></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
@@ -808,7 +908,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
@@ -857,7 +957,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -867,7 +967,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -887,7 +987,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -908,7 +1008,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -963,7 +1063,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>Run the markdown through <em>showdown</em></p>
         </td>
@@ -973,7 +1073,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
 </div>
 <p>Add anchors to all headings</p>
         </td>
@@ -983,7 +1083,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>Wrap up with necessary classes</p>
         </td>
@@ -993,7 +1093,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -1003,7 +1103,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -1019,7 +1119,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -1037,7 +1137,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -1204,7 +1304,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
 </div>
 <p>If we haven't already loaded the template, load it now.
 It's a bit messy to be using readFileSync I know, but this
