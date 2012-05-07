@@ -29,13 +29,28 @@ function makeTree(treeData, root, filename){
   // Root folder (whole tree) should always be open
   treeNode.childNodes[0].className += ' open';
 
-  // Attach click evenr handler
+  // Attach click event handler
   treeNode.addEventListener('click', nodeClicked, false);
 
   if(treeVisible) document.body.className += ' tree';
 
+  // Restore scroll position from localStorage if set. And attach scroll handler
+  if(window.localStorage && window.localStorage.docker_treeScroll) treeNode.scrollTop = window.localStorage.docker_treeScroll;
+  treeNode.onscroll = treeScrolled;
+
   // Only set a class to allow CSS transitions after the tree state has been painted
   setTimeout(function(){ document.body.className += ' slidey'; }, 100);
+}
+
+/**
+ * # treeScrolled
+ *
+ * Called when the tree is scrolled. Stores the scroll position in localStorage
+ * so it can be restored on the next pageview.
+ */
+function treeScrolled(){
+  var tree = document.getElementById('tree');
+  if(window.localStorage) window.localStorage.docker_treeScroll = tree.scrollTop;
 }
 
 /**
