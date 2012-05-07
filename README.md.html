@@ -35,7 +35,7 @@
 </div>
 
 
-<p>Well, I may well even get this on npm at some point. Not yet though as it's such a WIP.</p>
+<p>Simple: <code>npm install -g docker</code></p>
 
 <p>Requires <a href="http://pygments.org/">Pygments</a></p>
 
@@ -50,8 +50,10 @@
 
 <p>Still yet to finialise exactly how the command-line interface should work, but basically:</p>
 
-<pre><code>./docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
+<pre><code>docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
 </code></pre>
+
+<p>(or, if you haven't installed with <code>-g</code> specified, something like <code>$(npm root)/docker/docker</code> instead of <code>docker</code> at the beginning there)</p>
 
 <p>If the <code>-i</code> or <code>-o</code> options aren't specified, they'll default respectively to <code>./</code> and <code>./doc</code>.</p>
 
