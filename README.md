@@ -8,7 +8,7 @@ Take a look at this project's [public page](http://jbt.github.com/docker) for an
 
 ## Installation
 
-Well, I may well even get this on npm at some point. Not yet though as it's such a WIP.
+Simple: `npm install -g docker`
 
 Requires [Pygments](http://pygments.org/)
 
@@ -17,8 +17,10 @@ Requires [Pygments](http://pygments.org/)
 Still yet to finialise exactly how the command-line interface should work, but basically:
 
 ```
-./docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
+docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
 ```
+
+(or, if you haven't installed with `-g` specified, something like `$(npm root)/docker/docker` instead of `docker` at the beginning there)
 
 If the `-i` or `-o` options aren't specified, they'll default respectively to `./` and `./doc`.
 
