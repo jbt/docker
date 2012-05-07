@@ -53,10 +53,12 @@ var mkdirp = require('mkdirp'),
  * @this {Docker}
  * @param {string} inDir The root directory containing all the code files
  * @param {string} outDir The directory into which to put all the doc pages
+ * @param {boolean} onlyUpdated Whether to only process files that have been updated
  */
-var Docker = module.exports =function(inDir, outDir){
+var Docker = module.exports =function(inDir, outDir, onlyUpdated){
   this.inDir = inDir.replace(/\/$/,'');
   this.outDir = outDir;
+  this.onlyUpdated = !!onlyUpdated;
   this.running = false;
   this.scanQueue = [];
   this.files = [];
@@ -187,20 +189,57 @@ Docker.prototype.generateDoc = function(filename, cb){
   var self = this;
   this.running = true;
   filename = path.join(this.inDir, filename);
-  fs.readFile(filename, 'utf-8', function(err, data){
-    if(err) throw err;
-    var l = self.languageParams(filename);
-    switch(l.type){
-      case 'code':
-        var sections = self.parseSections(data, filename);
-        self.highlight(sections, filename, function(){
-          self.renderCodeHtml(sections, filename, cb);
-        });
-        break;
-      case 'markdown':
-        self.renderMarkdownHtml(data, filename, cb);
-        break;
-    }
+  this.decideWhetherToProcess(filename, function(shouldProcess){
+    if(!shouldProcess) return cb();
+    fs.readFile(filename, 'utf-8', function(err, data){
+      if(err) throw err;
+      var l = self.languageParams(filename);
+      switch(l.type){
+        case 'code':
+          var sections = self.parseSections(data, filename);
+          self.highlight(sections, filename, function(){
+            self.renderCodeHtml(sections, filename, cb);
+          });
+          break;
+        case 'markdown':
+          self.renderMarkdownHtml(data, filename, cb);
+          break;
+      }
+    });
+  });
+};
+
+/**
+ * ## Docker.prototype.decideWhetherToProcess
+ *
+ * Decide whether or not a file should be processed. If the `onlyUpdated`
+ * flag was set on initialization, only allow processing of files that
+ * are newer than their counterpart generated doc file.
+ *
+ * Fires a callback function with either true or false depending on whether
+ * or not the file should be processed
+ *
+ * @param {string} filename The name of the file to check
+ * @param {function} callback Callback function
+ */
+Docker.prototype.decideWhetherToProcess = function(filename, callback){
+
+  // If we should be processing all files, then yes, we should process this one
+  if(!this.onlyUpdated) return callback(true);
+
+  // Find the doc this file would be compiled to
+  var outFile = this.outFile(filename);
+
+  // Stat the files
+  fs.stat(outFile, function(err, outStat){
+
+    // If the output file doesn't exist, then definitely process this file
+    if(err && err.code == 'ENOENT') return callback(true);
+
+    fs.stat(filename, function(err, inStat){
+      // Process the file if the input is newer than the output
+      callback(+inStat.mtime > +outStat.mtime);
+    });
   });
 };
 
@@ -219,6 +258,7 @@ Docker.prototype.generateDoc = function(filename, cb){
  * ```
  * @param {string} data The contents of the script file
  * @param {string} filename The name of the script file
+
  * @return {Array} array of section objects
  */
 Docker.prototype.parseSections = function(data, filename){
