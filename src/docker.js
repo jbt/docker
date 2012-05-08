@@ -380,14 +380,14 @@ Docker.prototype.languageParams = function(filename){
  * @param {function} cb Callback function to fire when we're done
  */
 Docker.prototype.highlight = function(sections, filename, cb){
-  var params = this.languageParams(filename);
+  var params = this.languageParams(filename), self = this;
 
   // Spawn a new **pygments** process
   var pyg = spawn('pygmentize', ['-l', params.name, '-f', 'html', '-O', 'encoding=utf-8,tabsize=2']);
 
   // Hook up errors, for either when pygments itself throws an error,
   // or for when we're unable to send the code to pygments for some reason
-  pyg.stderr.on('data', function(err){ console.error(err); });
+  pyg.stderr.on('data', function(err){ console.error(err.toString()); });
   pyg.stdin.on('error', function(err){
     console.error('Unable to write to Pygments stdin: ' , err);
     process.exit(1);
@@ -406,7 +406,7 @@ Docker.prototype.highlight = function(sections, filename, cb){
       sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
     }
-    cb();
+    self.processDocCodeBlocks(sections, cb);
   });
 
   // Feed pygments with the code
@@ -418,6 +418,127 @@ Docker.prototype.highlight = function(sections, filename, cb){
     pyg.stdin.write(input.join(params.divText));
     pyg.stdin.end();
   }
+};
+
+/**
+ * ## Docker.prototype.processDocCodeBlocks
+ *
+ * Goes through all the HTML generated from comments, finds any code blocks
+ * and highlights them
+ *
+ * @param {Array} sections Sections array as above
+ * @param {function} cb Callback to fire when done
+ */
+Docker.prototype.processDocCodeBlocks = function(sections, cb){
+  var i = 0, self = this;
+
+  function next(){
+    // If we've reached the end of the sections array, we've highlighted everything,
+    // so we can stop and fire the callback
+    if(i == sections.length) return cb();
+
+    // Process the code blocks on this section, each time returning the html
+    // and moving onto the next section when we're done
+    self.extractDocCode(sections[i].docHtml, function(html){
+      sections[i].docHtml = html;
+      i = i + 1;
+      next();
+    });
+  }
+
+  // Start off with the first section
+  next();
+};
+
+/**
+ * ## Docker.prototype.extractDocCode
+ *
+ * Extract and highlight code blocks in formatted HTML output from showdown
+ *
+ * @param {string} html The HTML to process
+ * @param {function} cb Callback function to fire when done
+ */
+Docker.prototype.extractDocCode = function(html, cb){
+
+  // We'll store all extracted code blocks, along with information, in this array
+  var codeBlocks = [];
+
+  // Search in the HTML for any code tag with a language set (in the format that showdown returns)
+  html = html.replace(/<pre><code\slanguage='([a-z]+)'>([^<]*)<\/code><\/pre>/g, function(wholeMatch, language, block){
+    // Unescape these HTML entities because they'll be re-escaped by pygments
+    block = block.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/,'&');
+
+    // Store the code block away in `codeBlocks` and leave a flag in the original text.
+    return "\n\n~C" + codeBlocks.push({
+      language: language,
+      code: block,
+      i: codeBlocks.length + 1
+    }) + "C\n\n";
+  });
+
+  // Once we're done with that, now we can move on to highlighting the code we've extracted
+  this.highlighExtractedCode(html, codeBlocks, cb);
+};
+
+/**
+ * ## Docker.prototype.highlightExtractedCode
+ *
+ * Loops through all extracted code blocks and feeds them through pygments
+ * for code highlighting. Unfortunately the only way to do this that's able
+ * to cater for all situations is to spawn a new pygments process for each
+ * code block (as different blocks might be in different languages). If anyone
+ * knows of a more efficient way of doing this, please let me know.
+ *
+ * @param {string} html The HTML the code has been extracted from
+ * @param {Array} codeBlocks Array of extracted code blocks as above
+ * @param {function} cb Callback to fire when we're done with processed HTML
+ */
+Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
+
+  function next(){
+    // If we're done, then stop and fire the callback
+    if(codeBlocks.length === 0) return cb(html);
+
+    // Pull the next code block off the beginning of the array
+    var nextBlock = codeBlocks.shift();
+
+    // By default tell Pygments to guess the language, and if
+    // we have a language specified (should always be the case if the above works),
+    // then tell pygments to use that lexer
+    var pygArgs = ['-g'];
+    if(nextBlock.language) pygArgs = ['-l', nextBlock.language];
+
+    // Spawn a new **pygments** process
+    var pyg = spawn('pygmentize', pygArgs.concat(['-f', 'html', '-O', 'encoding=utf-8,tabsize=2']));
+
+    // Hook up errors, for either when pygments itself throws an error,
+    // or for when we're unable to send the code to pygments for some reason
+    pyg.stderr.on('data', function(err){ console.error(err.toString()); });
+    pyg.stdin.on('error', function(err){
+      console.error('Unable to write to Pygments stdin: ' , err);
+      process.exit(1);
+    });
+
+    var out = '';
+    pyg.stdout.on('data', function(data){ out += data.toString(); });
+
+    // When pygments is done, substitute the highlighted code back into
+    // the html, and move onto the next code block
+    pyg.on('exit', function(){
+      out = out.replace(/<pre>/,'<pre><code>').replace(/<\/pre>/,'</code></pre>');
+      html = html.replace('\n~C' + nextBlock.i + 'C\n', out);
+      next();
+    });
+
+    // Feed pygments with the code
+    if(pyg.stdin.writable){
+      pyg.stdin.write(nextBlock.code);
+      pyg.stdin.end();
+    }
+  }
+
+  // Fire off on first block
+  next();
 };
 
 /**
@@ -514,45 +635,48 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
   // Run the markdown through *showdown*
   content = showdown.makeHtml(content);
 
-  // Add anchors to all headings
-  content = this.addAnchors(content,0);
+  this.extractDocCode(content, function(content){
 
-  // Wrap up with necessary classes
-  content = '<div class="docs markdown">' + content + '</div>';
+    // Add anchors to all headings
+    content = this.addAnchors(content,0);
 
-  // Decide which path to store the output on.
-  var outFile = this.outFile(filename);
+    // Wrap up with necessary classes
+    content = '<div class="docs markdown">' + content + '</div>';
 
-  // Calculate the location of the input root relative to the output file.
-  // This is necessary so we can link to the stylesheet in the output HTML using
-  // a relative href rather than an absolute one
-  var outDir = path.dirname(outFile);
-  var relDir = '';
-  while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
-    relDir += '../';
-  }
+    // Decide which path to store the output on.
+    var outFile = this.outFile(filename);
 
-  // Render the html file using our template
-  var html = this.renderTemplate({
-    title: path.basename(filename),
-    relativeDir: relDir,
-    content: content,
-    tree: JSON.stringify(this.tree),
-    filename: filename.replace(this.inDir,'').replace(/^\//,'')
-  });
+    // Calculate the location of the input root relative to the output file.
+    // This is necessary so we can link to the stylesheet in the output HTML using
+    // a relative href rather than an absolute one
+    var outDir = path.dirname(outFile);
+    var relDir = '';
+    while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
+      relDir += '../';
+    }
 
-  var self = this;
+    // Render the html file using our template
+    var html = this.renderTemplate({
+      title: path.basename(filename),
+      relativeDir: relDir,
+      content: content,
+      tree: JSON.stringify(this.tree),
+      filename: filename.replace(this.inDir,'').replace(/^\//,'')
+    });
 
-  // Recursively create the output directory, clean out any old version of the
-  // output file, then save our new file.
-  mkdirp(outDir, function(){
-    fs.unlink(outFile, function(){
-      fs.writeFile(outFile, html, function(){
-        console.log('Generated: ' + outFile.replace(self.outDir,''));
-        cb();
+    var self = this;
+
+    // Recursively create the output directory, clean out any old version of the
+    // output file, then save our new file.
+    mkdirp(outDir, function(){
+      fs.unlink(outFile, function(){
+        fs.writeFile(outFile, html, function(){
+          console.log('Generated: ' + outFile.replace(self.outDir,''));
+          cb();
+        });
       });
     });
-  });
+  }.bind(this));
 };
 
 /**
