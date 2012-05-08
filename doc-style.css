@@ -193,7 +193,11 @@ td.docs, th.docs {
 }
 .docs pre {
   margin: 15px 0 15px;
-  padding-left: 15px;
+  padding: 5px;
+  padding-left: 10px;
+  background: #f8f8ff;
+  border: 1px solid #dedede;
+  font-size: 12px;
 }
 .docs pre.code_stats {
   font-size: 60%;

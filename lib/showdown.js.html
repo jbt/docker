@@ -1589,8 +1589,8 @@ starting cardinal number; e.g. "1." or "a.".</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(?:\n|^)(?:`{3,}[ a-z]*\n?)((?:[^`]+`{1,2})*[^`]*)(?:\n*`{3,})/g</span><span class="p">,</span>
-    <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span><span class="nx">m1</span><span class="p">)</span> <span class="p">{</span>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(?:\n|^)(?:`{3,}\s?([a-z]*)\n)((?:[^`]+`{1,2})*[^`]*)(?:\n*`{3,})/g</span><span class="p">,</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span><span class="nx">lang</span><span class="p">,</span><span class="nx">m1</span><span class="p">)</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">codeblock</span> <span class="o">=</span> <span class="nx">m1</span><span class="p">;</span>
 
       <span class="nx">codeblock</span> <span class="o">=</span> <span class="nx">_EncodeCode</span><span class="p">(</span><span class="nx">codeblock</span><span class="p">);</span>
@@ -1598,7 +1598,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <span class="nx">codeblock</span> <span class="o">=</span> <span class="nx">codeblock</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\n+/g</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="c1">// trim leading newlines</span>
       <span class="nx">codeblock</span> <span class="o">=</span> <span class="nx">codeblock</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\n+$/g</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="c1">// trim trailing whitespace</span>
 
-      <span class="nx">codeblock</span> <span class="o">=</span> <span class="s2">&quot;&lt;pre&gt;&lt;code&gt;&quot;</span> <span class="o">+</span> <span class="nx">codeblock</span> <span class="o">+</span> <span class="s2">&quot;\n&lt;/code&gt;&lt;/pre&gt;&quot;</span><span class="p">;</span>
+      <span class="nx">codeblock</span> <span class="o">=</span> <span class="s2">&quot;&lt;pre&gt;&lt;code language=&#39;&quot;</span> <span class="o">+</span> <span class="nx">lang</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">codeblock</span> <span class="o">+</span> <span class="s2">&quot;\n&lt;/code&gt;&lt;/pre&gt;&quot;</span><span class="p">;</span>
 
       <span class="k">return</span> <span class="nx">hashBlock</span><span class="p">(</span><span class="nx">codeblock</span><span class="p">);</span>
     <span class="p">}</span>
@@ -2024,7 +2024,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-114" id="section-114">&#182;</a>
 </div>
-<p>Email addresses: <a href="&#109;&#x61;&#x69;l&#116;&#111;:&#x61;&#x64;&#100;&#x72;&#x65;&#115;&#x73;&#64;&#x64;&#x6F;&#x6D;&#97;i&#110;.&#102;&#111;&#x6F;">&#x61;&#x64;&#100;&#x72;&#x65;&#115;&#x73;&#64;&#x64;&#x6F;&#x6D;&#97;i&#110;.&#102;&#111;&#x6F;</a></p>
+<p>Email addresses: <a href="&#x6D;&#x61;&#105;&#108;t&#x6F;:a&#x64;&#100;&#114;&#101;&#115;&#115;&#x40;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;.&#x66;&#111;&#x6F;">a&#x64;&#100;&#114;&#101;&#115;&#115;&#x40;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;.&#x66;&#111;&#x6F;</a></p>
         </td>
         <td class="code"><div class="highlight"><pre></pre></div>
         </td>

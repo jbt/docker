@@ -45,8 +45,11 @@ next to syntax-highlighted code. This page is the result of running docker again
 
 <p>The command-line usage of docker is somewhat more useful than that of docco. To use, simply run</p>
 
-<pre><code>./docker -i path/to/code -o path/to/docs [a_file.js a_dir]
-</code></pre>
+
+<div class="highlight"><pre><code>./docker -i path/to/code -o path/to/docs <span class="o">[</span>a_file.js a_dir<span class="o">]</span>
+</code></pre></div>
+
+
 
 <p>Docker will then recurse into the code root directory (or alternatively just the files
 and directories you specify) and document-ize all the files it can.
@@ -272,18 +275,21 @@ If it's a file, add it to the queue.</p>
 
 <p><code>this.tree</code> takes the format:</p>
 
-<pre><code>{
-   dirs: {
-     'child_dir_name': { [Object of same format as tree] },
-     'other_child_name': etc...
-   },
-   files: [
-     'filename.js',
-     'filename2.js',
-     etc...
-   ]
- }
-</code></pre>
+
+<div class="highlight"><pre><code> <span class="p">{</span>
+   <span class="nx">dirs</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s1">&#39;child_dir_name&#39;</span><span class="o">:</span> <span class="p">{</span> <span class="cm">/* same format as tree */</span> <span class="p">},</span>
+     <span class="s1">&#39;other_child_name&#39;</span><span class="o">:</span> <span class="c1">// etc...</span>
+   <span class="p">},</span>
+   <span class="nx">files</span><span class="o">:</span> <span class="p">[</span>
+     <span class="s1">&#39;filename.js&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;filename2.js&#39;</span><span class="p">,</span>
+     <span class="c1">// etc...</span>
+   <span class="p">]</span>
+ <span class="p">}</span>
+</code></pre></div>
+
+
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">currDir</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">;</span>
   <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
@@ -530,11 +536,14 @@ A section is defined to be one block of code with an accompanying comment</p>
 
 <p>Returns an array of section objects, which take the form</p>
 
-<pre><code> {
-   doc_text: 'foo', // String containing comment content
-   code_text: 'bar' // Accompanying code
- }
-</code></pre>
+
+<div class="highlight"><pre><code> <span class="p">{</span>
+   <span class="nx">doc_text</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="c1">// String containing comment content</span>
+   <span class="nx">code_text</span><span class="o">:</span> <span class="s1">&#39;bar&#39;</span> <span class="c1">// Accompanying code</span>
+ <span class="p">}</span>
+</code></pre></div>
+
+
   </div>
   <div class="details">
     <div class="dox_tag_title">Params</div>
@@ -784,7 +793,7 @@ section generate pretty html for the comments and the code, and put them in
 </div>
         </td>
         <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
-  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
+  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -805,7 +814,7 @@ section generate pretty html for the comments and the code, and put them in
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="p">});</span>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span> <span class="p">});</span>
   <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Unable to write to Pygments stdin: &#39;</span> <span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
     <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
@@ -831,7 +840,7 @@ Also parse the comment text using <strong>showdown</strong></p>
       <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">codeHtml</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&#39;</span> <span class="o">+</span> <span class="nx">bits</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/pre&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
       <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docs</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="nx">cb</span><span class="p">();</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">processDocCodeBlocks</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
   <span class="p">});</span></pre></div>
         </td>
       </tr>
@@ -850,6 +859,309 @@ Also parse the comment text using <strong>showdown</strong></p>
     <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">divText</span><span class="p">));</span>
     <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
   <span class="p">}</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.processdoccodeblocks">
+  <h2>
+    <a href="#docker.prototype.processdoccodeblocks" class="pilcrow">&#182;</a>
+    Docker.prototype.processDocCodeBlocks
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Goes through all the HTML generated from comments, finds any code blocks
+and highlights them</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>sections</span>
+      <span class="dox_type">Array</span>
+      <span>Sections array as above</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>cb</span>
+      <span class="dox_type">function</span>
+      <span>Callback to fire when done</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processDocCodeBlocks</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">next</span><span class="p">(){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>If we've reached the end of the sections array, we've highlighted everything,
+so we can stop and fire the callback</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>Process the code blocks on this section, each time returning the html
+and moving onto the next section when we're done</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">self</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">){</span>
+      <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
+      <span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<p>Start off with the first section</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">next</span><span class="p">();</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.extractdoccode">
+  <h2>
+    <a href="#docker.prototype.extractdoccode" class="pilcrow">&#182;</a>
+    Docker.prototype.extractDocCode
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Extract and highlight code blocks in formatted HTML output from showdown</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>html</span>
+      <span class="dox_type">string</span>
+      <span>The HTML to process</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>cb</span>
+      <span class="dox_type">function</span>
+      <span>Callback function to fire when done</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">extractDocCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+</div>
+<p>We'll store all extracted code blocks, along with information, in this array</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">codeBlocks</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+</div>
+<p>Search in the HTML for any code tag with a language set (in the format that showdown returns)</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;pre&gt;&lt;code\slanguage=&#39;([a-z]+)&#39;&gt;([^&lt;]*)&lt;\/code&gt;&lt;\/pre&gt;/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">block</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>Unescape these HTML entities because they'll be re-escaped by pygments</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">block</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;gt;/g</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;lt;/g</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;amp;/</span><span class="p">,</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>Store the code block away in <code>codeBlocks</code> and leave a flag in the original text.</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">return</span> <span class="s2">&quot;\n\n~C&quot;</span> <span class="o">+</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+      <span class="nx">language</span><span class="o">:</span> <span class="nx">language</span><span class="p">,</span>
+      <span class="nx">code</span><span class="o">:</span> <span class="nx">block</span><span class="p">,</span>
+      <span class="nx">i</span><span class="o">:</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="p">})</span> <span class="o">+</span> <span class="s2">&quot;C\n\n&quot;</span><span class="p">;</span>
+  <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>Once we're done with that, now we can move on to highlighting the code we've extracted</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">highlighExtractedCode</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">codeBlocks</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.highlightextractedcode">
+  <h2>
+    <a href="#docker.prototype.highlightextractedcode" class="pilcrow">&#182;</a>
+    Docker.prototype.highlightExtractedCode
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Loops through all extracted code blocks and feeds them through pygments
+for code highlighting. Unfortunately the only way to do this that's able
+to cater for all situations is to spawn a new pygments process for each
+code block (as different blocks might be in different languages). If anyone
+knows of a more efficient way of doing this, please let me know.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>html</span>
+      <span class="dox_type">string</span>
+      <span>The HTML the code has been extracted from</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>codeBlocks</span>
+      <span class="dox_type">Array</span>
+      <span>Array of extracted code blocks as above</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>cb</span>
+      <span class="dox_type">function</span>
+      <span>Callback to fire when we're done with processed HTML</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">highlighExtractedCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">codeBlocks</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+
+  <span class="kd">function</span> <span class="nx">next</span><span class="p">(){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+</div>
+<p>If we're done, then stop and fire the callback</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">html</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+</div>
+<p>Pull the next code block off the beginning of the array</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">nextBlock</span> <span class="o">=</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+</div>
+<p>By default tell Pygments to guess the language, and if
+we have a language specified (should always be the case if the above works),
+then tell pygments to use that lexer</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">pygArgs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-g&#39;</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">nextBlock</span><span class="p">.</span><span class="nx">language</span><span class="p">)</span> <span class="nx">pygArgs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-l&#39;</span><span class="p">,</span> <span class="nx">nextBlock</span><span class="p">.</span><span class="nx">language</span><span class="p">];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+</div>
+<p>Spawn a new <strong>pygments</strong> process</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">pyg</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;pygmentize&#39;</span><span class="p">,</span> <span class="nx">pygArgs</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding=utf-8,tabsize=2&#39;</span><span class="p">]));</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+</div>
+<p>Hook up errors, for either when pygments itself throws an error,
+or for when we're unable to send the code to pygments for some reason</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">pyg</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span> <span class="p">});</span>
+    <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Unable to write to Pygments stdin: &#39;</span> <span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+      <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span> <span class="nx">out</span> <span class="o">+=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span> <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<p>When pygments is done, substitute the highlighted code back into
+the html, and move onto the next code block</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">pyg</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;pre&gt;/</span><span class="p">,</span><span class="s1">&#39;&lt;pre&gt;&lt;code&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/pre&gt;/</span><span class="p">,</span><span class="s1">&#39;&lt;/code&gt;&lt;/pre&gt;&#39;</span><span class="p">);</span>
+      <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;\n~C&#39;</span> <span class="o">+</span> <span class="nx">nextBlock</span><span class="p">.</span><span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;C\n&#39;</span><span class="p">,</span> <span class="nx">out</span><span class="p">);</span>
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+</div>
+<p>Feed pygments with the code</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">writable</span><span class="p">){</span>
+      <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">nextBlock</span><span class="p">.</span><span class="nx">code</span><span class="p">);</span>
+      <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+</div>
+<p>Fire off on first block</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">next</span><span class="p">();</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -888,7 +1200,7 @@ Also parse the comment text using <strong>showdown</strong></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
 </div>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
@@ -908,7 +1220,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
@@ -957,7 +1269,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -967,7 +1279,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -987,7 +1299,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -1008,7 +1320,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -1063,93 +1375,96 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
 </div>
 <p>Run the markdown through <em>showdown</em></p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span></pre></div>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>Add anchors to all headings</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span></pre></div>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
 </div>
 <p>Wrap up with necessary classes</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;docs markdown&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">content</span> <span class="o">+</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span></pre></div>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;docs markdown&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">content</span> <span class="o">+</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
 a relative href rather than an absolute one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">outFile</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">relDir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">while</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">relDir</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)){</span>
-    <span class="nx">relDir</span> <span class="o">+=</span> <span class="s1">&#39;../&#39;</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">outFile</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">relDir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">relDir</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)){</span>
+      <span class="nx">relDir</span> <span class="o">+=</span> <span class="s1">&#39;../&#39;</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">({</span>
-    <span class="nx">title</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
-    <span class="nx">relativeDir</span><span class="o">:</span> <span class="nx">relDir</span><span class="p">,</span>
-    <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span>
-    <span class="nx">tree</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">),</span>
-    <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-  <span class="p">});</span>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">({</span>
+      <span class="nx">title</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
+      <span class="nx">relativeDir</span><span class="o">:</span> <span class="nx">relDir</span><span class="p">,</span>
+      <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span>
+      <span class="nx">tree</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">),</span>
+      <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="p">});</span>
 
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>
+    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Generated: &#39;</span> <span class="o">+</span> <span class="nx">outFile</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">));</span>
-        <span class="nx">cb</span><span class="p">();</span>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Generated: &#39;</span> <span class="o">+</span> <span class="nx">outFile</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">));</span>
+          <span class="nx">cb</span><span class="p">();</span>
+        <span class="p">});</span>
       <span class="p">});</span>
     <span class="p">});</span>
-  <span class="p">});</span>
+  <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1304,7 +1619,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
 </div>
 <p>If we haven't already loaded the template, load it now.
 It's a bit messy to be using readFileSync I know, but this
