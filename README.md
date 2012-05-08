@@ -16,7 +16,7 @@ Requires [Pygments](http://pygments.org/)
 
 Still yet to finialise exactly how the command-line interface should work, but basically:
 
-```
+```sh
 docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
 ```
 
