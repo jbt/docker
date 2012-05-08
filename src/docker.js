@@ -12,7 +12,7 @@
 //
 // The command-line usage of docker is somewhat more useful than that of docco. To use, simply run
 //
-// ```
+// ```sh
 // ./docker -i path/to/code -o path/to/docs [a_file.js a_dir]
 // ```
 //
@@ -123,19 +123,19 @@ Docker.prototype.queueFile = function(filename){
   // Loop through all the directories and process the folder structure into `this.tree`.
   //
   // `this.tree` takes the format:
-  //
-  //     {
-  //        dirs: {
-  //          'child_dir_name': { [Object of same format as tree] },
-  //          'other_child_name': etc...
-  //        },
-  //        files: [
-  //          'filename.js',
-  //          'filename2.js',
-  //          etc...
-  //        ]
-  //      }
-  //
+  // ```js
+  //  {
+  //    dirs: {
+  //      'child_dir_name': { /* same format as tree */ },
+  //      'other_child_name': // etc...
+  //    },
+  //    files: [
+  //      'filename.js',
+  //      'filename2.js',
+  //      // etc...
+  //    ]
+  //  }
+  // ```
   var currDir  = this.tree;
   for(var i = 0; i < bits.length - 1; i += 1){
     if(!currDir.dirs) currDir.dirs = {};
@@ -250,7 +250,7 @@ Docker.prototype.decideWhetherToProcess = function(filename, callback){
  * A section is defined to be one block of code with an accompanying comment
  *
  * Returns an array of section objects, which take the form
- * ```
+ * ```js
  *  {
  *    doc_text: 'foo', // String containing comment content
  *    code_text: 'bar' // Accompanying code
