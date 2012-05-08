@@ -1578,18 +1578,19 @@ starting cardinal number; e.g. "1." or "a.".</p>
 <div class="dox">
   <div class="summary"><p>JT * GFM-esque fenced code blocks    text = text.replace(text,
       /(?:\n|^)
-      (?<code>{3,}[ a-z]*\n?)  // Code fence with optional language
-      (                   // $1 = the code block -- one or more lines, and no occurrences of three or more backticks
-        (?[^</code>]+<code>{1,2})*[^</code>]*
+      (?<code>{3,}[ a-z]*\n?)        // Code fence with optional language
+      (                         // $1 = the code block -- one or more lines, and no occurrences of three or more backticks
+        [^</code>]<em>(?:<code>{1,2}[^</code>]+)</em>
       )
-      (?:\n*`{3,})         // Closing fence
+      (?:\n*`{3,})              // Closing fence
+      (?:\n|$)                  // And make sure we get all of the closing fence. Just in case someone used the wrong number of backticks
     /g,function(){...});</p>
   </div>
   <div class="body">
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(?:\n|^)(?:`{3,}\s?([a-z]*)\n)((?:[^`]+`{1,2})*[^`]*)(?:\n*`{3,})/g</span><span class="p">,</span>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(?:\n|^)(?:`{3,}\s?([a-z]*)\n)([^`]*(?:`{1,2}[^`]+)*)(?:\n*`{3,})(?:\n|^)/g</span><span class="p">,</span>
     <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span><span class="nx">lang</span><span class="p">,</span><span class="nx">m1</span><span class="p">)</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">codeblock</span> <span class="o">=</span> <span class="nx">m1</span><span class="p">;</span>
 
@@ -2024,7 +2025,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-114" id="section-114">&#182;</a>
 </div>
-<p>Email addresses: <a href="&#x6D;&#x61;&#105;&#108;t&#x6F;:a&#x64;&#100;&#114;&#101;&#115;&#115;&#x40;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;.&#x66;&#111;&#x6F;">a&#x64;&#100;&#114;&#101;&#115;&#115;&#x40;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;.&#x66;&#111;&#x6F;</a></p>
+<p>Email addresses: <a href="ma&#105;&#108;t&#x6F;:&#97;&#x64;&#x64;&#x72;&#x65;&#115;&#x73;&#x40;&#x64;&#111;&#109;&#x61;&#105;&#x6E;&#x2E;fo&#x6F;">&#97;&#x64;&#x64;&#x72;&#x65;&#115;&#x73;&#x40;&#x64;&#111;&#109;&#x61;&#105;&#x6E;&#x2E;fo&#x6F;</a></p>
         </td>
         <td class="code"><div class="highlight"><pre></pre></div>
         </td>
