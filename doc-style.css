@@ -21,27 +21,56 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   margin-top: 40px;
 }
-#tree{
+#tree, #headings{
   position: absolute;
-  top: 0;
+  top: 30px;
   left: 0;
   bottom: 0;
   width: 290px;
   padding: 10px 0;
   overflow: auto;
-  background: #F5F5FF;
 }
 
-#tree_wrapper{
+#sidebar_wrapper{
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   width: 0;
+  background: #F5F5FF;
   overflow: hidden;
 }
 
-.slidey #tree_wrapper{
+#sidebar_switch{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 290px;
+  height: 29px;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+#sidebar_switch span{
+  display: block;
+  float: left;
+  width: 50%;
+  text-align: center;
+  line-height: 29px;
+  color: #333;
+  cursor: pointer;
+}
+
+#sidebar_switch :hover{
+  background: #f8f8ff;
+}
+
+#sidebar_switch .selected{
+  font-weight: bold;
+  color: black;
+  background: #fdfdff;
+}
+
+.slidey #sidebar_wrapper{
   -webkit-transition: width 250ms linear;
   -moz-transition: width 250ms linear;
   -ms-transition: width 250ms linear;
@@ -49,7 +78,7 @@ h1 {
   transition: width 250ms linear;
 }
 
-.tree #tree_wrapper{ width: 290px; }
+.tree #sidebar_wrapper{ width: 290px; }
 
 #tree .dir,
 #tree .file{
@@ -87,7 +116,22 @@ h1 {
 
 #tree .dir.open>.children{ display: block; }
 
-#tree-toggle{
+#headings .heading a{
+  text-decoration: none;
+  padding-left: 10px;
+  display: block;
+  color: black;
+}
+
+#headings .h1{ padding-left: 0; margin-top: 10px; font-size: 1.3em}
+#headings .h2{ padding-left: 10px; margin-top: 8px; font-size: 1.1em}
+#headings .h3{ padding-left: 20px; margin-top: 5px; font-size: 1em}
+#headings .h4{ padding-left: 30px; margin-top: 3px; font-size: 0.9em}
+#headings .h5{ padding-left: 40px; margin-top: 1px; font-size: 0.8em}
+#headings .h6{ padding-left: 50px; font-size: 0.75em}
+
+
+#sidebar-toggle{
   position: fixed;
   top: 0;
   left: 0;
@@ -98,7 +142,7 @@ h1 {
   cursor: pointer;
 }
 
-.slidey #tree-toggle,
+.slidey #sidebar-toggle,
 .slidey #container{
   -webkit-transition: all 250ms linear;
   -moz-transition: all 250ms linear;
@@ -107,9 +151,9 @@ h1 {
   transition: all 250ms linear;
 }
 
-#tree-toggle:hover{ width: 10px; background: #ddd; }
+#sidebar-toggle:hover{ width: 10px; background: #ddd; }
 
-.tree #tree-toggle{ left: 290px; }
+.tree #sidebar-toggle{ left: 290px; }
 
 #container {
   position: fixed;

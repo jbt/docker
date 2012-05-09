@@ -4,13 +4,107 @@
   <title>docker.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../', thisFile = 'src/docker.js';
+  </script>
   <script src="../doc-script.js"></script>
 </head>
 <body>
-  <div id="tree_wrapper">
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
     <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#docker.js">docker.js</a>
+      </div>
+      <div class="heading h3">
+        <a href="#a-simple-documentation-generator-based-on-docco">A simple documentation generator based on docco</a>
+      </div>
+      <div class="heading h2">
+        <a href="#differences-from-docco">Differences from docco</a>
+      </div>
+      <div class="heading h2">
+        <a href="#node-modules">Node Modules</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker-constructor">Docker Constructor</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.doc">Docker.prototype.doc</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.addnextfile">Docker.prototype.addNextFile</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.queuefile">Docker.prototype.queueFile</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.processnextfile">Docker.prototype.processNextFile</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.canhandlefile">Docker.prototype.canHandleFile</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.generatedoc">Docker.prototype.generateDoc</a>
+      </div>
+      <div class="heading h3">
+        <a href="#this-is-where-the-magic-happens">This is where the magic happens</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.decidewhethertoprocess">Docker.prototype.decideWhetherToProcess</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.parsesections">Docker.prototype.parseSections</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.languageparams">Docker.prototype.languageParams</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.highlight">Docker.prototype.highlight</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.processdoccodeblocks">Docker.prototype.processDocCodeBlocks</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.extractdoccode">Docker.prototype.extractDocCode</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.highlightextractedcode">Docker.prototype.highlightExtractedCode</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.addanchors">Docker.prototype.addAnchors</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.rendercodehtml">Docker.prototype.renderCodeHtml</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.rendermarkdownhtml">Docker.prototype.renderMarkdownHtml</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.copysharedresources">Docker.prototype.copySharedResources</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.outfile">Docker.prototype.outFile</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.compiletemplate">Docker.prototype.compileTemplate</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.rendertemplate">Docker.prototype.renderTemplate</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.codefiletemplate">Docker.prototype.codeFileTemplate</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.doxtemplate">Docker.prototype.doxTemplate</a>
+      </div>
+    </div>
   </div>
-  <div id="tree-toggle"></div>
+  <div id="sidebar-toggle"></div>
   <div id="container"><div id="background"></div>
 <table cellpadding="0" cellspacing="0">
   <tbody>
@@ -26,10 +120,10 @@
 
 
 <div class="pilwrap" id="a-simple-documentation-generator-based-on-docco">
-  <h2>
+  <h3>
     <a href="#a-simple-documentation-generator-based-on-docco" class="pilcrow">&#182;</a>
     <em>A simple documentation generator based on <a href="http://jashkenas.github.com/docco/">docco</a></em>
-  </h2>
+  </h3>
 </div>
 
 
@@ -1193,7 +1287,7 @@ the html, and move onto the next code block</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addAnchors</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">idx</span><span class="p">){</span>
+        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addAnchors</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">headings</span><span class="p">){</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">docHtml</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/&lt;h[0-9]&gt;/</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
@@ -1205,8 +1299,9 @@ the html, and move onto the next code block</p>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">docHtml</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(&lt;h[0-9]&gt;)(.*)(&lt;\/h[0-9]&gt;)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">middle</span><span class="p">,</span> <span class="nx">end</span><span class="p">){</span>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">docHtml</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(&lt;h([0-9])&gt;)(.*)(&lt;\/h\2&gt;)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">middle</span><span class="p">,</span> <span class="nx">end</span><span class="p">){</span>
       <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">middle</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;[^&gt;]*&gt;/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[^a-zA-Z0-9\_\.]/g</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">);</span>
+      <span class="nx">headings</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span> <span class="nx">middle</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;[^&gt;]*&gt;/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="nx">level</span><span class="o">:</span> <span class="nx">level</span> <span class="p">});</span>
       <span class="k">return</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot; id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;\n  &#39;</span><span class="o">+</span>
                 <span class="nx">start</span> <span class="o">+</span>
                 <span class="s1">&#39;\n    &lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot; class=&quot;pilcrow&quot;&gt;&amp;#182;&lt;/a&gt;\n    &#39;</span> <span class="o">+</span>
@@ -1273,7 +1368,9 @@ the name a bit to make it more friendly for IDs, then use that</p>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
+        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">headings</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1292,7 +1389,7 @@ a relative href rather than an absolute one</p>
   <span class="p">}</span>
 
   <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
-    <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+    <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">headings</span><span class="p">);</span>
   <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -1310,7 +1407,7 @@ a relative href rather than an absolute one</p>
     <span class="nx">title</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
     <span class="nx">relativeDir</span><span class="o">:</span> <span class="nx">relDir</span><span class="p">,</span>
     <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span>
-    <span class="nx">tree</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">),</span>
+    <span class="nx">headings</span><span class="o">:</span> <span class="nx">headings</span><span class="p">,</span>
     <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
   <span class="p">});</span>
 
@@ -1381,7 +1478,9 @@ output file, then save our new file.</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
 
-  <span class="k">this</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">){</span></pre></div>
+  <span class="k">this</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">headings</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1391,7 +1490,7 @@ output file, then save our new file.</p>
 </div>
 <p>Add anchors to all headings</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span></pre></div>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="nx">headings</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1441,7 +1540,7 @@ a relative href rather than an absolute one</p>
       <span class="nx">title</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
       <span class="nx">relativeDir</span><span class="o">:</span> <span class="nx">relDir</span><span class="p">,</span>
       <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span>
-      <span class="nx">tree</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">),</span>
+      <span class="nx">headings</span><span class="o">:</span> <span class="nx">headings</span><span class="p">,</span>
       <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="p">});</span>
 
@@ -1486,7 +1585,7 @@ output file, then save our new file.</p>
         <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">copySharedResources</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
   <span class="kd">function</span> <span class="nx">copy</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">){</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">to</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">stat</span><span class="p">){</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">to</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
       <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../&#39;</span><span class="p">,</span> <span class="nx">from</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
         <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">to</span><span class="p">),</span> <span class="nx">file</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
           <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Copied &#39;</span> <span class="o">+</span> <span class="nx">from</span> <span class="o">+</span> <span class="s1">&#39; to &#39;</span> <span class="o">+</span> <span class="nx">to</span><span class="p">);</span>
@@ -1495,8 +1594,12 @@ output file, then save our new file.</p>
     <span class="p">});</span>
   <span class="p">}</span>
 
-  <span class="nx">copy</span><span class="p">(</span><span class="s1">&#39;res/style.css&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-style.css&#39;</span><span class="p">);</span>
-  <span class="nx">copy</span><span class="p">(</span><span class="s1">&#39;res/script.js&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-script.js&#39;</span><span class="p">);</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="s1">&#39;var tree=&#39;</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">tree</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">copy</span><span class="p">(</span><span class="s1">&#39;res/style.css&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-style.css&#39;</span><span class="p">);</span>
+      <span class="nx">copy</span><span class="p">(</span><span class="s1">&#39;res/script.js&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-script.js&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1713,8 +1816,5 @@ is the easiest way for now.</p>
   </tbody>
 </table>
   </div>
-  <script>
-    makeTree({"files":["History.md","README.md"],"dirs":{"src":{"files":["docker.js"]},"res":{"files":["script.js"]},"lib":{"files":["showdown.js"]},"node_modules":{"dirs":{"mkdirp":{"files":["README.markdown","index.js"],"dirs":{"test":{"files":["perm.js","perm_sync.js","umask_sync.js","umask.js","clobber.js","rel.js","mkdirp.js","return_sync.js","sync.js","race.js","chmod.js","return.js"]},"examples":{"files":["pow.js"]}}},"commander":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["commander.js"]}}},"dox":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["dox.js","utils.js"]},"node_modules":{"dirs":{"github-flavored-markdown":{"files":["preview.md","index.md","README.md"],"dirs":{"scripts":{"files":["preview.js","showdown.js"]}}}}}}}}}}}, '../', 'src/docker.js');
-  </script>
 </body>
 </html>

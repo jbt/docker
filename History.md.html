@@ -4,13 +4,41 @@
   <title>History.md</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = '', thisFile = 'History.md';
+  </script>
   <script src="doc-script.js"></script>
 </head>
 <body>
-  <div id="tree_wrapper">
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
     <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#docker-version-history">Docker Version History</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.0.5">0.0.5</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.0.4">0.0.4</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.0.3">0.0.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.0.2">0.0.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.0.1">0.0.1</a>
+      </div>
+    </div>
   </div>
-  <div id="tree-toggle"></div>
+  <div id="sidebar-toggle"></div>
   <div id="container"><div class="docs markdown">
 <div class="pilwrap" id="docker-version-history">
   <h1>
@@ -19,6 +47,19 @@
   </h1>
 </div>
 
+
+
+<div class="pilwrap" id="0.0.5">
+  <h2>
+    <a href="#0.0.5" class="pilcrow">&#182;</a>
+    0.0.5
+  </h2>
+</div>
+
+
+<ul>
+<li>Add heading navigation within files</li>
+</ul>
 
 
 <div class="pilwrap" id="0.0.4">
@@ -76,8 +117,5 @@
 <li>Markdown processing of <code>.md</code> files and extracted code comments</li>
 </ul></div>
   </div>
-  <script>
-    makeTree({"files":["History.md","README.md"],"dirs":{"src":{"files":["docker.js"]},"res":{"files":["script.js"]},"lib":{"files":["showdown.js"]},"node_modules":{"dirs":{"mkdirp":{"files":["README.markdown","index.js"],"dirs":{"test":{"files":["perm.js","perm_sync.js","umask_sync.js","umask.js","clobber.js","rel.js","mkdirp.js","return_sync.js","sync.js","race.js","chmod.js","return.js"]},"examples":{"files":["pow.js"]}}},"commander":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["commander.js"]}}},"dox":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["dox.js","utils.js"]},"node_modules":{"dirs":{"github-flavored-markdown":{"files":["preview.md","index.md","README.md"],"dirs":{"scripts":{"files":["preview.js","showdown.js"]}}}}}}}}}}}, '', 'History.md');
-  </script>
 </body>
 </html>

@@ -4,13 +4,41 @@
   <title>script.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../', thisFile = 'res/script.js';
+  </script>
   <script src="../doc-script.js"></script>
 </head>
 <body>
-  <div id="tree_wrapper">
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
     <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#res-script.js">res/script.js</a>
+      </div>
+      <div class="heading h2">
+        <a href="#maketree">makeTree</a>
+      </div>
+      <div class="heading h2">
+        <a href="#treescrolled">treeScrolled</a>
+      </div>
+      <div class="heading h2">
+        <a href="#nodeclicked">nodeClicked</a>
+      </div>
+      <div class="heading h2">
+        <a href="#nodehtml">nodeHtml</a>
+      </div>
+      <div class="heading h2">
+        <a href="#toggletree">toggleTree</a>
+      </div>
+    </div>
   </div>
-  <div id="tree-toggle"></div>
+  <div id="sidebar-toggle"></div>
   <div id="container"><div id="background"></div>
 <table cellpadding="0" cellspacing="0">
   <tbody>
@@ -77,7 +105,7 @@ the tree is visible and which directories are expanded</p>
         </td>
         <td class="code"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">makeTree</span><span class="p">(</span><span class="nx">treeData</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">filename</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">treeNode</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">treeHandle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;tree-toggle&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">treeHandle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar-toggle&#39;</span><span class="p">);</span>
   <span class="nx">treeHandle</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">toggleTree</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span></pre></div>
         </td>
       </tr>
@@ -139,10 +167,10 @@ the tree is visible and which directories are expanded</p>
         <td class="docs"><div class="dox">
   <div class="summary">
 <div class="pilwrap" id="treescrolled">
-  <h1>
+  <h2>
     <a href="#treescrolled" class="pilcrow">&#182;</a>
     treeScrolled
-  </h1>
+  </h2>
 </div>
 
   </div>
@@ -161,10 +189,10 @@ so it can be restored on the next pageview.</p>
         <td class="docs"><div class="dox">
   <div class="summary">
 <div class="pilwrap" id="nodeclicked">
-  <h1>
+  <h2>
     <a href="#nodeclicked" class="pilcrow">&#182;</a>
     nodeClicked
-  </h1>
+  </h2>
 </div>
 
   </div>
@@ -390,14 +418,50 @@ so it can be restored on the next pageview.</p>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">wireUpTabs</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">tabEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar_switch&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span>
+      <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span> <span class="p">};</span>
+    <span class="p">}(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">tab</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">tabEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar_switch&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s.*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="nx">tab</span><span class="p">){</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;block&#39;</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; selected&#39;</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">;</span>
+      <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\sselected/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">makeTree</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="nx">relativeDir</span><span class="p">,</span> <span class="nx">thisFile</span><span class="p">);</span>
+  <span class="nx">wireUpTabs</span><span class="p">();</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">){</span>
+    <span class="nx">switchTab</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="nx">switchTab</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
 </pre></div>
         </td>
       </tr>
   </tbody>
 </table>
   </div>
-  <script>
-    makeTree({"files":["History.md","README.md"],"dirs":{"src":{"files":["docker.js"]},"res":{"files":["script.js"]},"lib":{"files":["showdown.js"]},"node_modules":{"dirs":{"mkdirp":{"files":["README.markdown","index.js"],"dirs":{"test":{"files":["perm.js","perm_sync.js","umask_sync.js","umask.js","clobber.js","rel.js","mkdirp.js","return_sync.js","sync.js","race.js","chmod.js","return.js"]},"examples":{"files":["pow.js"]}}},"commander":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["commander.js"]}}},"dox":{"files":["index.js","Readme.md","History.md"],"dirs":{"lib":{"files":["dox.js","utils.js"]},"node_modules":{"dirs":{"github-flavored-markdown":{"files":["preview.md","index.md","README.md"],"dirs":{"scripts":{"files":["preview.js","showdown.js"]}}}}}}}}}}}, '../', 'res/script.js');
-  </script>
 </body>
 </html>
