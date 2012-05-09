@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.0.5
+
+ * Add heading navigation within files
+
 ## 0.0.4
 
  * Add syntax highlighting to fenced code blocks that have a language specified
