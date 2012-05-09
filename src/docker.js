@@ -1,5 +1,5 @@
 // # docker.js
-// ## _A simple documentation generator based on [docco](http://jashkenas.github.com/docco/)_
+// ### _A simple documentation generator based on [docco](http://jashkenas.github.com/docco/)_
 // **Docker** is a really simple documentation generator, which originally started out as a
 // pure-javascript port of **docco**, but which eventually gained many extra little features
 // which somewhat break docco's philosophy of being a quick-and-dirty thing.
@@ -549,12 +549,13 @@ Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
  * @param {object} section The section object to look at
  * @param {number} idx The index of the section in the whole array.
  */
-Docker.prototype.addAnchors = function(docHtml, idx){
+Docker.prototype.addAnchors = function(docHtml, idx, headings){
   if(docHtml.match(/<h[0-9]>/)){
     // If there is a heading tag, pick out the first one (likely the most important), sanitize
     // the name a bit to make it more friendly for IDs, then use that
-    docHtml = docHtml.replace(/(<h[0-9]>)(.*)(<\/h[0-9]>)/g, function(a, start, middle, end){
+    docHtml = docHtml.replace(/(<h([0-9])>)(.*)(<\/h\2>)/g, function(a, start, level, middle, end){
       var id = middle.replace(/<[^>]*>/g,'').toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
+      headings.push({ id: id, text: middle.replace(/<[^>]*>/g,''), level: level });
       return '\n<div class="pilwrap" id="' + id + '">\n  '+
                 start +
                 '\n    <a href="#' + id + '" class="pilcrow">&#182;</a>\n    ' +
@@ -583,6 +584,8 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
   // Decide which path to store the output on.
   var outFile = this.outFile(filename);
 
+  var headings = [];
+
   // Calculate the location of the input root relative to the output file.
   // This is necessary so we can link to the stylesheet in the output HTML using
   // a relative href rather than an absolute one
@@ -593,7 +596,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
   }
 
   for(var i = 0; i < sections.length; i += 1){
-    sections[i].docHtml = this.addAnchors(sections[i].docHtml, i);
+    sections[i].docHtml = this.addAnchors(sections[i].docHtml, i, headings);
   }
 
   // Render the html file using our template
@@ -604,7 +607,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
     title: path.basename(filename),
     relativeDir: relDir,
     content: content,
-    tree: JSON.stringify(this.tree),
+    headings: headings,
     filename: filename.replace(this.inDir,'').replace(/^\//,'')
   });
 
@@ -637,8 +640,10 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
 
   this.extractDocCode(content, function(content){
 
+    var headings = [];
+
     // Add anchors to all headings
-    content = this.addAnchors(content,0);
+    content = this.addAnchors(content,0, headings);
 
     // Wrap up with necessary classes
     content = '<div class="docs markdown">' + content + '</div>';
@@ -660,7 +665,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
       title: path.basename(filename),
       relativeDir: relDir,
       content: content,
-      tree: JSON.stringify(this.tree),
+      headings: headings,
       filename: filename.replace(this.inDir,'').replace(/^\//,'')
     });
 
@@ -687,7 +692,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
 Docker.prototype.copySharedResources = function(){
   var self = this;
   function copy(from, to){
-    fs.unlink(path.join(this.outDir, to), function(err, stat){
+    fs.unlink(path.join(self.outDir, to), function(){
       fs.readFile(path.join(path.dirname(__filename),'../', from), function(err, file){
         fs.writeFile(path.join(self.outDir, to), file, function(){
           console.log('Copied ' + from + ' to ' + to);
@@ -696,8 +701,12 @@ Docker.prototype.copySharedResources = function(){
     });
   }
 
-  copy('res/style.css', 'doc-style.css');
-  copy('res/script.js', 'doc-script.js');
+  fs.unlink(path.join(this.outDir, 'doc-filelist.js'), function(){
+    fs.writeFile(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', function(){
+      copy('res/style.css', 'doc-style.css');
+      copy('res/script.js', 'doc-script.js');
+    });
+  });
 };
 
 /**

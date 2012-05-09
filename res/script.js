@@ -20,7 +20,7 @@ var treeVisible = (window.localStorage && window.localStorage.docker_showTree ==
  */
 function makeTree(treeData, root, filename){
   var treeNode = document.getElementById('tree');
-  var treeHandle = document.getElementById('tree-toggle');
+  var treeHandle = document.getElementById('sidebar-toggle');
   treeHandle.addEventListener('click', toggleTree, false);
 
   // Build the html and add it to the container.
@@ -43,7 +43,7 @@ function makeTree(treeData, root, filename){
 }
 
 /**
- * # treeScrolled
+ * ## treeScrolled
  *
  * Called when the tree is scrolled. Stores the scroll position in localStorage
  * so it can be restored on the next pageview.
@@ -54,7 +54,7 @@ function treeScrolled(){
 }
 
 /**
- * # nodeClicked
+ * ## nodeClicked
  *
  * Called when a directory is clicked. Toggles open state of the directory
  *
@@ -151,3 +151,42 @@ function toggleTree(){
     }
   }
 }
+
+function wireUpTabs(){
+  var tabEl = document.getElementById('sidebar_switch');
+  var children = tabEl.childNodes;
+  for(var i = 0, l = children.length; i < l;  i += 1){
+    if(children[i].nodeType !== 1) continue;
+    children[i].addEventListener('click', function(c){
+      return function(){ switchTab(c); };
+    }(children[i].className));
+  }
+}
+
+function switchTab(tab){
+  var tabEl = document.getElementById('sidebar_switch');
+  var children = tabEl.childNodes;
+  for(var i = 0, l = children.length; i < l;  i += 1){
+    if(children[i].nodeType !== 1) continue;
+    var t = children[i].className.replace(/\s.*$/,'');
+    if(t === tab){
+      document.getElementById(t).style.display = 'block';
+      if(children[i].className.indexOf('selected') === -1) children[i].className += ' selected';
+    }else{
+      document.getElementById(t).style.display = 'none';
+      children[i].className = children[i].className.replace(/\sselected/,'');
+    }
+  }
+  if(window.localStorage) window.localStorage.docker_siderbarTab = tab;
+}
+
+window.onload = function(){
+  makeTree(tree, relativeDir, thisFile);
+  wireUpTabs();
+
+  if(window.localStorage && window.localStorage.docker_siderbarTab){
+    switchTab(window.localStorage.docker_siderbarTab);
+  }else{
+    switchTab('tree');
+  }
+};
