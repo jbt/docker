@@ -316,6 +316,12 @@ Docker.prototype.parseSections = function(data, filename){
         }
         continue;
       }else if(
+        // We want to match the start of a multiline comment only if the line doesn't also match the
+        // end of the same comment, or if a single-line comment is started before the multiline
+        // So for example the following would not be treated as a multiline starter:
+        // ```js
+        //  alert('foo'); // Alert some foo /* Random open comment thing
+        // ```
         line.match(params.multiLine[0]) &&
         !line.replace(params.multiLine[0],'').match(params.multiLine[1]) &&
         !line.split(params.multiLine[0])[0].match(commentRegex)){
@@ -354,64 +360,37 @@ Docker.prototype.parseSections = function(data, filename){
  */
 Docker.prototype.languageParams = function(filename){
   switch(path.extname(filename)){
+    // The language params can have the following keys:
+    //
+    //  * `name`: Name of Pygments lexer to use
+    //  * `comment`: String flag for single-line comments
+    //  * `multiline`: Two-element array of start and end flags for block comments
+    //  * `commentsIgnore`: Regex of comments to strip completely (don't even doc)
+    //  * `dox`: Whether to run block comments through Dox (only JavaScript)
+    //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
+    //
     case '.js':
-      return {
-        name: 'javascript',
-        comment: '//',
-        commentsIgnore: /^\s*\/\/=/,
-        multiLine: [ /\/\*/, /\*\// ],
-        dox: true
-      };
+      return { name: 'javascript',   comment: '//',  multiLine: [ /\/\*/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
     case '.coffee':
-      return {
-        name: 'coffeescript',
-        comment: '#',
-        multiLine: [ /^#{3}$/, /^#{3}$/ ]
-      };
+      return { name: 'coffeescript', comment: '#',  multiLine: [ /^#{3}$/, /^#{3}$/ ] };
     case '.rb':
-      return {
-        name: 'ruby',
-        comment: '#',
-        multiLine: [ /\=begin/, /\=end/ ]
-      };
+      return { name: 'ruby',         comment: '#',  multiLine: [ /\=begin/, /\=end/ ] };
     case '.py':
-      return {
-        name: 'python',
-        comment: '#'
-      };
+      return { name: 'python',       comment: '#'   }; // Python has no block commments :-(
     case '.c':
     case '.h':
-      return {
-        name: 'c',
-        comment: '//',
-        multiLine: [ /\/\*/, /\*\// ]
-      };
+      return { name: 'c',            comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.cc':
     case '.cpp':
-      return {
-        name: 'cpp',
-        comment: '//',
-        multiLine: [ /\/\*/, /\*\// ]
-      };
+      return { name: 'cpp',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.cs':
-      return {
-        name: 'csharp',
-        comment: '//',
-        multiLine: [ /\/\*/, /\*\// ]
-      };
+      return { name: 'csharp',       comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.java':
-      return {
-        name: 'java',
-        comment: '//',
-        multiLine: [ /\/\*/, /\*\// ]
-      };
+      return { name: 'java',         comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.md':
     case '.mkd':
     case '.markdown':
-      return {
-        name: 'markdown',
-        type: 'markdown'
-      };
+      return { name: 'markdown', type: 'markdown' };
     default:
       return false;
   }
@@ -615,7 +594,9 @@ Docker.prototype.addAnchors = function(docHtml, idx, headings){
     });
   }else{
     // If however we can't find a heading, then just use the section index instead.
-    docHtml = '\n<div class="pilwrap">\n  <a class="pilcrow" href="#section-' + (idx+1)+ '" id="section-' +(idx + 1) +'">&#182;</a>\n</div>\n' + docHtml;
+    docHtml = '\n<div class="pilwrap">' +
+              '\n  <a class="pilcrow" href="#section-' + (idx+1)+ '" id="section-' +(idx + 1) +'">&#182;</a>' +
+              '\n</div>\n' + docHtml;
   }
   return docHtml;
 };
