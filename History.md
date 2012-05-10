@@ -1,12 +1,17 @@
 # Docker Version History
 
+## 0.0.6
+
+ * Added support for a pile more languages (now JS, coffeescript, ruby, python, C, C++, C#, Java and Markdown)
+ * Tweaks to markdown (particularly, automatic linking of URLs and email addresses)
+
 ## 0.0.5
 
- * Add heading navigation within files
+ * Added heading navigation within files
 
 ## 0.0.4
 
- * Add syntax highlighting to fenced code blocks that have a language specified
+ * Added syntax highlighting to fenced code blocks that have a language specified
 
 ## 0.0.3
 
@@ -14,7 +19,7 @@
 
 ## 0.0.2
 
- * Add `-u` flag to only process files that have been updated
+ * Added `-u` flag to only process files that have been updated
 
 ## 0.0.1
 
