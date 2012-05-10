@@ -397,6 +397,47 @@ Docker.prototype.languageParams = function(filename){
 };
 
 /**
+ * ## Docker.prototype.pygments
+ *
+ * Runs a given block of code through pygments
+ *
+ * @param {string} data The code to give to Pygments
+ * @param {string} language The name of the Pygments lexer to use
+ * @param {function} cb Callback to fire with Pygments output
+ */
+Docker.prototype.pygments = function(data, language, cb){
+  // By default tell Pygments to guess the language, and if
+  // we have a language specified then tell pygments to use that lexer
+  var pygArgs = ['-g'];
+  if(language) pygArgs = ['-l', language];
+
+  // Spawn a new **pygments** process
+  var pyg = spawn('pygmentize', pygArgs.concat(['-f', 'html', '-O', 'encoding=utf-8,tabsize=2']));
+
+  // Hook up errors, for either when pygments itself throws an error,
+  // or for when we're unable to send the code to pygments for some reason
+  pyg.stderr.on('data', function(err){ console.error(err.toString()); });
+  pyg.stdin.on('error', function(err){
+    console.error('Unable to write to Pygments stdin: ' , err);
+    process.exit(1);
+  });
+
+  var out = '';
+  pyg.stdout.on('data', function(data){ out += data.toString(); });
+
+  // When pygments is done, fire the callback with our output
+  pyg.on('exit', function(){
+    cb(out);
+  });
+
+  // Feed pygments with the code
+  if(pyg.stdin.writable){
+    pyg.stdin.write(data);
+    pyg.stdin.end();
+  }
+};
+
+/**
  * ## Docker.prototype.highlight
  *
  * Highlights all the sections of a file using **pygments**
@@ -411,24 +452,14 @@ Docker.prototype.languageParams = function(filename){
 Docker.prototype.highlight = function(sections, filename, cb){
   var params = this.languageParams(filename), self = this;
 
-  // Spawn a new **pygments** process
-  var pyg = spawn('pygmentize', ['-l', params.name, '-f', 'html', '-O', 'encoding=utf-8,tabsize=2']);
+  var input = [];
+  for(var i = 0; i < sections.length; i += 1){
+    input.push(sections[i].code);
+  }
+  input = input.join('\n' + params.comment + '----{DIVIDER_THING}----\n');
 
-  // Hook up errors, for either when pygments itself throws an error,
-  // or for when we're unable to send the code to pygments for some reason
-  pyg.stderr.on('data', function(err){ console.error(err.toString()); });
-  pyg.stdin.on('error', function(err){
-    console.error('Unable to write to Pygments stdin: ' , err);
-    process.exit(1);
-  });
-
-  var out = '';
-  pyg.stdout.on('data', function(data){ out += data.toString(); });
-
-  // Once pygments is done, split the output up into different sections, and
-  // allocate them to the relevant section objects.
-  // Also parse the comment text using **showdown**
-  pyg.on('exit', function(){
+  // Run our input through pygments, then split the output back up into its constituent sections
+  this.pygments(input, params.name, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
     var bits = out.split(new RegExp('\\n*<span class="c1?">' + params.comment + '----\\{DIVIDER_THING\\}----<\\/span>\\n*'));
     for(var i = 0; i < sections.length; i += 1){
@@ -437,16 +468,6 @@ Docker.prototype.highlight = function(sections, filename, cb){
     }
     self.processDocCodeBlocks(sections, cb);
   });
-
-  // Feed pygments with the code
-  if(pyg.stdin.writable){
-    var input = [];
-    for(var i = 0; i < sections.length; i += 1){
-      input.push(sections[i].code);
-    }
-    pyg.stdin.write(input.join('\n' + params.comment + '----{DIVIDER_THING}----\n'));
-    pyg.stdin.end();
-  }
 };
 
 /**
@@ -524,6 +545,8 @@ Docker.prototype.extractDocCode = function(html, cb){
  */
 Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
 
+  var self = this;
+
   function next(){
     // If we're done, then stop and fire the callback
     if(codeBlocks.length === 0) return cb(html);
@@ -531,39 +554,12 @@ Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
     // Pull the next code block off the beginning of the array
     var nextBlock = codeBlocks.shift();
 
-    // By default tell Pygments to guess the language, and if
-    // we have a language specified (should always be the case if the above works),
-    // then tell pygments to use that lexer
-    var pygArgs = ['-g'];
-    if(nextBlock.language) pygArgs = ['-l', nextBlock.language];
-
-    // Spawn a new **pygments** process
-    var pyg = spawn('pygmentize', pygArgs.concat(['-f', 'html', '-O', 'encoding=utf-8,tabsize=2']));
-
-    // Hook up errors, for either when pygments itself throws an error,
-    // or for when we're unable to send the code to pygments for some reason
-    pyg.stderr.on('data', function(err){ console.error(err.toString()); });
-    pyg.stdin.on('error', function(err){
-      console.error('Unable to write to Pygments stdin: ' , err);
-      process.exit(1);
-    });
-
-    var out = '';
-    pyg.stdout.on('data', function(data){ out += data.toString(); });
-
-    // When pygments is done, substitute the highlighted code back into
-    // the html, and move onto the next code block
-    pyg.on('exit', function(){
+    // Run the code through pygments
+    self.pygments(nextBlock.code, nextBlock.language, function(out){
       out = out.replace(/<pre>/,'<pre><code>').replace(/<\/pre>/,'</code></pre>');
       html = html.replace('\n~C' + nextBlock.i + 'C\n', out);
       next();
     });
-
-    // Feed pygments with the code
-    if(pyg.stdin.writable){
-      pyg.stdin.write(nextBlock.code);
-      pyg.stdin.end();
-    }
   }
 
   // Fire off on first block
