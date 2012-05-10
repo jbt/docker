@@ -1,5 +1,10 @@
 # Docker Version History
 
+## 0.0.7
+
+ * Minor improvements to code structure
+ * Full comments on public script file
+
 ## 0.0.6
 
  * Added support for a pile more languages (now JS, coffeescript, ruby, python, C, C++, C#, Java and Markdown)
