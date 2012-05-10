@@ -370,7 +370,7 @@ Docker.prototype.languageParams = function(filename){
     //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
     //
     case '.js':
-      return { name: 'javascript',   comment: '//',  multiLine: [ /\/\*/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
+      return { name: 'javascript',   comment: '//', multiLine: [ /\/\*/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
     case '.coffee':
       return { name: 'coffeescript', comment: '#',  multiLine: [ /^#{3}$/, /^#{3}$/ ] };
     case '.rb':
