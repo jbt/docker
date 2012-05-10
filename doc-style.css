@@ -246,7 +246,8 @@ td.docs, th.docs {
 .docs pre.code_stats {
   font-size: 60%;
 }
-.docs p tt, .docs p code {
+.docs p tt, .docs p code,
+.docs li tt, .docs li code {
   background: #f8f8ff;
   border: 1px solid #dedede;
   font-size: 12px;

@@ -321,7 +321,33 @@ contorted like /[ \t]*\n+/ .</p>
 </div>
 <p>attacklab: Restore tildes</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/~T/g</span><span class="p">,</span><span class="s2">&quot;~&quot;</span><span class="p">);</span>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/~T/g</span><span class="p">,</span><span class="s2">&quot;~&quot;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p><em>* JT *</em>  Auto-link URLs and emails</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/https?\:\/\/[^&quot;\s\&lt;\&gt;]*[^.,;&#39;&quot;&gt;\:\s\&lt;\&gt;\)\]\!]/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span><span class="nx">matchIndex</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">left</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">matchIndex</span><span class="p">),</span> <span class="nx">right</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">matchIndex</span><span class="p">)</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>Don't match anything inside a tag, or anything already wrapped in a <code> or an <a></p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">((</span><span class="nx">left</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/&lt;[^&gt;]+$/</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">right</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^[^&gt;]*&gt;/</span><span class="p">))</span> <span class="o">||</span>
+        <span class="p">(</span><span class="nx">left</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/&lt;(code|a)[^&gt;]*&gt;[^&lt;]*$/</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">right</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^[^&lt;]*&lt;\/(a|code)&gt;/</span><span class="p">)))</span> <span class="p">{</span><span class="k">return</span> <span class="nx">wholeMatch</span><span class="p">}</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;a href=&#39;&quot;</span> <span class="o">+</span> <span class="nx">wholeMatch</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">wholeMatch</span> <span class="o">+</span> <span class="s2">&quot;&lt;/a&gt;&quot;</span><span class="p">;</span>
+  <span class="p">});</span>
+  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[a-z0-9_\-+=.]+@[a-z0-9\-]+(\.[a-z0-9-]+)+/ig</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">){</span><span class="k">return</span> <span class="s2">&quot;&lt;a href=&#39;mailto:&quot;</span> <span class="o">+</span> <span class="nx">wholeMatch</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">wholeMatch</span> <span class="o">+</span> <span class="s2">&quot;&lt;/a&gt;&quot;</span><span class="p">;});</span>
+
 
   <span class="k">return</span> <span class="nx">text</span><span class="p">;</span>
 <span class="p">}</span>
@@ -333,7 +359,7 @@ contorted like /[ \t]*\n+/ .</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>Strips link definitions from text, stores the URLs and titles in
 hash references.</p>
@@ -344,7 +370,7 @@ hash references.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>Link defs are in the form: ^[id]: url "optional title"</p>
         </td>
@@ -354,7 +380,7 @@ hash references.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>var text = text.replace(/
@@ -391,7 +417,7 @@ hash references.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>Oops, found blank lines, so it's not a title.
 Put back the parenthetical statement we stole.</p>
@@ -405,7 +431,7 @@ Put back the parenthetical statement we stole.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>Completely remove the definition from the text</p>
         </td>
@@ -423,7 +449,7 @@ Put back the parenthetical statement we stole.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>attacklab: Double up blank lines to reduce lookaround</p>
         </td>
@@ -433,7 +459,7 @@ Put back the parenthetical statement we stole.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Hashify HTML blocks:
 We only want to do this for block-level HTML tags, such as headers,
@@ -449,7 +475,7 @@ hard-coded:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>First, look for nested blocks, e.g.:
   <div>
@@ -469,7 +495,7 @@ match will start at the first <code>&lt;div&gt;</code> and stop at the first <co
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>attacklab: This regex can be expensive when it fails.</p>
 
@@ -497,7 +523,7 @@ match will start at the first <code>&lt;div&gt;</code> and stop at the first <co
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>Now match more liberally, simply from <code>\n&lt;tag&gt;</code> to <code>&lt;/tag&gt;\n</code></p>
         </td>
@@ -507,7 +533,7 @@ match will start at the first <code>&lt;div&gt;</code> and stop at the first <co
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>var text = text.replace(/
@@ -533,7 +559,7 @@ match will start at the first <code>&lt;div&gt;</code> and stop at the first <co
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>Special case just for <hr />. It was easier to make a special case than
 to make the other regex more complicated.</p>
@@ -544,7 +570,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -570,7 +596,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <p>Special case for standalone HTML comments:</p>
         </td>
@@ -580,7 +606,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -605,7 +631,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>PHP and ASP-style processor instructions (<?...?> and &lt;%...%>)</p>
         </td>
@@ -615,7 +641,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -644,7 +670,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>attacklab: Undo double lines (see comment at top of this function)</p>
         </td>
@@ -659,7 +685,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>Undo double lines</p>
         </td>
@@ -670,7 +696,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>strip trailing blank lines</p>
         </td>
@@ -680,7 +706,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
 </div>
 <p>Replace the element text with a marker ("~KxK" where x is its key)</p>
         </td>
@@ -695,7 +721,7 @@ to make the other regex more complicated.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>These are all the transformations that form block-level
 tags like paragraphs, headers, and list items.</p>
@@ -708,7 +734,7 @@ tags like paragraphs, headers, and list items.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
 </div>
 <p>Do Horizontal Rules:</p>
         </td>
@@ -724,7 +750,7 @@ tags like paragraphs, headers, and list items.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>We already ran _HashHTMLBlocks() before, in Markdown(), but that
 was to escape raw HTML in the original Markdown source. This time,
@@ -744,7 +770,7 @@ we're escaping the markup we've just created, so that we don't wrap
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>These are all the transformations that occur <em>within</em> block-level
 tags like paragraphs, headers, and list items.</p>
@@ -757,7 +783,7 @@ tags like paragraphs, headers, and list items.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>Process anchor and image tags. Images must come first,
 because ![foo][f] looks like an anchor.</p>
@@ -769,7 +795,7 @@ because ![foo][f] looks like an anchor.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>Make links out of things like <code>&lt;http://example.com/&gt;</code>
 Must come after _DoAnchors(), because you can use &lt; and >
@@ -783,7 +809,7 @@ delimiters in inline links like <a href="url">this</a>.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Do hard breaks:</p>
         </td>
@@ -798,7 +824,7 @@ delimiters in inline links like <a href="url">this</a>.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
 </div>
 <p>Within tags -- meaning between &lt; and > -- encode [\ ` * _] so they
 don't conflict with their use in Markdown for code, italics and strong.</p>
@@ -809,7 +835,7 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
 </div>
 <p>Build a regex to find HTML tags and comments.  See Friedl's
 "Mastering Regular Expressions", 2nd Ed., pp. 200-201.</p>
@@ -831,7 +857,7 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
 </div>
 <p>Turn Markdown link shortcuts into XHTML <a> tags.</p>
 
@@ -843,7 +869,7 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -876,7 +902,7 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
 </div>
 <p>Next, inline-style links: <a href="url" title="optional title">link text</a></p>
         </td>
@@ -886,7 +912,7 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -925,7 +951,7 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>Last, handle reference-style shortcuts: [link text]
 These must come last in case you've also got [link test][1]
@@ -937,7 +963,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -972,7 +998,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
 </div>
 <p>lower-case and turn embedded newlines into spaces</p>
         </td>
@@ -993,7 +1019,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
 </div>
 <p>Special case for explicit empty url</p>
         </td>
@@ -1025,7 +1051,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
 </div>
 <p>Turn Markdown image shortcuts into <img> tags.</p>
         </td>
@@ -1035,7 +1061,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
 </div>
 <p>First, handle reference-style labeled images: ![alt text][id]</p>
         </td>
@@ -1045,7 +1071,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -1072,7 +1098,7 @@ or <a href="/foo">link test</a></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>Next, handle inline images:  <img src="url" alt="alt text" title="optional title" />
 Don't forget: encode * and _</p>
@@ -1083,7 +1109,7 @@ Don't forget: encode * and _</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -1132,7 +1158,7 @@ Don't forget: encode * and _</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>lower-case and turn embedded newlines into spaces</p>
         </td>
@@ -1159,7 +1185,7 @@ Don't forget: encode * and _</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
 </div>
 <p>attacklab: Markdown.pl adds empty title attributes to images.
 Replicate this bug.</p>
@@ -1170,7 +1196,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
 </div>
 <p>if (title != "") {</p>
         </td>
@@ -1182,7 +1208,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
 </div>
 <p>}</p>
         </td>
@@ -1198,7 +1224,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
 </div>
 <p>Setext-style headers:
  Header 1
@@ -1218,7 +1244,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
+  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
 </div>
 <p>atx-style headers:
  # Header 1
@@ -1233,7 +1259,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
+  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -1262,7 +1288,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
+  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
 </div>
 <p>This declaration keeps Dojo compressor from outputting garbage:</p>
         </td>
@@ -1274,7 +1300,7 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
+  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
 </div>
 <p>Form HTML ordered (numbered) and unordered (bulleted) lists.</p>
         </td>
@@ -1284,10 +1310,10 @@ Replicate this bug.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
+  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
 </div>
 <p>attacklab: add sentinel to hack around khtml/safari bug:
-http://bugs.webkit.org/show_bug.cgi?id=11231</p>
+<a href='http://bugs.webkit.org/show_bug.cgi?id=11231'>http://bugs.webkit.org/show_bug.cgi?id=11231</a></p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">+=</span> <span class="s2">&quot;~0&quot;</span><span class="p">;</span></pre></div>
         </td>
@@ -1295,7 +1321,7 @@ http://bugs.webkit.org/show_bug.cgi?id=11231</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
+  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
 </div>
 <p>Re-usable pattern to match any entirel ul or ol list:</p>
         </td>
@@ -1305,7 +1331,7 @@ http://bugs.webkit.org/show_bug.cgi?id=11231</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
+  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>var whole<em>list = /
@@ -1343,7 +1369,7 @@ http://bugs.webkit.org/show_bug.cgi?id=11231</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
+  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
 </div>
 <p>Turn double returns into triple returns, so that we can make a
 paragraph for the last item in a list, if necessary:</p>
@@ -1355,7 +1381,7 @@ paragraph for the last item in a list, if necessary:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
 </div>
 <p>Trim any trailing whitespace, to put the closing <code>&lt;/$list_type&gt;</code>
 up on the preceding line, to get it past the current stupid
@@ -1378,7 +1404,7 @@ hack that is the HTML block parser.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
 <p>Turn double returns into triple returns, so that we can make a
 paragraph for the last item in a list, if necessary:</p>
@@ -1394,7 +1420,7 @@ paragraph for the last item in a list, if necessary:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
 </div>
 <p>attacklab: strip sentinel</p>
         </td>
@@ -1409,7 +1435,7 @@ paragraph for the last item in a list, if necessary:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
 </div>
 <p>Process the contents of a single ordered or unordered list, splitting it
  into individual list items.</p>
@@ -1441,7 +1467,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
 </div>
 <p>trim trailing blank lines:</p>
         </td>
@@ -1451,7 +1477,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>attacklab: add sentinel to emulate \z</p>
         </td>
@@ -1461,7 +1487,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>list<em>str = list</em>str.replace(/
@@ -1492,7 +1518,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>Recursion for sub-lists:</p>
         </td>
@@ -1509,7 +1535,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>attacklab: strip sentinel</p>
         </td>
@@ -1526,7 +1552,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>Process Markdown <code>&lt;pre&gt;&lt;code&gt;</code> blocks.</p>
         </td>
@@ -1536,7 +1562,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(text,
@@ -1560,7 +1586,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
+  <a class="pilcrow" href="#section-91" id="section-91">&#182;</a>
 </div>
 <p>attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug</p>
         </td>
@@ -1586,18 +1612,20 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
+  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
 </div>
 <div class="dox">
-  <div class="summary"><p>JT * GFM-esque fenced code blocks    text = text.replace(text,
-      /(?:\n|^)
-      (?<code>{3,}[ a-z]*\n?)        // Code fence with optional language
-      (                         // $1 = the code block -- one or more lines, and no occurrences of three or more backticks
-        [^</code>]<em>(?:<code>{1,2}[^</code>]+)</em>
-      )
-      (?:\n*`{3,})              // Closing fence
-      (?:\n|$)                  // And make sure we get all of the closing fence. Just in case someone used the wrong number of backticks
-    /g,function(){...});</p>
+  <div class="summary"><ul>
+<li>JT <em>* GFM-esque fenced code blocks    text = text.replace(text,
+  /(?:\n|^)
+  (?<code>{3,}[ a-z]*\n?)        // Code fence with optional language
+  (                         // $1 = the code block -- one or more lines, and no occurrences of three or more backticks
+    [^</code>]</em>(?:<code>{1,2}[^</code>]+)*
+  )
+  (?:\n*`{3,})              // Closing fence
+  (?:\n|$)                  // And make sure we get all of the closing fence. Just in case someone used the wrong number of backticks
+/g,function(){...});</li>
+</ul>
   </div>
   <div class="body">
   </div>
@@ -1622,7 +1650,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-91" id="section-91">&#182;</a>
+  <a class="pilcrow" href="#section-93" id="section-93">&#182;</a>
 </div>
 <p>attacklab: strip sentinel</p>
         </td>
@@ -1643,7 +1671,7 @@ starting cardinal number; e.g. "1." or "a.".</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
+  <a class="pilcrow" href="#section-94" id="section-94">&#182;</a>
 </div>
 <ul>
 <li><p>Backtick quotes are used for <code></code> spans.</p></li>
@@ -1679,7 +1707,7 @@ Turns to:
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-93" id="section-93">&#182;</a>
+  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -1716,7 +1744,7 @@ Turns to:
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-94" id="section-94">&#182;</a>
+  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
 </div>
 <p>Encode/escape certain characters inside Markdown code runs.
 The point is that in code, these characters are literals,
@@ -1731,7 +1759,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
+  <a class="pilcrow" href="#section-97" id="section-97">&#182;</a>
 </div>
 <p>Do the angle bracket song and dance:</p>
         </td>
@@ -1742,7 +1770,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
+  <a class="pilcrow" href="#section-98" id="section-98">&#182;</a>
 </div>
 <p>Now, escape characters that are magic in Markdown:</p>
         </td>
@@ -1765,7 +1793,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-98" id="section-98">&#182;</a>
+  <a class="pilcrow" href="#section-100" id="section-100">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>Item
@@ -1813,7 +1841,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-99" id="section-99">&#182;</a>
+  <a class="pilcrow" href="#section-101" id="section-101">&#182;</a>
 </div>
 <p>attacklab: hack around Konqueror 3.5.4 bug:
 "----------bug".replace(/^-/g,"") == "bug"</p>
@@ -1824,7 +1852,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-100" id="section-100">&#182;</a>
+  <a class="pilcrow" href="#section-102" id="section-102">&#182;</a>
 </div>
 <p>attacklab: clean up hack</p>
         </td>
@@ -1839,7 +1867,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-101" id="section-101">&#182;</a>
+  <a class="pilcrow" href="#section-103" id="section-103">&#182;</a>
 </div>
 <p>These leading spaces screw with <pre> content, so we need to fix that:</p>
         </td>
@@ -1852,7 +1880,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-102" id="section-102">&#182;</a>
+  <a class="pilcrow" href="#section-104" id="section-104">&#182;</a>
 </div>
 <p>attacklab: hack around Konqueror 3.5.4 bug:</p>
         </td>
@@ -1873,7 +1901,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-103" id="section-103">&#182;</a>
+  <a class="pilcrow" href="#section-105" id="section-105">&#182;</a>
 </div>
 <p>Params:
    $text - string to process with html <p> tags</p>
@@ -1884,7 +1912,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-104" id="section-104">&#182;</a>
+  <a class="pilcrow" href="#section-106" id="section-106">&#182;</a>
 </div>
 <p>Strip leading and trailing lines:</p>
         </td>
@@ -1898,7 +1926,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-105" id="section-105">&#182;</a>
+  <a class="pilcrow" href="#section-107" id="section-107">&#182;</a>
 </div>
 <p>Wrap <p> tags.</p>
         </td>
@@ -1910,7 +1938,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-106" id="section-106">&#182;</a>
+  <a class="pilcrow" href="#section-108" id="section-108">&#182;</a>
 </div>
 <p>if this is an HTML marker, copy it</p>
         </td>
@@ -1930,7 +1958,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-107" id="section-107">&#182;</a>
+  <a class="pilcrow" href="#section-109" id="section-109">&#182;</a>
 </div>
 <p>Unhashify HTML blocks</p>
         </td>
@@ -1941,7 +1969,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-108" id="section-108">&#182;</a>
+  <a class="pilcrow" href="#section-110" id="section-110">&#182;</a>
 </div>
 <p>if this is a marker for an html block...</p>
         </td>
@@ -1962,7 +1990,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-109" id="section-109">&#182;</a>
+  <a class="pilcrow" href="#section-111" id="section-111">&#182;</a>
 </div>
 <p>Smart processing for ampersands and angle brackets that need to be encoded.</p>
         </td>
@@ -1972,10 +2000,10 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-110" id="section-110">&#182;</a>
+  <a class="pilcrow" href="#section-112" id="section-112">&#182;</a>
 </div>
 <p>Ampersand-encoding based entirely on Nat Irons's Amputator MT plugin:
-  http://bumppo.net/projects/amputator/</p>
+  <a href='http://bumppo.net/projects/amputator/'>http://bumppo.net/projects/amputator/</a></p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g</span><span class="p">,</span><span class="s2">&quot;&amp;amp;&quot;</span><span class="p">);</span></pre></div>
         </td>
@@ -1983,7 +2011,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-111" id="section-111">&#182;</a>
+  <a class="pilcrow" href="#section-113" id="section-113">&#182;</a>
 </div>
 <p>Encode naked &lt;'s</p>
         </td>
@@ -1999,7 +2027,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-112" id="section-112">&#182;</a>
+  <a class="pilcrow" href="#section-114" id="section-114">&#182;</a>
 </div>
 <p>Parameter:  String.
   Returns: The string, with after processing the following backslash
@@ -2011,7 +2039,7 @@ entities within a Markdown code span.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-113" id="section-113">&#182;</a>
+  <a class="pilcrow" href="#section-115" id="section-115">&#182;</a>
 </div>
 <p>attacklab: The polite way to do this is with the new
 escapeCharacters() function:</p>
@@ -2036,9 +2064,9 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-114" id="section-114">&#182;</a>
+  <a class="pilcrow" href="#section-116" id="section-116">&#182;</a>
 </div>
-<p>Email addresses: <a href="&#109;&#x61;&#105;&#x6C;&#116;&#111;:&#97;&#x64;&#100;&#114;&#101;&#x73;&#x73;&#x40;&#x64;o&#x6D;&#x61;&#x69;n&#x2E;&#102;o&#x6F;">&#97;&#x64;&#100;&#114;&#101;&#x73;&#x73;&#x40;&#x64;o&#x6D;&#x61;&#x69;n&#x2E;&#102;o&#x6F;</a></p>
+<p>Email addresses: <a href="m&#x61;&#105;&#x6C;t&#111;:&#x61;d&#x64;&#x72;&#x65;&#115;&#115;&#64;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;&#46;&#x66;&#x6F;&#x6F;">&#x61;d&#x64;&#x72;&#x65;&#115;&#115;&#64;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;&#46;&#x66;&#x6F;&#x6F;</a></p>
         </td>
         <td class="code"><div class="highlight"><pre></pre></div>
         </td>
@@ -2046,7 +2074,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-115" id="section-115">&#182;</a>
+  <a class="pilcrow" href="#section-117" id="section-117">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
@@ -2080,9 +2108,9 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-116" id="section-116">&#182;</a>
+  <a class="pilcrow" href="#section-118" id="section-118">&#182;</a>
 </div>
-<p>Input: an email address, e.g. "foo@example.com"</p>
+<p>Input: an email address, e.g. "<a href='mailto:foo@example.com'>foo@example.com</a>"</p>
 
 <p>Output: the email address as a mailto link, with each character
  of the address encoded as either a decimal or hex entity, in
@@ -2101,7 +2129,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-117" id="section-117">&#182;</a>
+  <a class="pilcrow" href="#section-119" id="section-119">&#182;</a>
 </div>
 <p>attacklab: why can't javascript speak hex?</p>
         </td>
@@ -2126,7 +2154,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-118" id="section-118">&#182;</a>
+  <a class="pilcrow" href="#section-120" id="section-120">&#182;</a>
 </div>
 <p>this <em>must</em> be encoded. I insist.</p>
         </td>
@@ -2137,7 +2165,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-119" id="section-119">&#182;</a>
+  <a class="pilcrow" href="#section-121" id="section-121">&#182;</a>
 </div>
 <p>leave ':' alone (to spot mailto: later)</p>
         </td>
@@ -2147,7 +2175,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-120" id="section-120">&#182;</a>
+  <a class="pilcrow" href="#section-122" id="section-122">&#182;</a>
 </div>
 <p>roughly 10% raw, 45% hex, 45% dec</p>
         </td>
@@ -2173,7 +2201,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-121" id="section-121">&#182;</a>
+  <a class="pilcrow" href="#section-123" id="section-123">&#182;</a>
 </div>
 <p>Swap back in all the special characters we've hidden.</p>
         </td>
@@ -2193,7 +2221,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-122" id="section-122">&#182;</a>
+  <a class="pilcrow" href="#section-124" id="section-124">&#182;</a>
 </div>
 <p>Remove one level of line-leading tabs or spaces</p>
         </td>
@@ -2203,7 +2231,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-123" id="section-123">&#182;</a>
+  <a class="pilcrow" href="#section-125" id="section-125">&#182;</a>
 </div>
 <p>attacklab: hack around Konqueror 3.5.4 bug:
 "----------bug".replace(/^-/g,"") == "bug"</p>
@@ -2214,7 +2242,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-124" id="section-124">&#182;</a>
+  <a class="pilcrow" href="#section-126" id="section-126">&#182;</a>
 </div>
 <p>attacklab: clean up hack</p>
         </td>
@@ -2229,7 +2257,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-125" id="section-125">&#182;</a>
+  <a class="pilcrow" href="#section-127" id="section-127">&#182;</a>
 </div>
 <p>attacklab: Detab's completely rewritten for speed.
 In perl we could fix it by anchoring the regexp with \G.
@@ -2241,7 +2269,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-126" id="section-126">&#182;</a>
+  <a class="pilcrow" href="#section-128" id="section-128">&#182;</a>
 </div>
 <p>expand first n-1 tabs</p>
         </td>
@@ -2251,7 +2279,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-127" id="section-127">&#182;</a>
+  <a class="pilcrow" href="#section-129" id="section-129">&#182;</a>
 </div>
 <p>replace the nth with two sentinels</p>
         </td>
@@ -2261,7 +2289,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-128" id="section-128">&#182;</a>
+  <a class="pilcrow" href="#section-130" id="section-130">&#182;</a>
 </div>
 <p>use the sentinel to anchor our regex so it doesn't explode</p>
         </td>
@@ -2274,7 +2302,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-129" id="section-129">&#182;</a>
+  <a class="pilcrow" href="#section-131" id="section-131">&#182;</a>
 </div>
 <p>there <em>must</em> be a better way to do this:</p>
         </td>
@@ -2288,7 +2316,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-130" id="section-130">&#182;</a>
+  <a class="pilcrow" href="#section-132" id="section-132">&#182;</a>
 </div>
 <p>clean up sentinels</p>
         </td>
@@ -2302,7 +2330,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-131" id="section-131">&#182;</a>
+  <a class="pilcrow" href="#section-133" id="section-133">&#182;</a>
 </div>
 <p>attacklab: Utility functions</p>
         </td>
@@ -2312,7 +2340,7 @@ In javascript we're less fortunate.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-132" id="section-132">&#182;</a>
+  <a class="pilcrow" href="#section-134" id="section-134">&#182;</a>
 </div>
 <p>First we have to escape the escape characters so that
 we can build a character class out of them</p>

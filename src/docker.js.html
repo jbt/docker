@@ -457,7 +457,7 @@ For now, we can only do javascript and markdown files</p>
 </div>
         </td>
         <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">canHandleFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
-  <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.md&#39;</span><span class="p">,</span> <span class="s1">&#39;.markdown&#39;</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">filename</span><span class="p">))</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -508,14 +508,15 @@ For now, we can only do javascript and markdown files</p>
       <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
       <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
       <span class="k">switch</span><span class="p">(</span><span class="nx">l</span><span class="p">.</span><span class="nx">type</span><span class="p">){</span>
+        <span class="k">case</span> <span class="s1">&#39;markdown&#39;</span><span class="o">:</span>
+          <span class="nx">self</span><span class="p">.</span><span class="nx">renderMarkdownHtml</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
         <span class="k">case</span> <span class="s1">&#39;code&#39;</span><span class="o">:</span>
           <span class="kd">var</span> <span class="nx">sections</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">parseSections</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
           <span class="nx">self</span><span class="p">.</span><span class="nx">highlight</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
             <span class="nx">self</span><span class="p">.</span><span class="nx">renderCodeHtml</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
           <span class="p">});</span>
-          <span class="k">break</span><span class="p">;</span>
-        <span class="k">case</span> <span class="s1">&#39;markdown&#39;</span><span class="o">:</span>
-          <span class="nx">self</span><span class="p">.</span><span class="nx">renderMarkdownHtml</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
           <span class="k">break</span><span class="p">;</span>
       <span class="p">}</span>
     <span class="p">});</span>
@@ -684,7 +685,9 @@ A section is defined to be one block of code with an accompanying comment</p>
   <span class="kd">function</span> <span class="nx">md</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">stripParas</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(^\s*|\s*$)/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">));</span>
     <span class="k">return</span> <span class="nx">stripParas</span> <span class="o">?</span> <span class="nx">h</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/?p&gt;/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="nx">h</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+  <span class="kd">var</span> <span class="nx">commentRegex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;^\\s*&#39;</span> <span class="o">+</span> <span class="nx">params</span><span class="p">.</span><span class="nx">comment</span> <span class="o">+</span> <span class="s1">&#39;\\s?&#39;</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -695,7 +698,8 @@ A section is defined to be one block of code with an accompanying comment</p>
 <p>Loop through all the lines, and parse into sections</p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">codeLines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">codeLines</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span></pre></div>
+    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">codeLines</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -705,8 +709,8 @@ A section is defined to be one block of code with an accompanying comment</p>
 </div>
 <p>If we are currently in a multiline comment, behave differently</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">inMultiLineComment</span><span class="p">){</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multilineEnd</span><span class="p">)){</span></pre></div>
+        <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">inMultiLineComment</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">])){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -718,10 +722,11 @@ A section is defined to be one block of code with an accompanying comment</p>
 of the multiline comment, and pass it through <strong>dox</strong>, which will then
 extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>        <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
-        <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="k">try</span><span class="p">{</span>
-          <span class="nx">doxData</span> <span class="o">=</span> <span class="nx">dox</span><span class="p">.</span><span class="nx">parseComments</span><span class="p">(</span><span class="nx">multiLine</span><span class="p">,</span> <span class="p">{</span><span class="nx">raw</span><span class="o">:</span> <span class="kc">true</span><span class="p">})[</span><span class="mi">0</span><span class="p">];</span></pre></div>
+        <td class="code"><div class="highlight"><pre>          <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+          <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">dox</span><span class="p">){</span>
+            <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+            <span class="k">try</span><span class="p">{</span>
+              <span class="nx">doxData</span> <span class="o">=</span> <span class="nx">dox</span><span class="p">.</span><span class="nx">parseComments</span><span class="p">(</span><span class="nx">multiLine</span><span class="p">,</span> <span class="p">{</span><span class="nx">raw</span><span class="o">:</span> <span class="kc">true</span><span class="p">})[</span><span class="mi">0</span><span class="p">];</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -731,17 +736,23 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
 </div>
 <p>Don't let dox do any markdown parsing. We'll do that all ourselves with md above</p>
         </td>
-        <td class="code"><div class="highlight"><pre>          <span class="nx">doxData</span><span class="p">.</span><span class="nx">md</span> <span class="o">=</span> <span class="nx">md</span><span class="p">;</span>
-          <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">doxTemplate</span><span class="p">(</span><span class="nx">doxData</span><span class="p">);</span>
-        <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Dox error: &quot;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">);</span>
-          <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="nx">multiLine</span><span class="p">;</span>
+        <td class="code"><div class="highlight"><pre>              <span class="nx">doxData</span><span class="p">.</span><span class="nx">md</span> <span class="o">=</span> <span class="nx">md</span><span class="p">;</span>
+              <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">doxTemplate</span><span class="p">(</span><span class="nx">doxData</span><span class="p">);</span>
+            <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Dox error: &quot;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">);</span>
+              <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+              <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">multiLine</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+          <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+            <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">multiLine</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="nx">multiLine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+          <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="nx">multiLine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-      <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-        <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multilineStart</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multilineEnd</span><span class="p">)){</span></pre></div>
+        <span class="k">continue</span><span class="p">;</span>
+      <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -749,15 +760,19 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
-<p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
+<p>We want to match the start of a multiline comment only if the line doesn't also match the
+end of the same comment, or if a single-line comment is started before the multiline
+So for example the following would not be treated as a multiline starter:</p>
+
+
+<div class="highlight"><pre><code> <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span> <span class="c1">// Alert some foo /* Random open comment thing</span>
+</code></pre></div>
+
+
         </td>
-        <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
-        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
-        <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">};</span>
-      <span class="p">}</span>
-      <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-      <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">line</span><span class="p">;</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentRegex</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span><span class="p">)){</span></pre></div>
+        <td class="code"><div class="highlight"><pre>        <span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
+        <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
+        <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">].</span><span class="nx">match</span><span class="p">(</span><span class="nx">commentRegex</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -765,14 +780,33 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
+<p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>        <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
+          <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
+          <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">};</span>
+        <span class="p">}</span>
+        <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">line</span><span class="p">;</span>
+        <span class="k">continue</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">commentRegex</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span> <span class="o">||</span> <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span><span class="p">))){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
 <p>This is for single-line comments. Again, store away the last section and start a new one</p>
         </td>
         <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
         <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">};</span>
       <span class="p">}</span>
-      <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentRegex</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span><span class="p">)){</span>
+      <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">commentRegex</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span> <span class="o">||</span> <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span><span class="p">)){</span>
       <span class="nx">section</span><span class="p">.</span><span class="nx">code</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
@@ -811,41 +845,49 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
 </div>
         </td>
         <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">languageParams</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
-  <span class="k">switch</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">filename</span><span class="p">)){</span>
-    <span class="k">case</span> <span class="s1">&#39;.js&#39;</span><span class="o">:</span></pre></div>
+  <span class="k">switch</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">filename</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
-<p><code>commentRegex</code> is for single-line comments, <code>multilineStart</code> and <code>multilineEnd</code> are for multiline comments.</p>
+<p>The language params can have the following keys:</p>
 
-<p><code>commentsIgnore</code> is for comments that should be stripped completely and not document-ized.</p>
-
-<p><code>divText</code> is a generic divider so sections can be fed into <strong>pygments</strong> together, and
-<code>divHtml</code> is the corresponding divider to look for in the output</p>
+<ul>
+<li><code>name</code>: Name of Pygments lexer to use</li>
+<li><code>comment</code>: String flag for single-line comments</li>
+<li><code>multiline</code>: Two-element array of start and end flags for block comments</li>
+<li><code>commentsIgnore</code>: Regex of comments to strip completely (don't even doc)</li>
+<li><code>dox</code>: Whether to run block comments through Dox (only JavaScript)</li>
+<li><code>type</code>: Either <code>'code'</code> (default) or <code>'markdown'</code> - format of page to render</li>
+</ul>
         </td>
-        <td class="code"><div class="highlight"><pre>      <span class="k">return</span> <span class="p">{</span>
-        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;javascript&#39;</span><span class="p">,</span>
-        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;code&#39;</span><span class="p">,</span>
-        <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span>
-        <span class="nx">commentRegex</span><span class="o">:</span> <span class="sr">/^\s*\/\/\s?/</span><span class="p">,</span>
-        <span class="nx">commentsIgnore</span><span class="o">:</span> <span class="sr">/^\s*\/\/=/</span><span class="p">,</span>
-        <span class="nx">multilineStart</span><span class="o">:</span> <span class="sr">/\/\*/</span><span class="p">,</span>
-        <span class="nx">multilineEnd</span><span class="o">:</span> <span class="sr">/\*\//</span><span class="p">,</span>
-        <span class="nx">divText</span><span class="o">:</span> <span class="s1">&#39;\n//----{DIVIDER_THING}----\n&#39;</span><span class="p">,</span>
-        <span class="nx">divHtml</span><span class="o">:</span> <span class="sr">/\n*&lt;span class=&quot;c1?&quot;&gt;\/\/----\{DIVIDER_THING\}----&lt;\/span&gt;\n*/</span>
-      <span class="p">};</span>
+        <td class="code"><div class="highlight"><pre>    <span class="k">case</span> <span class="s1">&#39;.js&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;javascript&#39;</span><span class="p">,</span>   <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">commentsIgnore</span><span class="o">:</span> <span class="sr">/^\s*\/\/=/</span><span class="p">,</span> <span class="nx">dox</span><span class="o">:</span> <span class="kc">true</span> <span class="p">};</span>
+    <span class="k">case</span> <span class="s1">&#39;.coffee&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;coffeescript&#39;</span><span class="p">,</span> <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/^#{3}$/</span><span class="p">,</span> <span class="sr">/^#{3}$/</span> <span class="p">]</span> <span class="p">};</span>
+    <span class="k">case</span> <span class="s1">&#39;.rb&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;ruby&#39;</span><span class="p">,</span>         <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\=begin/</span><span class="p">,</span> <span class="sr">/\=end/</span> <span class="p">]</span> <span class="p">};</span>
+    <span class="k">case</span> <span class="s1">&#39;.py&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span>       <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span>   <span class="p">};</span> <span class="c1">// Python has no block commments :-(</span>
+    <span class="k">case</span> <span class="s1">&#39;.c&#39;</span><span class="o">:</span>
+    <span class="k">case</span> <span class="s1">&#39;.h&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span>            <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>     <span class="p">};</span>
+    <span class="k">case</span> <span class="s1">&#39;.cc&#39;</span><span class="o">:</span>
+    <span class="k">case</span> <span class="s1">&#39;.cpp&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;cpp&#39;</span><span class="p">,</span>          <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>     <span class="p">};</span>
+    <span class="k">case</span> <span class="s1">&#39;.cs&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;csharp&#39;</span><span class="p">,</span>       <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>     <span class="p">};</span>
+    <span class="k">case</span> <span class="s1">&#39;.java&#39;</span><span class="o">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;java&#39;</span><span class="p">,</span>         <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>     <span class="p">};</span>
     <span class="k">case</span> <span class="s1">&#39;.md&#39;</span><span class="o">:</span>
+    <span class="k">case</span> <span class="s1">&#39;.mkd&#39;</span><span class="o">:</span>
     <span class="k">case</span> <span class="s1">&#39;.markdown&#39;</span><span class="o">:</span>
-      <span class="k">return</span> <span class="p">{</span>
-        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;markdown&#39;</span><span class="p">,</span>
-        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;markdown&#39;</span>
-      <span class="p">};</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;markdown&#39;</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;markdown&#39;</span> <span class="p">};</span>
     <span class="k">default</span><span class="o">:</span>
-      <span class="k">throw</span> <span class="s1">&#39;Unknown language&#39;</span><span class="p">;</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -893,7 +935,7 @@ section generate pretty html for the comments and the code, and put them in
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>Spawn a new <strong>pygments</strong> process</p>
         </td>
@@ -903,7 +945,7 @@ section generate pretty html for the comments and the code, and put them in
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
@@ -921,7 +963,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>Once pygments is done, split the output up into different sections, and
 allocate them to the relevant section objects.
@@ -929,7 +971,7 @@ Also parse the comment text using <strong>showdown</strong></p>
         </td>
         <td class="code"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
     <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s*&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/pre&gt;&lt;\/div&gt;\s*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">bits</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">divHtml</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">bits</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;\\n*&lt;span class=&quot;c1?&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">params</span><span class="p">.</span><span class="nx">comment</span> <span class="o">+</span> <span class="s1">&#39;----\\{DIVIDER_THING\\}----&lt;\\/span&gt;\\n*&#39;</span><span class="p">));</span>
     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
       <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">codeHtml</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&#39;</span> <span class="o">+</span> <span class="nx">bits</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/pre&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
       <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docs</span><span class="p">);</span>
@@ -941,7 +983,7 @@ Also parse the comment text using <strong>showdown</strong></p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <p>Feed pygments with the code</p>
         </td>
@@ -950,7 +992,7 @@ Also parse the comment text using <strong>showdown</strong></p>
     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
       <span class="nx">input</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">code</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">divText</span><span class="p">));</span>
+    <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">params</span><span class="p">.</span><span class="nx">comment</span> <span class="o">+</span> <span class="s1">&#39;----{DIVIDER_THING}----\n&#39;</span><span class="p">));</span>
     <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
   <span class="p">}</span>
 <span class="p">};</span></pre></div>
@@ -994,7 +1036,7 @@ and highlights them</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>If we've reached the end of the sections array, we've highlighted everything,
 so we can stop and fire the callback</p>
@@ -1005,7 +1047,7 @@ so we can stop and fire the callback</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>Process the code blocks on this section, each time returning the html
 and moving onto the next section when we're done</p>
@@ -1021,7 +1063,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <p>Start off with the first section</p>
         </td>
@@ -1063,7 +1105,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>We'll store all extracted code blocks, along with information, in this array</p>
         </td>
@@ -1073,7 +1115,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>Search in the HTML for any code tag with a language set (in the format that showdown returns)</p>
         </td>
@@ -1083,7 +1125,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
 </div>
 <p>Unescape these HTML entities because they'll be re-escaped by pygments</p>
         </td>
@@ -1093,7 +1135,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>Store the code block away in <code>codeBlocks</code> and leave a flag in the original text.</p>
         </td>
@@ -1108,7 +1150,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
 </div>
 <p>Once we're done with that, now we can move on to highlighting the code we've extracted</p>
         </td>
@@ -1161,7 +1203,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>If we're done, then stop and fire the callback</p>
         </td>
@@ -1171,7 +1213,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>Pull the next code block off the beginning of the array</p>
         </td>
@@ -1181,7 +1223,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>By default tell Pygments to guess the language, and if
 we have a language specified (should always be the case if the above works),
@@ -1194,7 +1236,7 @@ then tell pygments to use that lexer</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Spawn a new <strong>pygments</strong> process</p>
         </td>
@@ -1204,7 +1246,7 @@ then tell pygments to use that lexer</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
 </div>
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
@@ -1222,7 +1264,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
 </div>
 <p>When pygments is done, substitute the highlighted code back into
 the html, and move onto the next code block</p>
@@ -1237,7 +1279,7 @@ the html, and move onto the next code block</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
 </div>
 <p>Feed pygments with the code</p>
         </td>
@@ -1251,7 +1293,7 @@ the html, and move onto the next code block</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
 </div>
 <p>Fire off on first block</p>
         </td>
@@ -1294,7 +1336,7 @@ the html, and move onto the next code block</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
@@ -1315,11 +1357,13 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot;&gt;\n  &lt;a class=&quot;pilcrow&quot; href=&quot;#section-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;&quot; id=&quot;section-&#39;</span> <span class="o">+</span><span class="p">(</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&amp;#182;&lt;/a&gt;\n&lt;/div&gt;\n&#39;</span> <span class="o">+</span> <span class="nx">docHtml</span><span class="p">;</span>
+        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot;&gt;&#39;</span> <span class="o">+</span>
+              <span class="s1">&#39;\n  &lt;a class=&quot;pilcrow&quot; href=&quot;#section-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;&quot; id=&quot;section-&#39;</span> <span class="o">+</span><span class="p">(</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&amp;#182;&lt;/a&gt;&#39;</span> <span class="o">+</span>
+              <span class="s1">&#39;\n&lt;/div&gt;\n&#39;</span> <span class="o">+</span> <span class="nx">docHtml</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">docHtml</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
@@ -1364,7 +1408,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -1376,7 +1420,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -1396,7 +1440,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -1417,7 +1461,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -1472,7 +1516,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>Run the markdown through <em>showdown</em></p>
         </td>
@@ -1486,7 +1530,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
 </div>
 <p>Add anchors to all headings</p>
         </td>
@@ -1496,7 +1540,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>Wrap up with necessary classes</p>
         </td>
@@ -1506,7 +1550,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -1516,7 +1560,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -1532,7 +1576,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -1550,7 +1594,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
+  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -1722,7 +1766,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
+  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
 </div>
 <p>If we haven't already loaded the template, load it now.
 It's a bit messy to be using readFileSync I know, but this
