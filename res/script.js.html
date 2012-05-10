@@ -36,6 +36,15 @@
       <div class="heading h2">
         <a href="#toggletree">toggleTree</a>
       </div>
+      <div class="heading h2">
+        <a href="#wireuptabs">wireUpTabs</a>
+      </div>
+      <div class="heading h2">
+        <a href="#switchtab">switchTab</a>
+      </div>
+      <div class="heading h2">
+        <a href="#window.onload">window.onload</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -417,41 +426,177 @@ so it can be restored on the next pageview.</p>
       <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s1">&#39;docker_showTree&#39;</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">}</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="wireuptabs">
+  <h2>
+    <a href="#wireuptabs" class="pilcrow">&#182;</a>
+    wireUpTabs
+  </h2>
+</div>
 
-<span class="kd">function</span> <span class="nx">wireUpTabs</span><span class="p">(){</span>
+  </div>
+  <div class="body"><p>Wires up events on the sidebar tabe</p>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">wireUpTabs</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">tabEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar_switch&#39;</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
-  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>Each tab has a class corresponding of the id of its tab pane</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>Ignore text nodes</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
     <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span>
       <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span> <span class="p">};</span>
     <span class="p">}(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">));</span>
   <span class="p">}</span>
-<span class="p">}</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="switchtab">
+  <h2>
+    <a href="#switchtab" class="pilcrow">&#182;</a>
+    switchTab
+  </h2>
+</div>
 
-<span class="kd">function</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">tab</span><span class="p">){</span>
+  </div>
+  <div class="body"><p>Switches tabs in the sidebar</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>tab</span>
+      <span class="dox_type">string</span>
+      <span>The ID of the tab to switch to</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">tab</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">tabEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar_switch&#39;</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
-  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s.*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="nx">tab</span><span class="p">){</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;block&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>Easiest way to go through tabs without any kind of selector is just to look at the tab bar</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>Ignore text nodes</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>Figure out what tab pane this tab button corresponts to</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s.*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="nx">tab</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>Show the tab pane, select the tab button</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;block&#39;</span><span class="p">;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; selected&#39;</span><span class="p">;</span>
-    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>Hide the tab pane, deselect the tab button</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">;</span>
       <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\sselected/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
-<span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>Store the last open tab in localStorage</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="window.onload">
+  <h2>
+    <a href="#window.onload" class="pilcrow">&#182;</a>
+    window.onload
+  </h2>
+</div>
 
-<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  </div>
+  <div class="body"><p>When the document is ready, make the sidebar and all that jazz</p>
+  </div>
+</div>
+        </td>
+        <td class="code"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="nx">makeTree</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="nx">relativeDir</span><span class="p">,</span> <span class="nx">thisFile</span><span class="p">);</span>
-  <span class="nx">wireUpTabs</span><span class="p">();</span>
-
-  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">){</span>
+  <span class="nx">wireUpTabs</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>Switch to the last viewed sidebar tab if stored, otherwise default to folder tree</p>
+        </td>
+        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">){</span>
     <span class="nx">switchTab</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">);</span>
   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
     <span class="nx">switchTab</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>

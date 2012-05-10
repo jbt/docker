@@ -152,10 +152,18 @@ function toggleTree(){
   }
 }
 
+/**
+ * ## wireUpTabs
+ *
+ * Wires up events on the sidebar tabe
+ */
 function wireUpTabs(){
   var tabEl = document.getElementById('sidebar_switch');
   var children = tabEl.childNodes;
+
+  // Each tab has a class corresponding of the id of its tab pane
   for(var i = 0, l = children.length; i < l;  i += 1){
+    // Ignore text nodes
     if(children[i].nodeType !== 1) continue;
     children[i].addEventListener('click', function(c){
       return function(){ switchTab(c); };
@@ -163,27 +171,49 @@ function wireUpTabs(){
   }
 }
 
+/**
+ * ## switchTab
+ *
+ * Switches tabs in the sidebar
+ *
+ * @param {string} tab The ID of the tab to switch to
+ */
 function switchTab(tab){
   var tabEl = document.getElementById('sidebar_switch');
   var children = tabEl.childNodes;
+
+  // Easiest way to go through tabs without any kind of selector is just to look at the tab bar
   for(var i = 0, l = children.length; i < l;  i += 1){
+    // Ignore text nodes
     if(children[i].nodeType !== 1) continue;
+
+    // Figure out what tab pane this tab button corresponts to
     var t = children[i].className.replace(/\s.*$/,'');
     if(t === tab){
+      // Show the tab pane, select the tab button
       document.getElementById(t).style.display = 'block';
       if(children[i].className.indexOf('selected') === -1) children[i].className += ' selected';
     }else{
+      // Hide the tab pane, deselect the tab button
       document.getElementById(t).style.display = 'none';
       children[i].className = children[i].className.replace(/\sselected/,'');
     }
   }
+
+  // Store the last open tab in localStorage
   if(window.localStorage) window.localStorage.docker_siderbarTab = tab;
 }
 
+/**
+ * ## window.onload
+ *
+ * When the document is ready, make the sidebar and all that jazz
+ */
 window.onload = function(){
   makeTree(tree, relativeDir, thisFile);
   wireUpTabs();
 
+  // Switch to the last viewed sidebar tab if stored, otherwise default to folder tree
   if(window.localStorage && window.localStorage.docker_siderbarTab){
     switchTab(window.localStorage.docker_siderbarTab);
   }else{
