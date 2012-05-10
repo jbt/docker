@@ -173,7 +173,7 @@ Docker.prototype.processNextFile = function(){
  * @param {string} filename File name to test
  */
 Docker.prototype.canHandleFile = function(filename){
-  return ['.js', '.md', '.markdown'].indexOf(path.extname(filename)) !== -1;
+  return this.languageParams(filename) !== false;
 };
 
 /**
@@ -195,14 +195,15 @@ Docker.prototype.generateDoc = function(filename, cb){
       if(err) throw err;
       var l = self.languageParams(filename);
       switch(l.type){
+        case 'markdown':
+          self.renderMarkdownHtml(data, filename, cb);
+          break;
+        default:
         case 'code':
           var sections = self.parseSections(data, filename);
           self.highlight(sections, filename, function(){
             self.renderCodeHtml(sections, filename, cb);
           });
-          break;
-        case 'markdown':
-          self.renderMarkdownHtml(data, filename, cb);
           break;
       }
     });
@@ -280,47 +281,62 @@ Docker.prototype.parseSections = function(data, filename){
     return stripParas ? h.replace(/<\/?p>/g,'') : h;
   }
 
+  var commentRegex = new RegExp('^\\s*' + params.comment + '\\s?');
+
   // Loop through all the lines, and parse into sections
   for(var i = 0; i < codeLines.length; i += 1){
     var line = codeLines[i];
-
-    // If we are currently in a multiline comment, behave differently
-    if(inMultiLineComment){
-      if(line.match(params.multilineEnd)){
-        // Once we have reached the end of the multiline, take the whole content
-        // of the multiline comment, and pass it through **dox**, which will then
-        // extract any **jsDoc** parameters that are present.
-        multiLine += line + '\n';
-        inMultiLineComment = false;
-        try{
-          doxData = dox.parseComments(multiLine, {raw: true})[0];
-          // Don't let dox do any markdown parsing. We'll do that all ourselves with md above
-          doxData.md = md;
-          section.docs += this.doxTemplate(doxData);
-        }catch(e){
-          console.log("Dox error: " + e);
-          section.docs += multiLine;
+    if(params.multiLine){
+      // If we are currently in a multiline comment, behave differently
+      if(inMultiLineComment){
+        if(line.match(params.multiLine[1])){
+          // Once we have reached the end of the multiline, take the whole content
+          // of the multiline comment, and pass it through **dox**, which will then
+          // extract any **jsDoc** parameters that are present.
+          inMultiLineComment = false;
+          if(params.dox){
+            multiLine += line + '\n';
+            try{
+              doxData = dox.parseComments(multiLine, {raw: true})[0];
+              // Don't let dox do any markdown parsing. We'll do that all ourselves with md above
+              doxData.md = md;
+              section.docs += this.doxTemplate(doxData);
+            }catch(e){
+              console.log("Dox error: " + e);
+              multiLine += line.replace(params.multiLine[1],'') + '\n';
+              section.docs += '\n' + multiLine.replace(params.multiLine[0],'') + '\n';
+            }
+          }else{
+            multiLine += line.replace(params.multiLine[1],'') + '\n';
+            section.docs += '\n' + multiLine.replace(params.multiLine[0],'') + '\n';
+          }
+          multiLine = '';
+        }else{
+          multiLine += line + '\n';
         }
-        multiLine = '';
-      }else{
-        multiLine += line + '\n';
+        continue;
+      }else if(
+        line.match(params.multiLine[0]) &&
+        !line.replace(params.multiLine[0],'').match(params.multiLine[1]) &&
+        !line.split(params.multiLine[0])[0].match(commentRegex)){
+        // Here we start parsing a multiline comment. Store away the current section and start a new one
+        if(section.code){
+          if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
+          section = { docs: '', code: '' };
+        }
+        inMultiLineComment = true;
+        multiLine = line;
+        continue;
       }
-    }else if(line.match(params.multilineStart) && !line.match(params.multilineEnd)){
-      // Here we start parsing a multiline comment. Store away the current section and start a new one
-      if(section.code){
-        if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
-        section = { docs: '', code: '' };
-      }
-      inMultiLineComment = true;
-      multiLine = line;
-    }else if(line.match(params.commentRegex) && !line.match(params.commentsIgnore)){
+    }
+    if(line.match(commentRegex) && (!params.commentsIgnore || !line.match(params.commentsIgnore))){
       // This is for single-line comments. Again, store away the last section and start a new one
       if(section.code){
         if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
         section = { docs: '', code: '' };
       }
-      section.docs += line.replace(params.commentRegex, '') + '\n';
-    }else if(!line.match(params.commentsIgnore)){
+      section.docs += line.replace(commentRegex, '') + '\n';
+    }else if(!params.commentsIgnore || !line.match(params.commentsIgnore)){
       section.code += line + '\n';
     }
   }
@@ -339,31 +355,65 @@ Docker.prototype.parseSections = function(data, filename){
 Docker.prototype.languageParams = function(filename){
   switch(path.extname(filename)){
     case '.js':
-      // `commentRegex` is for single-line comments, `multilineStart` and `multilineEnd` are for multiline comments.
-      //
-      // `commentsIgnore` is for comments that should be stripped completely and not document-ized.
-      //
-      // `divText` is a generic divider so sections can be fed into **pygments** together, and
-      // `divHtml` is the corresponding divider to look for in the output
       return {
         name: 'javascript',
-        type: 'code',
         comment: '//',
-        commentRegex: /^\s*\/\/\s?/,
         commentsIgnore: /^\s*\/\/=/,
-        multilineStart: /\/\*/,
-        multilineEnd: /\*\//,
-        divText: '\n//----{DIVIDER_THING}----\n',
-        divHtml: /\n*<span class="c1?">\/\/----\{DIVIDER_THING\}----<\/span>\n*/
+        multiLine: [ /\/\*/, /\*\// ],
+        dox: true
+      };
+    case '.coffee':
+      return {
+        name: 'coffeescript',
+        comment: '#',
+        multiLine: [ /^#{3}$/, /^#{3}$/ ]
+      };
+    case '.rb':
+      return {
+        name: 'ruby',
+        comment: '#',
+        multiLine: [ /\=begin/, /\=end/ ]
+      };
+    case '.py':
+      return {
+        name: 'python',
+        comment: '#'
+      };
+    case '.c':
+    case '.h':
+      return {
+        name: 'c',
+        comment: '//',
+        multiLine: [ /\/\*/, /\*\// ]
+      };
+    case '.cc':
+    case '.cpp':
+      return {
+        name: 'cpp',
+        comment: '//',
+        multiLine: [ /\/\*/, /\*\// ]
+      };
+    case '.cs':
+      return {
+        name: 'csharp',
+        comment: '//',
+        multiLine: [ /\/\*/, /\*\// ]
+      };
+    case '.java':
+      return {
+        name: 'java',
+        comment: '//',
+        multiLine: [ /\/\*/, /\*\// ]
       };
     case '.md':
+    case '.mkd':
     case '.markdown':
       return {
         name: 'markdown',
         type: 'markdown'
       };
     default:
-      throw 'Unknown language';
+      return false;
   }
 };
 
@@ -401,7 +451,7 @@ Docker.prototype.highlight = function(sections, filename, cb){
   // Also parse the comment text using **showdown**
   pyg.on('exit', function(){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
-    var bits = out.split(params.divHtml);
+    var bits = out.split(new RegExp('\\n*<span class="c1?">' + params.comment + '----\\{DIVIDER_THING\\}----<\\/span>\\n*'));
     for(var i = 0; i < sections.length; i += 1){
       sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
@@ -415,7 +465,7 @@ Docker.prototype.highlight = function(sections, filename, cb){
     for(var i = 0; i < sections.length; i += 1){
       input.push(sections[i].code);
     }
-    pyg.stdin.write(input.join(params.divText));
+    pyg.stdin.write(input.join('\n' + params.comment + '----{DIVIDER_THING}----\n'));
     pyg.stdin.end();
   }
 };
