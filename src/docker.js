@@ -649,14 +649,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
 
   // Recursively create the output directory, clean out any old version of the
   // output file, then save our new file.
-  mkdirp(outDir, function(){
-    fs.unlink(outFile, function(){
-      fs.writeFile(outFile, html, function(){
-        console.log('Generated: ' + outFile.replace(self.outDir,''));
-        cb();
-      });
-    });
-  });
+  this.writeFile(outFile, html, 'Generated: ' + outFile.replace(self.outDir,''), cb);
 };
 
 /**
@@ -704,18 +697,9 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
       filename: filename.replace(this.inDir,'').replace(/^\//,'')
     });
 
-    var self = this;
-
     // Recursively create the output directory, clean out any old version of the
     // output file, then save our new file.
-    mkdirp(outDir, function(){
-      fs.unlink(outFile, function(){
-        fs.writeFile(outFile, html, function(){
-          console.log('Generated: ' + outFile.replace(self.outDir,''));
-          cb();
-        });
-      });
-    });
+    this.writeFile(outFile, html, 'Generated: ' + outFile.replace(self.outDir,''), cb);
   }.bind(this));
 };
 
@@ -726,37 +710,22 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
  */
 Docker.prototype.copySharedResources = function(){
   var self = this;
-  function copyJS(){
-    fs.unlink(path.join(self.outDir, 'doc-script.js'), function(){
-      fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
-        fs.writeFile(path.join(self.outDir, 'doc-script.js'), file, function(){
-          console.log('Copied JS to doc-script.js');
-        });
-      });
-    });
-  }
+  fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
+    self.writeFile(path.join(self.outDir, 'doc-script.js'), file, 'Copied JS to doc-script.js');
+  });
 
-  function copyCSS(){
-    fs.unlink(path.join(self.outDir, 'doc-style.css'), function(){
-      fs.readFile(path.join(path.dirname(__filename),'../res/css/' + self.colourScheme + '.css'), function(err, file){
-        exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
-          if(code || stderr !== ''){
-            console.error('Error generating CSS: \n' + stderr);
-            process.exit();
-          }
-          fs.writeFile(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, function(){
-            console.log('Copied ' + self.colourScheme + '.css to doc-style.css');
-          });
-        });
-      });
+  fs.readFile(path.join(path.dirname(__filename),'../res/css/' + self.colourScheme + '.css'), function(err, file){
+    exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
+      if(code || stderr !== ''){
+        console.error('Error generating CSS: \n' + stderr);
+        process.exit();
+      }
+      self.writeFile(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, 'Copied ' + self.colourScheme + '.css to doc-style.css');
     });
-  }
+  });
 
   fs.unlink(path.join(this.outDir, 'doc-filelist.js'), function(){
-    fs.writeFile(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', function(){
-      copyJS();
-      copyCSS();
-    });
+    self.writeFile(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', 'Saved file tree to doc-filelist.js');
   });
 };
 
@@ -849,4 +818,26 @@ Docker.prototype.doxTemplate = function(obj){
     this.__doxtmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__doxtmpl(obj);
+};
+
+/**
+ * ## Docker.prototype.writeFile
+ *
+ * Saves a file, making sure the directory already exists and overwriting any existing file
+ *
+ * @param {string} filename The name of the file to save
+ * @param {string} fileContent Content to save to the file
+ * @param {string} doneLog String to console.log when done
+ * @param {function} doneCallback Callback to fire when done
+ */
+Docker.prototype.writeFile = function(filename, fileContent, doneLog, doneCallback){
+  var outDir = path.dirname(filename);
+  mkdirp(outDir, function(){
+    fs.unlink(filename, function(){
+      fs.writeFile(filename, fileContent, function(){
+        if(doneLog) console.log(doneLog);
+        if(doneCallback) doneCallback();
+      });
+    });
+  });
 };
