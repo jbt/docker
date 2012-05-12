@@ -222,49 +222,60 @@ pre, tt, code {
   padding: 0; }
 
 /* All the stuff that can depend on colour scheme goes below here: */
-body body {
+body {
   background: #f8f8ff;
   color: #2f2f24; }
-body a {
+
+a {
   color: #261a3b; }
-  body a:visited {
+  a:visited {
     color: #261a3b; }
-body #sidebar_wrapper {
+
+#sidebar_wrapper {
   background: #ededf3; }
-body #sidebar_switch {
+
+#sidebar_switch {
   background: #e7e7ec;
   border-bottom-color: #d8d8dc; }
-  body #sidebar_switch span {
+  #sidebar_switch span {
     color: #2d2d22; }
-  body #sidebar_switch span:hover {
+  #sidebar_switch span:hover {
     background: #ededf3; }
-  body #sidebar_switch .selected {
+  #sidebar_switch .selected {
     background: #f3f3fa;
     color: #252519; }
-body #tree .file {
+
+#tree .file {
   color: #252519; }
-body #headings .heading a {
+
+#headings .heading a {
   color: #252519; }
-body #sidebar-toggle {
+
+#sidebar-toggle {
   background: #e2e2e8; }
-  body #sidebar-toggle:hover {
+  #sidebar-toggle:hover {
     background: #d8d8dc; }
-body .docs.markdown {
+
+.docs.markdown {
   background: #f8f8ff; }
-body .docs pre {
+.docs pre {
   border-color: #d8d8dc; }
-body .docs p tt, body .docs p code, body .docs li tt, body .docs li code {
+.docs p tt, .docs p code, .docs li tt, .docs li code {
   border-color: #d8d8dc;
   background: #ededf3; }
-body .highlight {
+
+.highlight {
   background: #ededf3;
   color: auto; }
-body .dox {
+
+.dox {
   border-top-color: #d8d8dc; }
-  body .dox .details {
+  .dox .details {
     background: #ededf3;
     border-color: #d8d8dc; }
-body .pilwrap .pilcrow {
+
+.pilwrap .pilcrow {
   color: #3a3a2f; }
-body td.code {
+
+td.code {
   border-left-color: #d8d8dc; }
