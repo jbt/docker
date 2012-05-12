@@ -27,10 +27,13 @@
 // is provided by way of [Dox](https://github.com/visionmedia/dox). You can see some examples of
 // the sort of output you get below.
 //
-//  - **Folder Tree**: collabsible folder tree suitable for browsing and navigating the many code files
-// that constitute a large-scale project
+//  - **Folder Tree** and **Heading Navigation**: collapsible sidebar with folder tree and jump-to
+// heading links for easy navigation between many files and within long files.
 //
 //  - **Markdown File Support**: support for plain markdown files, like the [README](../README.md.html) for this project.
+//
+//  - **Colour Schemes**: support for multiple output colour schemes
+//
 //
 // So let's get started!
 
