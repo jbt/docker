@@ -735,14 +735,14 @@ Docker.prototype.copySharedResources = function(){
 
   function copyCSS(){
     fs.unlink(path.join(self.outDir, 'doc-style.css'), function(){
-      fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
+      fs.readFile(path.join(path.dirname(__filename),'../res/css/' + self.colourScheme + '.css'), function(err, file){
         exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
           if(code || stderr !== ''){
             console.error('Error generating CSS: \n' + stderr);
             process.exit();
           }
           fs.writeFile(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, function(){
-            console.log('Copied CSS to doc-style.css');
+            console.log('Copied ' + self.colourScheme + '.css to doc-style.css');
           });
         });
       });
