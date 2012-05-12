@@ -3,14 +3,8 @@ body {
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
   font-size: 15px;
   line-height: 22px;
-  color: #252519;
   margin: 0;
   padding: 0; }
-
-a {
-  color: #261a3b; }
-  a:visited {
-    color: #261a3b; }
 
 p, h1, h2, h3, h4, h5, h6 {
   margin: 0 0 15px 0; }
@@ -33,7 +27,6 @@ h1 {
   left: 0;
   bottom: 0;
   width: 0;
-  background: #f5f5ff;
   overflow: hidden; }
 
 #sidebar_switch {
@@ -42,7 +35,7 @@ h1 {
   left: 0;
   width: 290px;
   height: 29px;
-  border-bottom: 1px solid #e4e4e4; }
+  border-bottom: 1px solid; }
   #sidebar_switch span {
     display: block;
     float: left;
@@ -51,12 +44,8 @@ h1 {
     line-height: 29px;
     color: #333333;
     cursor: pointer; }
-  #sidebar_switch :hover {
-    background: #f8f8ff; }
   #sidebar_switch .selected {
-    font-weight: bold;
-    color: black;
-    background: #fdfdff; }
+    font-weight: bold; }
 
 .slidey #sidebar_wrapper {
   -webkit-transition: width 250ms linear;
@@ -89,16 +78,14 @@ h1 {
 #tree .file {
   padding-left: 24px;
   display: block;
-  text-decoration: none;
-  color: black; }
+  text-decoration: none; }
 #tree > .dir {
   padding-left: 0; }
 
 #headings .heading a {
   text-decoration: none;
   padding-left: 10px;
-  display: block;
-  color: black; }
+  display: block; }
 #headings .h1 {
   padding-left: 0;
   margin-top: 10px;
@@ -130,8 +117,9 @@ h1 {
   width: 5px;
   bottom: 0;
   z-index: 2;
-  background: #e5e5ee;
   cursor: pointer; }
+  #sidebar-toggle:hover {
+    width: 10px; }
 
 .slidey #sidebar-toggle, .slidey #container {
   -webkit-transition: all 250ms linear;
@@ -139,10 +127,6 @@ h1 {
   -ms-transition: all 250ms linear;
   -o-transition: all 250ms linear;
   transition: all 250ms linear; }
-
-#sidebar-toggle:hover {
-  width: 10px;
-  background: #dddddd; }
 
 .tree #sidebar-toggle {
   left: 290px; }
@@ -166,10 +150,9 @@ table td {
   outline: 0; }
 
 .docs.markdown {
-  padding: 10px 50px;
-  background: white; }
+  padding: 10px 50px; }
 
-td.docs, th.docs {
+td.docs {
   max-width: 450px;
   min-width: 450px;
   min-height: 5px;
@@ -178,44 +161,34 @@ td.docs, th.docs {
   vertical-align: top;
   text-align: left; }
 
-.docs .filepath {
-  margin-top: -10px;
-  margin-left: 25px;
-  color: #8e8a96; }
 .docs pre {
   margin: 15px 0 15px;
   padding: 5px;
   padding-left: 10px;
-  border: 1px solid #dedede;
+  border: 1px solid;
   font-size: 12px; }
   .docs pre.code_stats {
     font-size: 60%; }
-.docs p tt, .docs p code {
-  background: #f8f8ff;
-  border: 1px solid #dedede;
+.docs p tt, .docs p code, .docs li tt, .docs li code {
+  border: 1px solid;
   font-size: 12px;
   padding: 0 0.2em; }
-.docs li tt, .docs li code {
-  background: #f8f8ff;
-  border: 1px solid #dedede;
-  font-size: 12px;
-  padding: 0 0.2em; }
-.docs .dox {
-  border-top: #eeeeee solid 1px;
+
+.dox {
+  border-top: 1px solid;
   padding-top: 10px;
   padding-bottom: 10px; }
-  .docs .dox .details {
+  .dox .details {
     padding: 10px;
-    background-color: #f5f5ff;
-    border: 1px solid #e5e5ee;
+    border: 1px solid;
     margin-bottom: 10px; }
-  .docs .dox .dox_tag_title {
+  .dox .dox_tag_title {
     font-weight: bold; }
-  .docs .dox .dox_tag_detail {
+  .dox .dox_tag_detail {
     margin-left: 10px; }
-    .docs .dox .dox_tag_detail span {
+    .dox .dox_tag_detail span {
       margin-right: 5px; }
-  .docs .dox .dox_type {
+  .dox .dox_type {
     font-style: italic; }
 
 .pilwrap {
@@ -237,11 +210,11 @@ td.docs, th.docs {
   .pilwrap:hover .pilcrow {
     opacity: 1; }
 
-td.code, th.code {
+td.code {
   padding: 8px 15px 8px 25px;
   width: 100%;
   vertical-align: bottom;
-  border-left: 1px solid #e5e5ee; }
+  border-left: 1px solid; }
 
 pre, tt, code {
   font-size: 12px;
@@ -250,5 +223,56 @@ pre, tt, code {
   margin: 0;
   padding: 0; }
 
+/* All the stuff that can depend on colour scheme goes below here: */
+body {
+  color: #252519; }
+
+a {
+  color: #261a3b; }
+  a:visited {
+    color: #261a3b; }
+
+#sidebar_wrapper {
+  background: #f5f5ff; }
+
+#sidebar_switch {
+  border-bottom-color: #e4e4e4; }
+  #sidebar_switch span:hover {
+    background: #f8f8ff; }
+  #sidebar_switch .selected {
+    background: #fdfdff;
+    color: black; }
+
+#tree .file {
+  color: black; }
+
+#heading .heading a {
+  color: black; }
+
+#sidebar-toggle {
+  background: #e5e5ee; }
+  #sidebar-toggle:hover {
+    background: #dddddd; }
+
+.docs.markdown {
+  background: white; }
+.docs pre {
+  border-color: #dedede; }
+.docs p tt, .docs p code, .docs li tt, .docs li code {
+  border-color: #dedede;
+  background: #f8f8ff; }
+
 .highlight {
   background: #f5f5ff; }
+
+.dox {
+  border-top-color: #eeeeee; }
+  .dox .details {
+    background: #f5f5ff;
+    border-color: #e5e5ee; }
+
+.pilwrap .pilcrow {
+  color: #454545; }
+
+td.code {
+  border-left-color: #e5e5ee; }

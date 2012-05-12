@@ -638,6 +638,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
     relativeDir: relDir,
     content: content,
     headings: headings,
+    colourScheme: this.colourScheme,
     filename: filename.replace(this.inDir,'').replace(/^\//,'')
   });
 
@@ -696,6 +697,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
       relativeDir: relDir,
       content: content,
       headings: headings,
+      colourScheme: this.colourScheme,
       filename: filename.replace(this.inDir,'').replace(/^\//,'')
     });
 
