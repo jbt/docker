@@ -223,8 +223,8 @@ pre, tt, code {
 
 /* All the stuff that can depend on colour scheme goes below here: */
 body {
-  background: #f9ffff;
-  color: #2f2f24; }
+  background: #fbffff;
+  color: #2f2b2b; }
 
 a {
   color: #261a3b; }
@@ -232,50 +232,50 @@ a {
     color: #261a3b; }
 
 #sidebar_wrapper {
-  background: #eef4f3; }
+  background: #f0f3f3; }
 
 #sidebar_switch {
-  background: #e8edec;
-  border-bottom-color: #d9dedc; }
+  background: #e9eded;
+  border-bottom-color: #dadddd; }
   #sidebar_switch span {
-    color: #2d2d22; }
+    color: #2d2828; }
   #sidebar_switch span:hover {
-    background: #eef4f3; }
+    background: #f0f3f3; }
   #sidebar_switch .selected {
-    background: #f4fafa;
-    color: #252519; }
+    background: #f6fafa;
+    color: #252020; }
 
 #tree .file {
-  color: #252519; }
+  color: #252020; }
 
 #headings .heading a {
-  color: #252519; }
+  color: #252020; }
 
 #sidebar-toggle {
-  background: #e3e9e8; }
+  background: #e5e8e8; }
   #sidebar-toggle:hover {
-    background: #d9dedc; }
+    background: #dadddd; }
 
 .docs.markdown {
-  background: #f9ffff; }
+  background: #fbffff; }
 .docs pre {
-  border-color: #d9dedc; }
+  border-color: #dadddd; }
 .docs p tt, .docs p code, .docs li tt, .docs li code {
-  border-color: #d9dedc;
-  background: #eef4f3; }
+  border-color: #dadddd;
+  background: #f0f3f3; }
 
 .highlight {
-  background: #eef4f3;
+  background: #f0f3f3;
   color: auto; }
 
 .dox {
-  border-top-color: #d9dedc; }
+  border-top-color: #dadddd; }
   .dox .details {
-    background: #eef4f3;
-    border-color: #d9dedc; }
+    background: #f0f3f3;
+    border-color: #dadddd; }
 
 .pilwrap .pilcrow {
-  color: #3a3a2f; }
+  color: #3a3636; }
 
 td.code {
-  border-left-color: #d9dedc; }
+  border-left-color: #dadddd; }
