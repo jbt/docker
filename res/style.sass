@@ -43,7 +43,6 @@ h1
     width: 50%
     text-align: center
     line-height: 29px
-    color: #333
     cursor: pointer
   .selected
     font-weight: bold
@@ -179,7 +178,7 @@ td.docs
       border: 1px solid
       font-size: 12px
       padding: 0 0.2em
-      
+
 .dox
   border-top: 1px solid
   padding-top: 10px
@@ -234,46 +233,58 @@ pre, tt, code
 
 /* All the stuff that can depend on colour scheme goes below here:
 
+=colorscheme($bg_color, $fg_color, $link_color)
+  $borders: mix($fg_color, $bg_color, 15)
+
+  background: $bg_color
+  color: mix($bg_color, $fg_color, 5)
+  a
+    color: $link_color
+    &:visited
+      color: $link_color
+  #sidebar_wrapper
+    background: mix($fg_color, $bg_color, 5)
+  #sidebar_switch
+    background: mix($fg_color, $bg_color, 8)
+    border-bottom-color: $borders
+    span
+      color: mix($bg_color, $fg_color, 4)
+    span:hover
+      background: mix($fg_color, $bg_color, 5)
+    .selected
+      background: mix($fg_color, $bg_color, 2)
+      color: $fg_color
+  #tree .file
+    color: $fg_color
+  #headings .heading a
+    color: $fg_color
+  #sidebar-toggle
+    background: mix($fg_color, $bg_color, 10)
+    &:hover
+      background: mix($fg_color, $bg_color, 15)
+  .docs
+    &.markdown
+      background: $bg_color
+    pre
+      border-color: $borders
+    p, li
+      tt, code
+        border-color: $borders
+        background: mix($fg_color, $bg_color, 5)
+  .highlight
+    background: mix($fg_color, $bg_color, 5)
+  .dox
+    border-top-color: $borders
+    .details
+      background: mix($fg_color, $bg_color, 5)
+      border-color: $borders
+  .pilwrap .pilcrow
+    color: mix($bg_color, $fg_color, 10)
+  td.code
+    border-left-color: $borders
+
 body
-  color: #252519
-a
-  color: #261a3b
-  &:visited
-    color: #261a3b
-#sidebar_wrapper
-  background: #F5F5FF
-#sidebar_switch
-  border-bottom-color: #e4e4e4
-  span:hover
-    background: #F8F8FF
-  .selected
-    background: #FDFDFF
-    color: black
-#tree .file
-  color: black
-#heading .heading a
-  color: black
-#sidebar-toggle
-  background: #E5E5EE
-  &:hover
-    background: #ddd
-.docs
-  &.markdown
-    background: #fff
-  pre
-    border-color: #dedede
-  p, li
-    tt, code
-      border-color: #dedede
-      background: #f8f8ff
-.highlight
-  background: #F5F5FF
-.dox
-  border-top-color: #eee
-  .details
-    background: #F5F5FF
-    border-color: #e5e5ee
-.pilwrap .pilcrow
-  color: #454545
-td.code
-  border-left-color: #e5e5ee
+  +colorscheme(#fff, #252519, #261a3b)
+
+body.monokai
+  +colorscheme(darken(#272822,5%), #eee, #ddd)

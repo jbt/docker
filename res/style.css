@@ -42,7 +42,6 @@ h1 {
     width: 50%;
     text-align: center;
     line-height: 29px;
-    color: #333333;
     cursor: pointer; }
   #sidebar_switch .selected {
     font-weight: bold; }
@@ -225,54 +224,93 @@ pre, tt, code {
 
 /* All the stuff that can depend on colour scheme goes below here: */
 body {
-  color: #252519; }
-
-a {
-  color: #261a3b; }
-  a:visited {
+  background: white;
+  color: #2f2f24; }
+  body a {
     color: #261a3b; }
+    body a:visited {
+      color: #261a3b; }
+  body #sidebar_wrapper {
+    background: #f4f4f3; }
+  body #sidebar_switch {
+    background: #ededec;
+    border-bottom-color: #dededc; }
+    body #sidebar_switch span {
+      color: #2d2d22; }
+    body #sidebar_switch span:hover {
+      background: #f4f4f3; }
+    body #sidebar_switch .selected {
+      background: #fafafa;
+      color: #252519; }
+  body #tree .file {
+    color: #252519; }
+  body #headings .heading a {
+    color: #252519; }
+  body #sidebar-toggle {
+    background: #e9e9e8; }
+    body #sidebar-toggle:hover {
+      background: #dededc; }
+  body .docs.markdown {
+    background: white; }
+  body .docs pre {
+    border-color: #dededc; }
+  body .docs p tt, body .docs p code, body .docs li tt, body .docs li code {
+    border-color: #dededc;
+    background: #f4f4f3; }
+  body .highlight {
+    background: #f4f4f3; }
+  body .dox {
+    border-top-color: #dededc; }
+    body .dox .details {
+      background: #f4f4f3;
+      border-color: #dededc; }
+  body .pilwrap .pilcrow {
+    color: #3a3a2f; }
+  body td.code {
+    border-left-color: #dededc; }
 
-#sidebar_wrapper {
-  background: #f5f5ff; }
-
-#sidebar_switch {
-  border-bottom-color: #e4e4e4; }
-  #sidebar_switch span:hover {
-    background: #f8f8ff; }
-  #sidebar_switch .selected {
-    background: #fdfdff;
-    color: black; }
-
-#tree .file {
-  color: black; }
-
-#heading .heading a {
-  color: black; }
-
-#sidebar-toggle {
-  background: #e5e5ee; }
-  #sidebar-toggle:hover {
-    background: #dddddd; }
-
-.docs.markdown {
-  background: white; }
-.docs pre {
-  border-color: #dedede; }
-.docs p tt, .docs p code, .docs li tt, .docs li code {
-  border-color: #dedede;
-  background: #f8f8ff; }
-
-.highlight {
-  background: #f5f5ff; }
-
-.dox {
-  border-top-color: #eeeeee; }
-  .dox .details {
-    background: #f5f5ff;
-    border-color: #e5e5ee; }
-
-.pilwrap .pilcrow {
-  color: #454545; }
-
-td.code {
-  border-left-color: #e5e5ee; }
+body.monokai {
+  background: #1a1a16;
+  color: #e3e3e3; }
+  body.monokai a {
+    color: #dddddd; }
+    body.monokai a:visited {
+      color: #dddddd; }
+  body.monokai #sidebar_wrapper {
+    background: #242420; }
+  body.monokai #sidebar_switch {
+    background: #2a2a27;
+    border-bottom-color: #393936; }
+    body.monokai #sidebar_switch span {
+      color: #e5e5e5; }
+    body.monokai #sidebar_switch span:hover {
+      background: #242420; }
+    body.monokai #sidebar_switch .selected {
+      background: #1e1e1a;
+      color: #eeeeee; }
+  body.monokai #tree .file {
+    color: #eeeeee; }
+  body.monokai #headings .heading a {
+    color: #eeeeee; }
+  body.monokai #sidebar-toggle {
+    background: #2f2f2b; }
+    body.monokai #sidebar-toggle:hover {
+      background: #393936; }
+  body.monokai .docs.markdown {
+    background: #1a1a16; }
+  body.monokai .docs pre {
+    border-color: #393936; }
+  body.monokai .docs p tt, body.monokai .docs p code, body.monokai .docs li tt, body.monokai .docs li code {
+    border-color: #393936;
+    background: #242420; }
+  body.monokai .highlight {
+    background: #242420; }
+  body.monokai .dox {
+    border-top-color: #393936; }
+    body.monokai .dox .details {
+      background: #242420;
+      border-color: #393936; }
+  body.monokai .pilwrap .pilcrow {
+    color: #d8d8d8; }
+  body.monokai td.code {
+    border-left-color: #393936; }

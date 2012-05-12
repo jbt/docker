@@ -736,7 +736,7 @@ Docker.prototype.copySharedResources = function(){
   function copyCSS(){
     fs.unlink(path.join(self.outDir, 'doc-style.css'), function(){
       fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
-        exec('pygmentize -S ' + self.colourScheme + ' -f html -a .highlight', function(code, stdout, stderr){
+        exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
           if(code || stderr !== ''){
             console.error('Error generating CSS: \n' + stderr);
             process.exit();
