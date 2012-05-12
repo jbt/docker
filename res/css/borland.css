@@ -225,46 +225,57 @@ pre, tt, code {
 body {
   background: #f8f8ff;
   color: #2f2f24; }
-  body a {
+
+a {
+  color: #261a3b; }
+  a:visited {
     color: #261a3b; }
-    body a:visited {
-      color: #261a3b; }
-  body #sidebar_wrapper {
+
+#sidebar_wrapper {
+  background: #ededf3; }
+
+#sidebar_switch {
+  background: #e7e7ec;
+  border-bottom-color: #d8d8dc; }
+  #sidebar_switch span {
+    color: #2d2d22; }
+  #sidebar_switch span:hover {
     background: #ededf3; }
-  body #sidebar_switch {
-    background: #e7e7ec;
-    border-bottom-color: #d8d8dc; }
-    body #sidebar_switch span {
-      color: #2d2d22; }
-    body #sidebar_switch span:hover {
-      background: #ededf3; }
-    body #sidebar_switch .selected {
-      background: #f3f3fa;
-      color: #252519; }
-  body #tree .file {
+  #sidebar_switch .selected {
+    background: #f3f3fa;
     color: #252519; }
-  body #headings .heading a {
-    color: #252519; }
-  body #sidebar-toggle {
-    background: #e2e2e8; }
-    body #sidebar-toggle:hover {
-      background: #d8d8dc; }
-  body .docs.markdown {
-    background: #f8f8ff; }
-  body .docs pre {
-    border-color: #d8d8dc; }
-  body .docs p tt, body .docs p code, body .docs li tt, body .docs li code {
-    border-color: #d8d8dc;
-    background: #ededf3; }
-  body .highlight {
+
+#tree .file {
+  color: #252519; }
+
+#headings .heading a {
+  color: #252519; }
+
+#sidebar-toggle {
+  background: #e2e2e8; }
+  #sidebar-toggle:hover {
+    background: #d8d8dc; }
+
+.docs.markdown {
+  background: #f8f8ff; }
+.docs pre {
+  border-color: #d8d8dc; }
+.docs p tt, .docs p code, .docs li tt, .docs li code {
+  border-color: #d8d8dc;
+  background: #ededf3; }
+
+.highlight {
+  background: #ededf3;
+  color: auto; }
+
+.dox {
+  border-top-color: #d8d8dc; }
+  .dox .details {
     background: #ededf3;
-    color: auto; }
-  body .dox {
-    border-top-color: #d8d8dc; }
-    body .dox .details {
-      background: #ededf3;
-      border-color: #d8d8dc; }
-  body .pilwrap .pilcrow {
-    color: #3a3a2f; }
-  body td.code {
-    border-left-color: #d8d8dc; }
+    border-color: #d8d8dc; }
+
+.pilwrap .pilcrow {
+  color: #3a3a2f; }
+
+td.code {
+  border-left-color: #d8d8dc; }

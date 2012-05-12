@@ -225,46 +225,57 @@ pre, tt, code {
 body {
   background: black;
   color: #f2f2f2; }
-  body a {
+
+a {
+  color: #eeeeee; }
+  a:visited {
     color: #eeeeee; }
-    body a:visited {
-      color: #eeeeee; }
-  body #sidebar_wrapper {
+
+#sidebar_wrapper {
+  background: #0c0c0c; }
+
+#sidebar_switch {
+  background: #141414;
+  border-bottom-color: #262626; }
+  #sidebar_switch span {
+    color: #f4f4f4; }
+  #sidebar_switch span:hover {
     background: #0c0c0c; }
-  body #sidebar_switch {
-    background: #141414;
-    border-bottom-color: #262626; }
-    body #sidebar_switch span {
-      color: #f4f4f4; }
-    body #sidebar_switch span:hover {
-      background: #0c0c0c; }
-    body #sidebar_switch .selected {
-      background: #050505;
-      color: white; }
-  body #tree .file {
+  #sidebar_switch .selected {
+    background: #050505;
     color: white; }
-  body #headings .heading a {
-    color: white; }
-  body #sidebar-toggle {
-    background: #191919; }
-    body #sidebar-toggle:hover {
-      background: #262626; }
-  body .docs.markdown {
-    background: black; }
-  body .docs pre {
-    border-color: #262626; }
-  body .docs p tt, body .docs p code, body .docs li tt, body .docs li code {
-    border-color: #262626;
-    background: #0c0c0c; }
-  body .highlight {
+
+#tree .file {
+  color: white; }
+
+#headings .heading a {
+  color: white; }
+
+#sidebar-toggle {
+  background: #191919; }
+  #sidebar-toggle:hover {
+    background: #262626; }
+
+.docs.markdown {
+  background: black; }
+.docs pre {
+  border-color: #262626; }
+.docs p tt, .docs p code, .docs li tt, .docs li code {
+  border-color: #262626;
+  background: #0c0c0c; }
+
+.highlight {
+  background: #0c0c0c;
+  color: auto; }
+
+.dox {
+  border-top-color: #262626; }
+  .dox .details {
     background: #0c0c0c;
-    color: auto; }
-  body .dox {
-    border-top-color: #262626; }
-    body .dox .details {
-      background: #0c0c0c;
-      border-color: #262626; }
-  body .pilwrap .pilcrow {
-    color: #e5e5e5; }
-  body td.code {
-    border-left-color: #262626; }
+    border-color: #262626; }
+
+.pilwrap .pilcrow {
+  color: #e5e5e5; }
+
+td.code {
+  border-left-color: #262626; }
