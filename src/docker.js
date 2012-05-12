@@ -41,6 +41,7 @@ var mkdirp = require('mkdirp'),
   fs = require('fs'),
   dox = require('dox'),
   path = require('path'),
+  exec = require('child_process').exec,
   spawn = require('child_process').spawn,
   showdown = require('../lib/showdown').Showdown;
 
@@ -55,10 +56,11 @@ var mkdirp = require('mkdirp'),
  * @param {string} outDir The directory into which to put all the doc pages
  * @param {boolean} onlyUpdated Whether to only process files that have been updated
  */
-var Docker = module.exports =function(inDir, outDir, onlyUpdated){
+var Docker = module.exports =function(inDir, outDir, onlyUpdated, colourScheme){
   this.inDir = inDir.replace(/\/$/,'');
   this.outDir = outDir;
   this.onlyUpdated = !!onlyUpdated;
+  this.colourScheme = colourScheme || 'default';
   this.running = false;
   this.scanQueue = [];
   this.files = [];
@@ -514,7 +516,8 @@ Docker.prototype.extractDocCode = function(html, cb){
   var codeBlocks = [];
 
   // Search in the HTML for any code tag with a language set (in the format that showdown returns)
-  html = html.replace(/<pre><code\slanguage='([a-z]+)'>([^<]*)<\/code><\/pre>/g, function(wholeMatch, language, block){
+  html = html.replace(/<pre><code(\slanguage='([a-z]+)')?>([^<]*)<\/code><\/pre>/g, function(wholeMatch, langBlock, language, block){
+    if(langBlock === '') return "<div class='highlight'>" + wholeMatch + '<div>';
     // Unescape these HTML entities because they'll be re-escaped by pygments
     block = block.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/,'&');
 
@@ -549,7 +552,7 @@ Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
 
   function next(){
     // If we're done, then stop and fire the callback
-    if(codeBlocks.length === 0) return cb(html);
+    if(codeBlocks.length === 0)return cb(html);
 
     // Pull the next code block off the beginning of the array
     var nextBlock = codeBlocks.shift();
@@ -718,11 +721,27 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
  */
 Docker.prototype.copySharedResources = function(){
   var self = this;
-  function copy(from, to){
-    fs.unlink(path.join(self.outDir, to), function(){
-      fs.readFile(path.join(path.dirname(__filename),'../', from), function(err, file){
-        fs.writeFile(path.join(self.outDir, to), file, function(){
-          console.log('Copied ' + from + ' to ' + to);
+  function copyJS(){
+    fs.unlink(path.join(self.outDir, 'doc-script.js'), function(){
+      fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
+        fs.writeFile(path.join(self.outDir, 'doc-script.js'), file, function(){
+          console.log('Copied JS to doc-script.js');
+        });
+      });
+    });
+  }
+
+  function copyCSS(){
+    fs.unlink(path.join(self.outDir, 'doc-style.css'), function(){
+      fs.readFile(path.join(path.dirname(__filename),'../res/style.css'), function(err, file){
+        exec('pygmentize -S ' + self.colourScheme + ' -f html -a .highlight', function(code, stdout, stderr){
+          if(code || stderr !== ''){
+            console.error('Error generating CSS: \n' + stderr);
+            process.exit();
+          }
+          fs.writeFile(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, function(){
+            console.log('Copied CSS to doc-style.css');
+          });
         });
       });
     });
@@ -730,8 +749,8 @@ Docker.prototype.copySharedResources = function(){
 
   fs.unlink(path.join(this.outDir, 'doc-filelist.js'), function(){
     fs.writeFile(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', function(){
-      copy('res/style.css', 'doc-style.css');
-      copy('res/script.js', 'doc-script.js');
+      copyJS();
+      copyCSS();
     });
   });
 };
