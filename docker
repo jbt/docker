@@ -7,7 +7,7 @@ var program = require('commander');
 var watchr = require('watchr');
 
 program
-  .version('0.0.9')
+  .version('0.1.0')
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
   .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc') )
   .option('-u, --updated_files', 'Only process files that have been changed')
