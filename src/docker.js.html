@@ -105,11 +105,13 @@
       <div class="heading h2">
         <a href="#docker.prototype.doxtemplate">Docker.prototype.doxTemplate</a>
       </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.writefile">Docker.prototype.writeFile</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container"><div id="background"></div>
-<table cellpadding="0" cellspacing="0">
+  <div id="container"><table cellpadding="0" cellspacing="0">
   <tbody>
       <tr>
         <td class="docs">
@@ -167,14 +169,15 @@ The folder structure will be preserved in the document root.</p>
 <li><p><strong>jsDoc support</strong>: support for <strong>jsDoc</strong>-style code comments, which
 is provided by way of <a href="https://github.com/visionmedia/dox">Dox</a>. You can see some examples of
 the sort of output you get below.</p></li>
-<li><p><strong>Folder Tree</strong>: collabsible folder tree suitable for browsing and navigating the many code files
-that constitute a large-scale project</p></li>
+<li><p><strong>Folder Tree</strong> and <strong>Heading Navigation</strong>: collapsible sidebar with folder tree and jump-to
+heading links for easy navigation between many files and within long files.</p></li>
 <li><p><strong>Markdown File Support</strong>: support for plain markdown files, like the <a href="../README.md.html">README</a> for this project.</p></li>
+<li><p><strong>Colour Schemes</strong>: support for multiple output colour schemes</p></li>
 </ul>
 
 <p>So let's get started!</p>
         </td>
-        <td class="code"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
         </td>
       </tr>
       <tr>
@@ -189,10 +192,11 @@ that constitute a large-scale project</p></li>
 
 <p>Include all the necessay node modules.</p>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">mkdirp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mkdirp&#39;</span><span class="p">),</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">mkdirp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mkdirp&#39;</span><span class="p">),</span>
   <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
   <span class="nx">dox</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;dox&#39;</span><span class="p">),</span>
   <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
+  <span class="nx">exec</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">).</span><span class="nx">exec</span><span class="p">,</span>
   <span class="nx">spawn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">).</span><span class="nx">spawn</span><span class="p">,</span>
   <span class="nx">showdown</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../lib/showdown&#39;</span><span class="p">).</span><span class="nx">Showdown</span><span class="p">;</span></pre></div>
         </td>
@@ -230,10 +234,11 @@ that constitute a large-scale project</p></li>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">outDir</span><span class="p">,</span> <span class="nx">onlyUpdated</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">outDir</span><span class="p">,</span> <span class="nx">onlyUpdated</span><span class="p">,</span> <span class="nx">colourScheme</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">inDir</span> <span class="o">=</span> <span class="nx">inDir</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span> <span class="o">=</span> <span class="nx">outDir</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">onlyUpdated</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">=</span> <span class="nx">colourScheme</span> <span class="o">||</span> <span class="s1">&#39;default&#39;</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">scanQueue</span> <span class="o">=</span> <span class="p">[];</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">files</span> <span class="o">=</span> <span class="p">[];</span>
@@ -264,7 +269,7 @@ that constitute a large-scale project</p></li>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">doc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">files</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">doc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">files</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">scanQueue</span> <span class="o">=</span> <span class="nx">files</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
 <span class="p">};</span></pre></div>
@@ -286,7 +291,7 @@ If it's a file, add it to the queue.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addNextFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addNextFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scanQueue</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">filename</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">scanQueue</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
     <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">stat</span><span class="p">){</span>
@@ -300,7 +305,7 @@ If it's a file, add it to the queue.</p>
 </div>
 <p>Find all children of the directory and queue those</p>
         </td>
-        <td class="code"><div class="highlight"><pre>        <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">list</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">list</span><span class="p">){</span>
           <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">self</span><span class="p">.</span><span class="nx">scanQueue</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
             <span class="nx">self</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
         <span class="p">});</span>
@@ -319,7 +324,7 @@ If it's a file, add it to the queue.</p>
 </div>
 <p>Once we're done scanning all the files, start processing them in order.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">processNextFile</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">processNextFile</span><span class="p">();</span>
   <span class="p">}</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -347,7 +352,7 @@ If it's a file, add it to the queue.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">queueFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">queueFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">canHandleFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
         </td>
@@ -359,7 +364,7 @@ If it's a file, add it to the queue.</p>
 </div>
 <p>Split the file's path into the individual directories</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">filename</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">filename</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">bits</span> <span class="o">=</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span></pre></div>
         </td>
       </tr>
@@ -388,7 +393,7 @@ If it's a file, add it to the queue.</p>
 
 
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">currDir</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">currDir</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tree</span><span class="p">;</span>
   <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">currDir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">)</span> <span class="nx">currDir</span><span class="p">.</span><span class="nx">dirs</span> <span class="o">=</span> <span class="p">{};</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">currDir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">[</span><span class="nx">bits</span><span class="p">[</span><span class="nx">i</span><span class="p">]])</span><span class="nx">currDir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">[</span><span class="nx">bits</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{};</span>
@@ -414,7 +419,7 @@ If it's a file, add it to the queue.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processNextFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processNextFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>
         </td>
       </tr>
@@ -425,7 +430,7 @@ If it's a file, add it to the queue.</p>
 </div>
 <p>If we still have files on the queue, process the first one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">generateDoc</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">shift</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(){</span>
       <span class="nx">self</span><span class="p">.</span><span class="nx">processNextFile</span><span class="p">();</span>
     <span class="p">});</span>
@@ -459,7 +464,7 @@ For now, we can only do javascript and markdown files</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">canHandleFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">canHandleFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
   <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -501,7 +506,7 @@ For now, we can only do javascript and markdown files</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">generateDoc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">generateDoc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
   <span class="nx">filename</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
@@ -560,7 +565,7 @@ or not the file should be processed</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">decideWhetherToProcess</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">decideWhetherToProcess</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -570,7 +575,7 @@ or not the file should be processed</p>
 </div>
 <p>If we should be processing all files, then yes, we should process this one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span><span class="p">)</span> <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span><span class="p">)</span> <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -580,7 +585,7 @@ or not the file should be processed</p>
 </div>
 <p>Find the doc this file would be compiled to</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -590,7 +595,7 @@ or not the file should be processed</p>
 </div>
 <p>Stat the files</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">outStat</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">outStat</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -600,7 +605,7 @@ or not the file should be processed</p>
 </div>
 <p>If the output file doesn't exist, then definitely process this file</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">code</span> <span class="o">==</span> <span class="s1">&#39;ENOENT&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">code</span> <span class="o">==</span> <span class="s1">&#39;ENOENT&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 
     <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">inStat</span><span class="p">){</span></pre></div>
         </td>
@@ -612,7 +617,7 @@ or not the file should be processed</p>
 </div>
 <p>Process the file if the input is newer than the output</p>
         </td>
-        <td class="code"><div class="highlight"><pre>      <span class="nx">callback</span><span class="p">(</span><span class="o">+</span><span class="nx">inStat</span><span class="p">.</span><span class="nx">mtime</span> <span class="o">&gt;</span> <span class="o">+</span><span class="nx">outStat</span><span class="p">.</span><span class="nx">mtime</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">callback</span><span class="p">(</span><span class="o">+</span><span class="nx">inStat</span><span class="p">.</span><span class="nx">mtime</span> <span class="o">&gt;</span> <span class="o">+</span><span class="nx">outStat</span><span class="p">.</span><span class="nx">mtime</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">};</span></pre></div>
@@ -664,7 +669,7 @@ A section is defined to be one block of code with an accompanying comment</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">parseSections</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">parseSections</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">filename</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">codeLines</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">sections</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
         </td>
@@ -676,7 +681,7 @@ A section is defined to be one block of code with an accompanying comment</p>
 </div>
 <p>Fetch language-specific parameters for this code file</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
@@ -700,7 +705,7 @@ A section is defined to be one block of code with an accompanying comment</p>
 </div>
 <p>Loop through all the lines, and parse into sections</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">codeLines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">codeLines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">codeLines</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">){</span></pre></div>
         </td>
@@ -712,7 +717,7 @@ A section is defined to be one block of code with an accompanying comment</p>
 </div>
 <p>If we are currently in a multiline comment, behave differently</p>
         </td>
-        <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">inMultiLineComment</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">inMultiLineComment</span><span class="p">){</span>
         <span class="k">if</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">])){</span></pre></div>
         </td>
       </tr>
@@ -725,7 +730,7 @@ A section is defined to be one block of code with an accompanying comment</p>
 of the multiline comment, and pass it through <strong>dox</strong>, which will then
 extract any <strong>jsDoc</strong> parameters that are present.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>          <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
           <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">dox</span><span class="p">){</span>
             <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
             <span class="k">try</span><span class="p">{</span>
@@ -739,7 +744,7 @@ extract any <strong>jsDoc</strong> parameters that are present.</p>
 </div>
 <p>Don't let dox do any markdown parsing. We'll do that all ourselves with md above</p>
         </td>
-        <td class="code"><div class="highlight"><pre>              <span class="nx">doxData</span><span class="p">.</span><span class="nx">md</span> <span class="o">=</span> <span class="nx">md</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>              <span class="nx">doxData</span><span class="p">.</span><span class="nx">md</span> <span class="o">=</span> <span class="nx">md</span><span class="p">;</span>
               <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">doxTemplate</span><span class="p">(</span><span class="nx">doxData</span><span class="p">);</span>
             <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
               <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Dox error: &quot;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">);</span>
@@ -773,7 +778,7 @@ So for example the following would not be treated as a multiline starter:</p>
 
 
         </td>
-        <td class="code"><div class="highlight"><pre>        <span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
         <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
         <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">].</span><span class="nx">match</span><span class="p">(</span><span class="nx">commentRegex</span><span class="p">)){</span></pre></div>
         </td>
@@ -785,7 +790,7 @@ So for example the following would not be treated as a multiline starter:</p>
 </div>
 <p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>        <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
           <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
           <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">};</span>
         <span class="p">}</span>
@@ -804,7 +809,7 @@ So for example the following would not be treated as a multiline starter:</p>
 </div>
 <p>This is for single-line comments. Again, store away the last section and start a new one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">){</span>
         <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">docs</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^\s*$/</span><span class="p">))</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
         <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">};</span>
       <span class="p">}</span>
@@ -847,7 +852,7 @@ So for example the following would not be treated as a multiline starter:</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">languageParams</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">languageParams</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
   <span class="k">switch</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">extname</span><span class="p">(</span><span class="nx">filename</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
@@ -867,7 +872,7 @@ So for example the following would not be treated as a multiline starter:</p>
 <li><code>type</code>: Either <code>'code'</code> (default) or <code>'markdown'</code> - format of page to render</li>
 </ul>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">case</span> <span class="s1">&#39;.js&#39;</span><span class="o">:</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">case</span> <span class="s1">&#39;.js&#39;</span><span class="o">:</span>
       <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;javascript&#39;</span><span class="p">,</span>   <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">commentsIgnore</span><span class="o">:</span> <span class="sr">/^\s*\/\/=/</span><span class="p">,</span> <span class="nx">dox</span><span class="o">:</span> <span class="kc">true</span> <span class="p">};</span>
     <span class="k">case</span> <span class="s1">&#39;.coffee&#39;</span><span class="o">:</span>
       <span class="k">return</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;coffeescript&#39;</span><span class="p">,</span> <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/^#{3}$/</span><span class="p">,</span> <span class="sr">/^#{3}$/</span> <span class="p">]</span> <span class="p">};</span>
@@ -928,7 +933,7 @@ So for example the following would not be treated as a multiline starter:</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">pygments</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">pygments</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -939,7 +944,7 @@ So for example the following would not be treated as a multiline starter:</p>
 <p>By default tell Pygments to guess the language, and if
 we have a language specified then tell pygments to use that lexer</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">pygArgs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-g&#39;</span><span class="p">];</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">pygArgs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-g&#39;</span><span class="p">];</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">language</span><span class="p">)</span> <span class="nx">pygArgs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-l&#39;</span><span class="p">,</span> <span class="nx">language</span><span class="p">];</span></pre></div>
         </td>
       </tr>
@@ -950,7 +955,7 @@ we have a language specified then tell pygments to use that lexer</p>
 </div>
 <p>Spawn a new <strong>pygments</strong> process</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">pyg</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;pygmentize&#39;</span><span class="p">,</span> <span class="nx">pygArgs</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding=utf-8,tabsize=2&#39;</span><span class="p">]));</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">pyg</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;pygmentize&#39;</span><span class="p">,</span> <span class="nx">pygArgs</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding=utf-8,tabsize=2&#39;</span><span class="p">]));</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -961,7 +966,7 @@ we have a language specified then tell pygments to use that lexer</p>
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span> <span class="p">});</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span> <span class="p">});</span>
   <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Unable to write to Pygments stdin: &#39;</span> <span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
     <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
@@ -978,7 +983,7 @@ or for when we're unable to send the code to pygments for some reason</p>
 </div>
 <p>When pygments is done, fire the callback with our output</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">pyg</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
     <span class="nx">cb</span><span class="p">(</span><span class="nx">out</span><span class="p">);</span>
   <span class="p">});</span></pre></div>
         </td>
@@ -990,7 +995,7 @@ or for when we're unable to send the code to pygments for some reason</p>
 </div>
 <p>Feed pygments with the code</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">writable</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">writable</span><span class="p">){</span>
     <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
     <span class="nx">pyg</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
   <span class="p">}</span>
@@ -1033,7 +1038,7 @@ section generate pretty html for the comments and the code, and put them in
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">languageParams</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
   <span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="p">[];</span>
@@ -1050,7 +1055,7 @@ section generate pretty html for the comments and the code, and put them in
 </div>
 <p>Run our input through pygments, then split the output back up into its constituent sections</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">pygments</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">out</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">pygments</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">params</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">out</span><span class="p">){</span>
     <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s*&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/pre&gt;&lt;\/div&gt;\s*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">bits</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;\\n*&lt;span class=&quot;c1?&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">params</span><span class="p">.</span><span class="nx">comment</span> <span class="o">+</span> <span class="s1">&#39;----\\{DIVIDER_THING\\}----&lt;\\/span&gt;\\n*&#39;</span><span class="p">));</span>
     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
@@ -1091,7 +1096,7 @@ and highlights them</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processDocCodeBlocks</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processDocCodeBlocks</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
   <span class="kd">function</span> <span class="nx">next</span><span class="p">(){</span></pre></div>
@@ -1105,7 +1110,7 @@ and highlights them</p>
 <p>If we've reached the end of the sections array, we've highlighted everything,
 so we can stop and fire the callback</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">();</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">();</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1116,7 +1121,7 @@ so we can stop and fire the callback</p>
 <p>Process the code blocks on this section, each time returning the html
 and moving onto the next section when we're done</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">self</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">self</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">){</span>
       <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
       <span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
       <span class="nx">next</span><span class="p">();</span>
@@ -1131,7 +1136,7 @@ and moving onto the next section when we're done</p>
 </div>
 <p>Start off with the first section</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">next</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">next</span><span class="p">();</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1163,7 +1168,7 @@ and moving onto the next section when we're done</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">extractDocCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">extractDocCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1173,7 +1178,7 @@ and moving onto the next section when we're done</p>
 </div>
 <p>We'll store all extracted code blocks, along with information, in this array</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">codeBlocks</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">codeBlocks</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1183,7 +1188,8 @@ and moving onto the next section when we're done</p>
 </div>
 <p>Search in the HTML for any code tag with a language set (in the format that showdown returns)</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;pre&gt;&lt;code\slanguage=&#39;([a-z]+)&#39;&gt;([^&lt;]*)&lt;\/code&gt;&lt;\/pre&gt;/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">block</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;pre&gt;&lt;code(\slanguage=&#39;([a-z]+)&#39;)?&gt;([^&lt;]*)&lt;\/code&gt;&lt;\/pre&gt;/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">wholeMatch</span><span class="p">,</span> <span class="nx">langBlock</span><span class="p">,</span> <span class="nx">language</span><span class="p">,</span> <span class="nx">block</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">langBlock</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="s2">&quot;&lt;div class=&#39;highlight&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">wholeMatch</span> <span class="o">+</span> <span class="s1">&#39;&lt;div&gt;&#39;</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1193,7 +1199,7 @@ and moving onto the next section when we're done</p>
 </div>
 <p>Unescape these HTML entities because they'll be re-escaped by pygments</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">block</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;gt;/g</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;lt;/g</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;amp;/</span><span class="p">,</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">block</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;gt;/g</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;lt;/g</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;amp;/</span><span class="p">,</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1203,7 +1209,7 @@ and moving onto the next section when we're done</p>
 </div>
 <p>Store the code block away in <code>codeBlocks</code> and leave a flag in the original text.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">return</span> <span class="s2">&quot;\n\n~C&quot;</span> <span class="o">+</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="s2">&quot;\n\n~C&quot;</span> <span class="o">+</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
       <span class="nx">language</span><span class="o">:</span> <span class="nx">language</span><span class="p">,</span>
       <span class="nx">code</span><span class="o">:</span> <span class="nx">block</span><span class="p">,</span>
       <span class="nx">i</span><span class="o">:</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span>
@@ -1218,7 +1224,7 @@ and moving onto the next section when we're done</p>
 </div>
 <p>Once we're done with that, now we can move on to highlighting the code we've extracted</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">highlighExtractedCode</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">codeBlocks</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">highlighExtractedCode</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">codeBlocks</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1259,7 +1265,7 @@ knows of a more efficient way of doing this, please let me know.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">highlighExtractedCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">codeBlocks</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">highlighExtractedCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">codeBlocks</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
 
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
@@ -1273,7 +1279,7 @@ knows of a more efficient way of doing this, please let me know.</p>
 </div>
 <p>If we're done, then stop and fire the callback</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">html</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span><span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">html</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1283,7 +1289,7 @@ knows of a more efficient way of doing this, please let me know.</p>
 </div>
 <p>Pull the next code block off the beginning of the array</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">nextBlock</span> <span class="o">=</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">nextBlock</span> <span class="o">=</span> <span class="nx">codeBlocks</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1293,7 +1299,7 @@ knows of a more efficient way of doing this, please let me know.</p>
 </div>
 <p>Run the code through pygments</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">self</span><span class="p">.</span><span class="nx">pygments</span><span class="p">(</span><span class="nx">nextBlock</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span> <span class="nx">nextBlock</span><span class="p">.</span><span class="nx">language</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">out</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">self</span><span class="p">.</span><span class="nx">pygments</span><span class="p">(</span><span class="nx">nextBlock</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span> <span class="nx">nextBlock</span><span class="p">.</span><span class="nx">language</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">out</span><span class="p">){</span>
       <span class="nx">out</span> <span class="o">=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;pre&gt;/</span><span class="p">,</span><span class="s1">&#39;&lt;pre&gt;&lt;code&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/pre&gt;/</span><span class="p">,</span><span class="s1">&#39;&lt;/code&gt;&lt;/pre&gt;&#39;</span><span class="p">);</span>
       <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;\n~C&#39;</span> <span class="o">+</span> <span class="nx">nextBlock</span><span class="p">.</span><span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;C\n&#39;</span><span class="p">,</span> <span class="nx">out</span><span class="p">);</span>
       <span class="nx">next</span><span class="p">();</span>
@@ -1308,7 +1314,7 @@ knows of a more efficient way of doing this, please let me know.</p>
 </div>
 <p>Fire off on first block</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">next</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">next</span><span class="p">();</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1340,7 +1346,7 @@ knows of a more efficient way of doing this, please let me know.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addAnchors</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">headings</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addAnchors</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">headings</span><span class="p">){</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">docHtml</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/&lt;h[0-9]&gt;/</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
@@ -1352,7 +1358,7 @@ knows of a more efficient way of doing this, please let me know.</p>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">docHtml</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(&lt;h([0-9])&gt;)(.*)(&lt;\/h\2&gt;)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">middle</span><span class="p">,</span> <span class="nx">end</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="nx">docHtml</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(&lt;h([0-9])&gt;)(.*)(&lt;\/h\2&gt;)/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">middle</span><span class="p">,</span> <span class="nx">end</span><span class="p">){</span>
       <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">middle</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;[^&gt;]*&gt;/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[^a-zA-Z0-9\_\.]/g</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">);</span>
       <span class="nx">headings</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span> <span class="nx">middle</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;[^&gt;]*&gt;/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="nx">level</span><span class="o">:</span> <span class="nx">level</span> <span class="p">});</span>
       <span class="k">return</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot; id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;\n  &#39;</span><span class="o">+</span>
@@ -1372,7 +1378,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
 </div>
 <p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot;&gt;&#39;</span> <span class="o">+</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">docHtml</span> <span class="o">=</span> <span class="s1">&#39;\n&lt;div class=&quot;pilwrap&quot;&gt;&#39;</span> <span class="o">+</span>
               <span class="s1">&#39;\n  &lt;a class=&quot;pilcrow&quot; href=&quot;#section-&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span> <span class="s1">&#39;&quot; id=&quot;section-&#39;</span> <span class="o">+</span><span class="p">(</span><span class="nx">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;&quot;&gt;&amp;#182;&lt;/a&gt;&#39;</span> <span class="o">+</span>
               <span class="s1">&#39;\n&lt;/div&gt;\n&#39;</span> <span class="o">+</span> <span class="nx">docHtml</span><span class="p">;</span>
   <span class="p">}</span>
@@ -1413,7 +1419,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">renderCodeHtml</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">renderCodeHtml</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sections</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1423,7 +1429,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
 
   <span class="kd">var</span> <span class="nx">headings</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
         </td>
@@ -1437,7 +1443,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
 This is necessary so we can link to the stylesheet in the output HTML using
 a relative href rather than an absolute one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">outFile</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">outFile</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">relDir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   <span class="k">while</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">relDir</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)){</span>
     <span class="nx">relDir</span> <span class="o">+=</span> <span class="s1">&#39;../&#39;</span><span class="p">;</span>
@@ -1455,7 +1461,7 @@ a relative href rather than an absolute one</p>
 </div>
 <p>Render the html file using our template</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">codeFileTemplate</span><span class="p">({</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">codeFileTemplate</span><span class="p">({</span>
     <span class="nx">sections</span><span class="o">:</span> <span class="nx">sections</span>
   <span class="p">});</span>
   <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">({</span>
@@ -1463,6 +1469,7 @@ a relative href rather than an absolute one</p>
     <span class="nx">relativeDir</span><span class="o">:</span> <span class="nx">relDir</span><span class="p">,</span>
     <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span>
     <span class="nx">headings</span><span class="o">:</span> <span class="nx">headings</span><span class="p">,</span>
+    <span class="nx">colourScheme</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">colourScheme</span><span class="p">,</span>
     <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
   <span class="p">});</span>
 
@@ -1477,14 +1484,7 @@ a relative href rather than an absolute one</p>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Generated: &#39;</span> <span class="o">+</span> <span class="nx">outFile</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">));</span>
-        <span class="nx">cb</span><span class="p">();</span>
-      <span class="p">});</span>
-    <span class="p">});</span>
-  <span class="p">});</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span> <span class="s1">&#39;Generated: &#39;</span> <span class="o">+</span> <span class="nx">outFile</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="nx">cb</span><span class="p">);</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -1521,7 +1521,7 @@ output file, then save our new file.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">renderMarkdownHtml</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">renderMarkdownHtml</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1531,7 +1531,7 @@ output file, then save our new file.</p>
 </div>
 <p>Run the markdown through <em>showdown</em></p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">content</span> <span class="o">=</span> <span class="nx">showdown</span><span class="p">.</span><span class="nx">makeHtml</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
 
   <span class="k">this</span><span class="p">.</span><span class="nx">extractDocCode</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content</span><span class="p">){</span>
 
@@ -1545,7 +1545,7 @@ output file, then save our new file.</p>
 </div>
 <p>Add anchors to all headings</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="nx">headings</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="nx">headings</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1555,7 +1555,7 @@ output file, then save our new file.</p>
 </div>
 <p>Wrap up with necessary classes</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;docs markdown&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">content</span> <span class="o">+</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;docs markdown&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">content</span> <span class="o">+</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1565,7 +1565,7 @@ output file, then save our new file.</p>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">outFile</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1577,7 +1577,7 @@ output file, then save our new file.</p>
 This is necessary so we can link to the stylesheet in the output HTML using
 a relative href rather than an absolute one</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">outFile</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">outFile</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">relDir</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
     <span class="k">while</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">relDir</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)){</span>
       <span class="nx">relDir</span> <span class="o">+=</span> <span class="s1">&#39;../&#39;</span><span class="p">;</span>
@@ -1591,15 +1591,14 @@ a relative href rather than an absolute one</p>
 </div>
 <p>Render the html file using our template</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">({</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderTemplate</span><span class="p">({</span>
       <span class="nx">title</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span>
       <span class="nx">relativeDir</span><span class="o">:</span> <span class="nx">relDir</span><span class="p">,</span>
       <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span>
       <span class="nx">headings</span><span class="o">:</span> <span class="nx">headings</span><span class="p">,</span>
+      <span class="nx">colourScheme</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">colourScheme</span><span class="p">,</span>
       <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="p">});</span>
-
-    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>
+    <span class="p">});</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1610,14 +1609,7 @@ a relative href rather than an absolute one</p>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>    <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Generated: &#39;</span> <span class="o">+</span> <span class="nx">outFile</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">));</span>
-          <span class="nx">cb</span><span class="p">();</span>
-        <span class="p">});</span>
-      <span class="p">});</span>
-    <span class="p">});</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">outFile</span><span class="p">,</span> <span class="nx">html</span><span class="p">,</span> <span class="s1">&#39;Generated: &#39;</span> <span class="o">+</span> <span class="nx">outFile</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="nx">cb</span><span class="p">);</span>
   <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -1637,23 +1629,24 @@ output file, then save our new file.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">copySharedResources</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">copySharedResources</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-  <span class="kd">function</span> <span class="nx">copy</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">){</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">to</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../&#39;</span><span class="p">,</span> <span class="nx">from</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
-        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">to</span><span class="p">),</span> <span class="nx">file</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Copied &#39;</span> <span class="o">+</span> <span class="nx">from</span> <span class="o">+</span> <span class="s1">&#39; to &#39;</span> <span class="o">+</span> <span class="nx">to</span><span class="p">);</span>
-        <span class="p">});</span>
-      <span class="p">});</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../res/script.js&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-script.js&#39;</span><span class="p">),</span> <span class="nx">file</span><span class="p">,</span> <span class="s1">&#39;Copied JS to doc-script.js&#39;</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../res/css/&#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">+</span> <span class="s1">&#39;.css&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
+    <span class="nx">exec</span><span class="p">(</span><span class="s1">&#39;pygmentize -S &#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">+</span> <span class="s1">&#39; -f html -a &quot;body .highlight&quot;&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">stdout</span><span class="p">,</span> <span class="nx">stderr</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">code</span> <span class="o">||</span> <span class="nx">stderr</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error generating CSS: \n&#39;</span> <span class="o">+</span> <span class="nx">stderr</span><span class="p">);</span>
+        <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-style.css&#39;</span><span class="p">),</span> <span class="nx">file</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="nx">stdout</span><span class="p">,</span> <span class="s1">&#39;Copied &#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">+</span> <span class="s1">&#39;.css to doc-style.css&#39;</span><span class="p">);</span>
     <span class="p">});</span>
-  <span class="p">}</span>
+  <span class="p">});</span>
 
   <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="s1">&#39;var tree=&#39;</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">tree</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">copy</span><span class="p">(</span><span class="s1">&#39;res/style.css&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-style.css&#39;</span><span class="p">);</span>
-      <span class="nx">copy</span><span class="p">(</span><span class="s1">&#39;res/script.js&#39;</span><span class="p">,</span> <span class="s1">&#39;doc-script.js&#39;</span><span class="p">);</span>
-    <span class="p">});</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="s1">&#39;var tree=&#39;</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">tree</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;Saved file tree to doc-filelist.js&#39;</span><span class="p">);</span>
   <span class="p">});</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -1687,7 +1680,7 @@ output file, then save our new file.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">outFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">outFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">){</span>
   <span class="k">return</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -1721,7 +1714,7 @@ output file, then save our new file.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">compileTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">compileTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
   <span class="k">return</span> <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">,</span> <span class="s1">&#39;var p=[],print=function(){p.push.apply(p,arguments);};&#39;</span> <span class="o">+</span>
     <span class="s1">&#39;with(obj){p.push(\&#39;&#39;</span> <span class="o">+</span>
     <span class="nx">str</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\r\t]/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
@@ -1771,7 +1764,7 @@ output file, then save our new file.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">renderTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">renderTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1783,7 +1776,7 @@ output file, then save our new file.</p>
 It's a bit messy to be using readFileSync I know, but this
 is the easiest way for now.</p>
         </td>
-        <td class="code"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">__tmpl</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">__tmpl</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">tmplFile</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../res/tmpl.jst&#39;</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">__tmpl</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">compileTemplate</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">tmplFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">());</span>
   <span class="p">}</span>
@@ -1820,7 +1813,7 @@ is the easiest way for now.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">codeFileTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">codeFileTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">__codeTmpl</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">tmplFile</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../res/code.jst&#39;</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">__codeTmpl</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">compileTemplate</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">tmplFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">());</span>
@@ -1858,12 +1851,63 @@ is the easiest way for now.</p>
   </div>
 </div>
         </td>
-        <td class="code"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">doxTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">doxTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">){</span>
   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">__doxtmpl</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">tmplFile</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span> <span class="s1">&#39;../res/dox.jst&#39;</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">__doxtmpl</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">compileTemplate</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">tmplFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">());</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">__doxtmpl</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.writefile">
+  <h2>
+    <a href="#docker.prototype.writefile" class="pilcrow">&#182;</a>
+    Docker.prototype.writeFile
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Saves a file, making sure the directory already exists and overwriting any existing file</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span>filename</span>
+      <span class="dox_type">string</span>
+      <span>The name of the file to save</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>fileContent</span>
+      <span class="dox_type">string</span>
+      <span>Content to save to the file</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>doneLog</span>
+      <span class="dox_type">string</span>
+      <span>String to console.log when done</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span>doneCallback</span>
+      <span class="dox_type">function</span>
+      <span>Callback to fire when done</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">writeFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">fileContent</span><span class="p">,</span> <span class="nx">doneLog</span><span class="p">,</span> <span class="nx">doneCallback</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">outDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+  <span class="nx">mkdirp</span><span class="p">(</span><span class="nx">outDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">unlink</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">fileContent</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">doneLog</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">doneLog</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">doneCallback</span><span class="p">)</span> <span class="nx">doneCallback</span><span class="p">();</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
 <span class="p">};</span>
 </pre></div>
         </td>
