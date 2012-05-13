@@ -381,6 +381,9 @@ Docker.prototype.parseSections = function(data, filename){
           if(params.dox){
             multiLine += line;
             try{
+              // Slightly-hacky-but-hey-it-works way of persuading Dox to work with
+              // non-javascript comments by [brynbellomy](https://github.com/brynbellomy)
+
               // standardize the comment block delimiters to the only ones that
               // dox seems to understand, namely, /* and */
               multiLine = multiLine
@@ -462,7 +465,7 @@ Docker.prototype.languageParams = function(filename){
     //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
     //
     case '.js':
-      return { name: 'javascript',   comment: '//', multiLine: [ /\/\*/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
+      return { name: 'javascript',   comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
     case '.coffee':
       return { name: 'coffeescript', comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], dox: true };
     case '.rb':
