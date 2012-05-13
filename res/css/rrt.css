@@ -214,6 +214,15 @@ td.code {
   vertical-align: bottom;
   border-left: 1px solid; }
 
+.background {
+  border-left: 1px solid;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 525px; }
+
 pre, tt, code {
   font-size: 12px;
   line-height: 18px;
@@ -277,5 +286,5 @@ a {
 .pilwrap .pilcrow {
   color: #e5e5e5; }
 
-td.code {
+td.code, .background {
   border-left-color: #262626; }
