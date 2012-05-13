@@ -164,7 +164,8 @@ td.docs {
   padding: 5px;
   padding-left: 10px;
   border: 1px solid;
-  font-size: 12px; }
+  font-size: 12px;
+  overflow: auto; }
   .docs pre.code_stats {
     font-size: 60%; }
 .docs p tt, .docs p code, .docs li tt, .docs li code {
