@@ -4,6 +4,7 @@ var path = require('path');
 var Docker = require('./src/docker.js');
 var pwd = process.env.PWD;
 var program = require('commander');
+var watchr = require('watchr');
 
 program
   .version('0.0.9')
@@ -12,8 +13,28 @@ program
   .option('-u, --updated_files', 'Only process files that have been changed')
   .option('-c, --colour_scheme [style]', 'Colour scheme to use (as in pygmentize -L styles)')
   .option('-I, --ignore_hidden', 'Ignore hidden files and directories (those starting with . or _)')
+  .option('-w, --watch', 'Watch on the input directory for file changes (experimental)')
   .parse(process.argv);
 
 var d = new Docker(program.input_dir, program.output_dir, program.updated_files, program.colour_scheme, program.ignore_hidden);
 if(program.args.length === 0) program.args = ['./'];
 d.doc(program.args);
+
+var ui = false;
+function update(){
+  if(d.running || d2.running) return;
+
+  d2.scanQueue = [];
+  d2.files = [];
+  d2.tree = {};
+  d2.doc(program.args);
+  clearInterval(ui);
+}
+
+if(program.watch){
+  var d2 = new Docker(program.input_dir, program.output_dir, true, program.colour_scheme, program.ignore_hidden);
+  watchr.watch(program.input_dir, function(eventName,file, currStat, prevStat){
+    ui = setInterval(update, 500);
+    update();
+  }, null);
+}

@@ -1,5 +1,13 @@
 # Docker Version History
 
+## 0.1.0
+
+ * Added `-w` flag to watch a directory for changes (experimental). Not sure how useful it'll actually be, but it's cool.
+ * Added `-I` switch to ignore hidden files
+ * Fixed some rendering bugs for code blocks
+ * Added automatic title generation for empty-looking files
+ * Various styling tweaks
+
 ## 0.0.9
 
  * Added support for another pile more languages (added perl, php, actionscript, sh and yaml)

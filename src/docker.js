@@ -80,7 +80,8 @@ var Docker = module.exports =function(inDir, outDir, onlyUpdated, colourScheme, 
  * @param {Array} files Array of file paths relative to the `inDir` to generate documentation for.
  */
 Docker.prototype.doc = function(files){
-  this.scanQueue = files;
+  this.running = true;
+  this.scanQueue = files.concat([]);
   this.addNextFile();
 };
 
@@ -240,13 +241,26 @@ Docker.prototype.decideWhetherToProcess = function(filename, callback){
   // Find the doc this file would be compiled to
   var outFile = this.outFile(filename);
 
-  // Stat the files
-  fs.stat(outFile, function(err, outStat){
+  // See whether the file is newer than the output
+  this.fileIsNewer(filename, outFile, callback);
+};
+
+/**
+ * ## Docker.prototype.fileIsNewer
+ *
+ * Sees whether one file is newer than another
+ *
+ * @param {string} file File to check
+ * @param {string} otherFile File to compare to
+ * @param {function} callback Callback to fire with true if file is newer than otherFile
+ */
+Docker.prototype.fileIsNewer = function(file, otherFile, callback){
+  fs.stat(otherFile, function(err, outStat){
 
     // If the output file doesn't exist, then definitely process this file
     if(err && err.code == 'ENOENT') return callback(true);
 
-    fs.stat(filename, function(err, inStat){
+    fs.stat(file, function(err, inStat){
       // Process the file if the input is newer than the output
       callback(+inStat.mtime > +outStat.mtime);
     });
@@ -731,8 +745,17 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
  */
 Docker.prototype.copySharedResources = function(){
   var self = this;
+
+  var toDo = 3;
+  function done(){
+    if(!--toDo){
+      self.running = false;
+      console.log('Done');
+    }
+  }
+
   fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
-    self.writeFile(path.join(self.outDir, 'doc-script.js'), file, 'Copied JS to doc-script.js');
+    self.writeFileIfDifferent(path.join(self.outDir, 'doc-script.js'), file, 'Copied JS to doc-script.js', done);
   });
 
   fs.readFile(path.join(path.dirname(__filename),'../res/css/' + self.colourScheme + '.css'), function(err, file){
@@ -741,13 +764,11 @@ Docker.prototype.copySharedResources = function(){
         console.error('Error generating CSS: \n' + stderr);
         process.exit();
       }
-      self.writeFile(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, 'Copied ' + self.colourScheme + '.css to doc-style.css');
+      self.writeFileIfDifferent(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, 'Copied ' + self.colourScheme + '.css to doc-style.css', done);
     });
   });
 
-  fs.unlink(path.join(this.outDir, 'doc-filelist.js'), function(){
-    self.writeFile(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', 'Saved file tree to doc-filelist.js');
-  });
+  self.writeFileIfDifferent(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', 'Saved file tree to doc-filelist.js', done);
 };
 
 /**
@@ -858,6 +879,34 @@ Docker.prototype.writeFile = function(filename, fileContent, doneLog, doneCallba
       fs.writeFile(filename, fileContent, function(){
         if(doneLog) console.log(doneLog);
         if(doneCallback) doneCallback();
+      });
+    });
+  });
+};
+
+/**
+ * ## Docker.prototype.writeFileIfDifferent
+ *
+ * Saves a fileas above, but only if the file's contents are to be changed
+ *
+ * @param {string} filename The name of the file to save
+ * @param {string} fileContent Content to save to the file
+ * @param {string} doneLog String to console.log when done
+ * @param {function} doneCallback Callback to fire when done
+ */
+Docker.prototype.writeFileIfDifferent = function(filename, fileContent, doneLog, doneCallback){
+  var outDir = path.dirname(filename);
+  fs.readFile(filename, function(err, content){
+    if(!err && content.toString() === fileContent.toString()){
+      if(doneCallback) doneCallback();
+      return;
+    }
+    mkdirp(outDir, function(){
+      fs.unlink(filename, function(){
+        fs.writeFile(filename, fileContent, function(){
+          if(doneLog) console.log(doneLog);
+          if(doneCallback) doneCallback();
+        });
       });
     });
   });

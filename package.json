@@ -5,7 +5,8 @@
   "dependencies": {
     "mkdirp": "0.3.2",
     "dox": "0.3.1",
-    "commander": "0.5.2"
+    "commander": "0.5.2",
+    "watchr": "2.0.3"
   },
   "bin": {
     "docker": "./docker"
