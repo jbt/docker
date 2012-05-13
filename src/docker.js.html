@@ -1885,7 +1885,12 @@ output file, then save our new file.</p>
   <span class="p">}</span>
 
   <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../res/script.js&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-script.js&#39;</span><span class="p">),</span> <span class="nx">file</span><span class="p">,</span> <span class="s1">&#39;Copied JS to doc-script.js&#39;</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span>
+      <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-script.js&#39;</span><span class="p">),</span>
+      <span class="nx">file</span><span class="p">,</span>
+      <span class="s1">&#39;Copied JS to doc-script.js&#39;</span><span class="p">,</span>
+      <span class="nx">done</span>
+    <span class="p">);</span>
   <span class="p">});</span>
 
   <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">__filename</span><span class="p">),</span><span class="s1">&#39;../res/css/&#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">+</span> <span class="s1">&#39;.css&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
@@ -1894,11 +1899,21 @@ output file, then save our new file.</p>
         <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error generating CSS: \n&#39;</span> <span class="o">+</span> <span class="nx">stderr</span><span class="p">);</span>
         <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">();</span>
       <span class="p">}</span>
-      <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-style.css&#39;</span><span class="p">),</span> <span class="nx">file</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="nx">stdout</span><span class="p">,</span> <span class="s1">&#39;Copied &#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">+</span> <span class="s1">&#39;.css to doc-style.css&#39;</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span>
+        <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-style.css&#39;</span><span class="p">),</span>
+        <span class="nx">file</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="nx">stdout</span><span class="p">,</span>
+        <span class="s1">&#39;Copied &#39;</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">+</span> <span class="s1">&#39;.css to doc-style.css&#39;</span><span class="p">,</span>
+        <span class="nx">done</span>
+      <span class="p">);</span>
     <span class="p">});</span>
   <span class="p">});</span>
 
-  <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="s1">&#39;var tree=&#39;</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">tree</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;Saved file tree to doc-filelist.js&#39;</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+  <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span>
+    <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;var tree=&#39;</span> <span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">tree</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Saved file tree to doc-filelist.js&#39;</span><span class="p">,</span>
+    <span class="nx">done</span>
+  <span class="p">);</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
