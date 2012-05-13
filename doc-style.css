@@ -164,7 +164,8 @@ td.docs {
   padding: 5px;
   padding-left: 10px;
   border: 1px solid;
-  font-size: 12px; }
+  font-size: 12px;
+  overflow: auto; }
   .docs pre.code_stats {
     font-size: 60%; }
 .docs p tt, .docs p code, .docs li tt, .docs li code {
@@ -213,6 +214,15 @@ td.code {
   width: 100%;
   vertical-align: bottom;
   border-left: 1px solid; }
+
+.background {
+  border-left: 1px solid;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 525px; }
 
 pre, tt, code {
   font-size: 12px;
@@ -269,7 +279,7 @@ a {
   color: auto; }
 
 .dox {
-  border-top-color: #dadddd; }
+  border-top-color: #e2e5e5; }
   .dox .details {
     background: #f0f3f3;
     border-color: #dadddd; }
@@ -277,7 +287,7 @@ a {
 .pilwrap .pilcrow {
   color: #3a3636; }
 
-td.code {
+td.code, .background {
   border-left-color: #dadddd; }
 body .highlight .hll { background-color: #ffffcc }
 body .highlight  { background: #f0f3f3; }

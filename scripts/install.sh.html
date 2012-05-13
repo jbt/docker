@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>install.sh</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../', thisFile = 'scripts/install.sh';
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>install.sh</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="c">#!/bin/sh</span>
+
+
+<span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;$(which pygmentize)&quot;</span> <span class="o">]</span>
+<span class="k">then</span>
+<span class="k">  </span><span class="nb">echo</span> <span class="s2">&quot;Looks like you don&#39;t have Pygments installed.&quot;</span>
+
+  <span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;$(which easy_install)&quot;</span> <span class="o">]</span>
+  <span class="k">then</span>
+<span class="k">    </span><span class="nb">echo</span> <span class="s2">&quot;Looks like you don&#39;t have easy_install either.&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Check out http://pypi.python.org/pypi/setuptools to install easy_install, then run:&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;  sudo easy_install Pygments&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;to install pygments&quot;</span>
+  <span class="k">else</span>
+<span class="k">    </span><span class="nb">echo</span> <span class="s2">&quot;Attempting to install Pygments. This requires sudo, so don&#39;t be alarmed.&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;If you want to do this yourself instead, just run &#39;sudo easy_install Pygments&#39;&quot;</span>
+    sudo easy_install Pygments
+  <span class="k">fi</span>
+<span class="k">fi</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
