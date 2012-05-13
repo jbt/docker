@@ -1,5 +1,10 @@
 # Docker Version History
 
+## 0.0.8
+
+ * Add support for different colour schemes
+ * A few more improvements to showdown for GFM-style bits.
+
 ## 0.0.7
 
  * Minor improvements to code structure
