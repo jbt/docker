@@ -42,7 +42,7 @@
       <div class="heading h2">
         <a href="#colour-schemes">Colour Schemes</a>
       </div>
-      <div class="heading h3">
+      <div class="heading h2">
         <a href="#important-note">Important note</a>
       </div>
     </div>
@@ -157,6 +157,17 @@
 
 
 
+<p>or:</p>
+
+
+<div class="highlight"><pre><code><span class="nv">$ </span>docker -o documents src/*
+</code></pre></div>
+
+
+
+<p>Note that in the first example, the contents of <code>src</code> will be mapped directly into <code>documents</code> whereas in the second and third
+examples, the files will be created inside <code>documents/src</code></p>
+
 
 <div class="pilwrap" id="generate-docker-docs">
   <h3>
@@ -218,14 +229,14 @@
 
 
 <div class="pilwrap" id="important-note">
-  <h3>
+  <h2>
     <a href="#important-note" class="pilcrow">&#182;</a>
     Important note
-  </h3>
+  </h2>
 </div>
 
 
-<p>All files must be inside <code>root_source_dir</code> (or the current pwd if not specified) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.</p></div>
+<p>All files must be inside the input directory (specified by <code>-i</code>) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.</p></div>
   </div>
 </body>
 </html>
