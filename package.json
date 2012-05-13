@@ -20,5 +20,8 @@
     "type": "git",
     "url": "git://github.com/jbt/docker.git"
   },
+  "scripts": {
+    "install": "scripts/install.sh"
+  },
   "main": "./src/docker.js"
 }

@@ -14,21 +14,83 @@ Requires [Pygments](http://pygments.org/)
 
 ## Usage
 
-Still yet to finialise exactly how the command-line interface should work, but basically:
-
 ```sh
-docker -i root_source_dir -o root_doc_dir [file1 file2 file3 ...]
+$ docker [options] [files ...]
 ```
 
-(or, if you haven't installed with `-g` specified, something like `$(npm root)/docker/docker` instead of `docker` at the beginning there)
+Available options are:
 
-If the `-i` or `-o` options aren't specified, they'll default respectively to `./` and `./doc`.
+ * `-i` or `--input_dir`: Path to input source directory. Defaults to current directory.
+ * `-o` or `--output_dir`: Path to output doc directory. Defaults to `./doc`.
+ * `-u` or `--updated_files`: If present, only process files that hav been changed.
+ * `-c` or `--colour_scheme` (yes, I'm British): Colour scheme to use. Colour schemes are as below.
+ * `-I` or `--ignore_hidden`: Ignore files and directories whose names begin with `.` or `_`.
+ * `-w` or `--watch`: Keep the process running, watch for changes on the directory, and process updated files.
 
-If the file list given is empty it'll just recurse into `root_source_dir` and run on anything it finds.
+If no file list is given, docker will run recursively on every file in the current directory
 
 Any of the files given can also be directories, in which case it will recurse into them.
 
-Folder structure inside `root_source_dir` is preserved into `root_doc_dir` and file names are simply appended `.html` for the doc file
+Folder structure inside the input directory is preserved into the output directory and file names are simply appended `.html` for the doc file
+
+## Examples
+
+If you haven't installed with `-g` specified, replace `docker` with something like `$(npm root)/docker/docker` in all of the examples below.
+
+### Process every file in the current directory into "doc"
+
+```sh
+$ docker
+```
+
+### Process files in "src" to "documents"
+
+```sh
+$ docker -i src -o documents
+```
+
+or:
+
+```sh
+$ docker -o documents src
+```
+
+### Generate Docker docs
+
+This is the command I use to generate [this project's documentation](http://jbt.github.com/docker).
+
+Use the "manni" colour scheme, only parse updated files (the coffee-script parser in one of the node_modules dirs is huge,
+so definitely don't process that every time), and watch the directory for further changes as the code is updated.
+
+```sh
+$ docker -o ../docker_gh-pages -c manni -I -u --watch
+```
+
+
+## Colour Schemes
+
+These are exactly as in `pygmentize -L styles`:
+
+ * monokai
+ * manni
+ * rrt
+ * perldoc
+ * borland
+ * colorful
+ * default
+ * murphy
+ * vs
+ * trac
+ * tango
+ * fruity
+ * autumn
+ * bw
+ * emacs
+ * vim
+ * pastie
+ * friendly
+ * native
+
 
 ### Important note
 

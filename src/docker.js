@@ -20,6 +20,8 @@
 // and directories you specify) and document-ize all the files it can.
 // The folder structure will be preserved in the document root.
 //
+// More detailed usage instructions and examples can be found in the [README](../README.md.html)
+//
 // ## Differences from docco
 // The main differences from docco are:
 //
@@ -417,7 +419,7 @@ Docker.prototype.parseSections = function(data, filename){
         continue;
       }
     }
-    if(line.match(commentRegex) && (!params.commentsIgnore || !line.match(params.commentsIgnore))){
+    if(line.match(commentRegex) && (!params.commentsIgnore || !line.match(params.commentsIgnore)) && !line.match(/#!/)){
       // This is for single-line comments. Again, store away the last section and start a new one
       if(section.code){
         if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
