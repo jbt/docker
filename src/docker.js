@@ -826,7 +826,12 @@ Docker.prototype.copySharedResources = function(){
   }
 
   fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
-    self.writeFileIfDifferent(path.join(self.outDir, 'doc-script.js'), file, 'Copied JS to doc-script.js', done);
+    self.writeFileIfDifferent(
+      path.join(self.outDir, 'doc-script.js'),
+      file,
+      'Copied JS to doc-script.js',
+      done
+    );
   });
 
   fs.readFile(path.join(path.dirname(__filename),'../res/css/' + self.colourScheme + '.css'), function(err, file){
@@ -835,11 +840,21 @@ Docker.prototype.copySharedResources = function(){
         console.error('Error generating CSS: \n' + stderr);
         process.exit();
       }
-      self.writeFileIfDifferent(path.join(self.outDir, 'doc-style.css'), file.toString() + stdout, 'Copied ' + self.colourScheme + '.css to doc-style.css', done);
+      self.writeFileIfDifferent(
+        path.join(self.outDir, 'doc-style.css'),
+        file.toString() + stdout,
+        'Copied ' + self.colourScheme + '.css to doc-style.css',
+        done
+      );
     });
   });
 
-  self.writeFileIfDifferent(path.join(self.outDir, 'doc-filelist.js'), 'var tree=' + JSON.stringify(self.tree) + ';', 'Saved file tree to doc-filelist.js', done);
+  self.writeFileIfDifferent(
+    path.join(self.outDir, 'doc-filelist.js'),
+    'var tree=' + JSON.stringify(self.tree) + ';',
+    'Saved file tree to doc-filelist.js',
+    done
+  );
 };
 
 /**
