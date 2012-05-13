@@ -538,10 +538,9 @@ Docker.prototype.extractDocCode = function(html, cb){
 
   // We'll store all extracted code blocks, along with information, in this array
   var codeBlocks = [];
-
   // Search in the HTML for any code tag with a language set (in the format that showdown returns)
-  html = html.replace(/<pre><code(\slanguage='([a-z]+)')?>([^<]*)<\/code><\/pre>/g, function(wholeMatch, langBlock, language, block){
-    if(langBlock === '') return "<div class='highlight'>" + wholeMatch + '<div>';
+  html = html.replace(/<pre><code(\slanguage='([a-z]*)')?>([^<]*)<\/code><\/pre>/g, function(wholeMatch, langBlock, language, block){
+    if(langBlock === '' || language === '') return "<div class='highlight'>" + wholeMatch + '<div>';
     // Unescape these HTML entities because they'll be re-escaped by pygments
     block = block.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/,'&');
 
