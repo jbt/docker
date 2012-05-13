@@ -81,8 +81,19 @@ var Docker = module.exports =function(inDir, outDir, onlyUpdated, colourScheme, 
  */
 Docker.prototype.doc = function(files){
   this.running = true;
-  this.scanQueue = files.concat([]);
+  [].push.apply(this.scanQueue, files);
   this.addNextFile();
+};
+
+/**
+ * ## Docker.prototype.clean
+ *
+ * Clears out any instance variables so this docker can be rerun
+ */
+Docker.prototype.clean = function(){
+  this.scanQueue = [];
+  this.files = [];
+  this.tree = {};
 };
 
 /**

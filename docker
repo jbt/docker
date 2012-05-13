@@ -23,18 +23,15 @@ d.doc(program.args);
 var ui = false;
 function update(){
   if(d.running || d2.running) return;
-
-  d2.scanQueue = [];
-  d2.files = [];
-  d2.tree = {};
+  d2.clean();
   d2.doc(program.args);
   clearInterval(ui);
+  ui = false;
 }
 
 if(program.watch){
   var d2 = new Docker(program.input_dir, program.output_dir, true, program.colour_scheme, program.ignore_hidden);
   watchr.watch(program.input_dir, function(eventName,file, currStat, prevStat){
-    ui = setInterval(update, 500);
-    update();
+    if(!ui)ui = setInterval(update, 250);
   }, null);
 }
