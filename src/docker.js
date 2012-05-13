@@ -46,6 +46,7 @@ var mkdirp = require('mkdirp'),
   path = require('path'),
   exec = require('child_process').exec,
   spawn = require('child_process').spawn,
+  watchr = require('watchr'),
   showdown = require('../lib/showdown').Showdown;
 
 /**
@@ -83,6 +84,53 @@ Docker.prototype.doc = function(files){
   this.running = true;
   [].push.apply(this.scanQueue, files);
   this.addNextFile();
+};
+
+/**
+ * ## Docker.prototype.watch
+ *
+ * Watches the input directory for file changes and updates docs whenever a file is updated
+ *
+ * @param {Array} files Array of file paths relative to the `inDir` to generate documentation for.
+ */
+Docker.prototype.watch = function(files){
+  this.watching = true;
+  this.watchFiles = files;
+
+  // Function to call when a file is changed. We put this on a timeout to account
+  // for several file changes happening in quick succession.
+  var uto = false, self = this;
+  function update(){
+    if(self.running) return (uto = setTimeout(update, 250));
+    self.clean();
+    self.doc(self.watchFiles);
+    uto = false;
+  }
+
+  // Install watchr. The `null` here is a watchr bug - looks like he forgot to allow for exactly
+  // two arguments (like in his example)
+  watchr.watch(this.inDir, function(){
+    if(!uto)uto = setTimeout(update, 250);
+  }, null);
+
+  // Aaaaand, go!
+  this.doc(files);
+};
+
+/**
+ * ## Docker.prototype.finished
+ *
+ * Callback function fired when processing is finished.
+ */
+Docker.prototype.finished = function(){
+  this.running = false;
+  if(this.watching){
+    // If we're in watch mode, switch to "only updated files" mode if we're not already
+    this.onlyUpdated = true;
+    console.log('Done. Waiting for changes...');
+  }else{
+    console.log('Done.');
+  }
 };
 
 /**
@@ -760,8 +808,7 @@ Docker.prototype.copySharedResources = function(){
   var toDo = 3;
   function done(){
     if(!--toDo){
-      self.running = false;
-      console.log('Done');
+      self.finished();
     }
   }
 
