@@ -125,7 +125,7 @@ Docker.prototype.watch = function(files){
 Docker.prototype.finished = function(){
   this.running = false;
   if(this.watching){
-    // If we're in watch mode, switch to "only updated files" mode if we're not already
+    // If we're in watch mode, switch "only updated files" mode on if it isn't already
     this.onlyUpdated = true;
     console.log('Done. Waiting for changes...');
   }else{
