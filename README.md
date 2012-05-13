@@ -48,12 +48,17 @@ $ docker
 ```sh
 $ docker -i src -o documents
 ```
-
 or:
-
 ```sh
 $ docker -o documents src
 ```
+or:
+```sh
+$ docker -o documents src/*
+```
+
+Note that in the first example, the contents of `src` will be mapped directly into `documents` whereas in the second and third
+examples, the files will be created inside `documents/src`
 
 ### Generate Docker docs
 
@@ -96,6 +101,6 @@ These are exactly as in `pygmentize -L styles`:
  * native
 
 
-### Important note
+## Important note
 
-All files must be inside `root_source_dir` (or the current pwd if not specified) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.
+All files must be inside the input directory (specified by `-i`) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.
