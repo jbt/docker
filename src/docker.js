@@ -654,6 +654,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
 
   // Render the html file using our template
   var content = this.codeFileTemplate({
+    title: path.basename(filename),
     sections: sections
   });
   var html = this.renderTemplate({
