@@ -59,8 +59,12 @@ $ docker -o documents src
 
 This is the command I use to generate [this project's documentation](http://jbt.github.com/docker).
 
-Use the "manni" colour scheme, only parse updated files (the coffee-script parser in one of the node_modules dirs is huge,
-so definitely don't process that every time), and watch the directory for further changes as the code is updated.
+ * Output to a directory on the `gh-pages` branch of this repo
+ * Use the "manni" colour scheme
+ * Ignore files starting with `_` or `.`
+ * Only process updated files
+   * The coffee-script parser in one of the `node_modules` dirs is huge, so definitely don't process that every time
+ * Watch the directory for further changes as the code is updated.
 
 ```sh
 $ docker -o ../docker_gh-pages -c manni -I -u --watch
