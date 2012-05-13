@@ -699,7 +699,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
 
     // Recursively create the output directory, clean out any old version of the
     // output file, then save our new file.
-    this.writeFile(outFile, html, 'Generated: ' + outFile.replace(self.outDir,''), cb);
+    this.writeFile(outFile, html, 'Generated: ' + outFile.replace(this.outDir,''), cb);
   }.bind(this));
 };
 
