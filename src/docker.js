@@ -364,7 +364,8 @@ Docker.prototype.parseSections = function(data, filename){
  * @return {object} Object containing all of the language-specific params
  */
 Docker.prototype.languageParams = function(filename){
-  switch(path.extname(filename)){
+  var ext = path.extname(filename);
+  switch(ext.toLowerCase()){
     // The language params can have the following keys:
     //
     //  * `name`: Name of Pygments lexer to use
@@ -387,7 +388,8 @@ Docker.prototype.languageParams = function(filename){
       return { name: 'perl',         comment: '#'   }; // Nor (really) does perl.
     case '.c':
     case '.h':
-      return { name: 'c',            comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
+      if(ext !== '.C') // Sneakily fall through to C++ for ,C files.
+        return { name: 'c',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.cc':
     case '.cpp':
       return { name: 'cpp',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
