@@ -386,7 +386,7 @@ Docker.prototype.parseSections = function(data, filename){
               multiLine = multiLine
                 .replace(params.multiLine[0], "/**")
                 .replace(params.multiLine[1], "*/")
-                .replace(/\n(\s*)/g, "\n$1* ");
+                .replace(/\n (?:[^\*])/g, "\n * ");
 
               doxData = dox.parseComments(multiLine, {raw: true})[0];
               // Don't let dox do any markdown parsing. We'll do that all ourselves with md above
@@ -464,7 +464,7 @@ Docker.prototype.languageParams = function(filename){
     case '.js':
       return { name: 'javascript',   comment: '//', multiLine: [ /\/\*/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
     case '.coffee':
-      return { name: 'coffeescript', comment: '#',  multiLine: [ /^\s*#{3}/, /#{3}/ ], dox: true };
+      return { name: 'coffeescript', comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], dox: true };
     case '.rb':
       return { name: 'ruby',         comment: '#',  multiLine: [ /\=begin/, /\=end/ ] };
     case '.py':
