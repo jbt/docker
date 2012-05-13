@@ -59,11 +59,12 @@ var mkdirp = require('mkdirp'),
  * @param {string} outDir The directory into which to put all the doc pages
  * @param {boolean} onlyUpdated Whether to only process files that have been updated
  */
-var Docker = module.exports =function(inDir, outDir, onlyUpdated, colourScheme){
+var Docker = module.exports =function(inDir, outDir, onlyUpdated, colourScheme, ignoreHidden){
   this.inDir = inDir.replace(/\/$/,'');
   this.outDir = outDir;
   this.onlyUpdated = !!onlyUpdated;
   this.colourScheme = colourScheme || 'default';
+  this.ignoreHidden = !!ignoreHidden;
   this.running = false;
   this.scanQueue = [];
   this.files = [];
@@ -96,8 +97,11 @@ Docker.prototype.addNextFile = function(){
       if(stat && stat.isDirectory()){
         // Find all children of the directory and queue those
         fs.readdir(path.join(self.inDir, filename), function(err, list){
-          for(var i = 0; i < list.length; i += 1) self.scanQueue.push(path.join(filename, list[i]));
-            self.addNextFile();
+          for(var i = 0; i < list.length; i += 1){
+            if(self.ignoreHidden && list[i].charAt(0).match(/[\._]/)) continue;
+            self.scanQueue.push(path.join(filename, list[i]));
+          }
+          self.addNextFile();
         });
       }else{
         self.queueFile(filename);
