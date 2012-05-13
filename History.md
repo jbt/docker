@@ -1,8 +1,13 @@
 # Docker Version History
 
+## 0.0.9
+
+ * Added support for another pile more languages (added perl, php, actionscript, sh and yaml)
+ * Ran embedded arrow images through pngcrush.  Saved a load of bytes
+
 ## 0.0.8
 
- * Add support for different colour schemes
+ * Added support for different colour schemes
  * A few more improvements to showdown for GFM-style bits.
 
 ## 0.0.7

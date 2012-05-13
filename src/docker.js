@@ -388,7 +388,7 @@ Docker.prototype.languageParams = function(filename){
       return { name: 'perl',         comment: '#'   }; // Nor (really) does perl.
     case '.c':
     case '.h':
-      if(ext !== '.C') // Sneakily fall through to C++ for ,C files.
+      if(ext !== '.C') // Sneakily fall through to C++ for .C files.
         return { name: 'c',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.cc':
     case '.cpp':
