@@ -382,6 +382,9 @@ Docker.prototype.languageParams = function(filename){
       return { name: 'ruby',         comment: '#',  multiLine: [ /\=begin/, /\=end/ ] };
     case '.py':
       return { name: 'python',       comment: '#'   }; // Python has no block commments :-(
+    case '.pl':
+    case '.pm':
+      return { name: 'perl',         comment: '#'   }; // Nor (really) does perl.
     case '.c':
     case '.h':
       return { name: 'c',            comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
@@ -392,6 +395,18 @@ Docker.prototype.languageParams = function(filename){
       return { name: 'csharp',       comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.java':
       return { name: 'java',         comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
+    case '.php':
+    case '.php3':
+    case '.php4':
+    case '.php5':
+      return { name: 'php',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
+    case '.as':
+      return { name: 'actionscript', comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
+    case '.sh':
+      return { name: 'sh',           comment: '#'   };
+    case '.yaml':
+    case '.yml':
+      return { name: 'yaml',         comment: '#'   };
     case '.md':
     case '.mkd':
     case '.markdown':
