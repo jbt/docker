@@ -490,7 +490,7 @@ Docker.prototype.languageParams = function(filename){
     case '.php3':
     case '.php4':
     case '.php5':
-      return { name: 'php',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
+      return { name: 'php',          comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true };
     case '.as':
       return { name: 'actionscript', comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.sh':
