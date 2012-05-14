@@ -485,7 +485,7 @@ Docker.prototype.languageParams = function(filename){
     case '.cs':
       return { name: 'csharp',       comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
     case '.java':
-      return { name: 'java',         comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
+      return { name: 'java',         comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true };
     case '.php':
     case '.php3':
     case '.php4':
