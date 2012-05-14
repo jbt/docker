@@ -12,7 +12,7 @@
     "docker": "./docker"
   },
   "engines": {
-    "node": ">=0.4.11"
+    "node": ">=0.4.0"
   },
   "description": "Static documentation generator based on docco",
   "homepage": "http://jbt.github.com/docker",
