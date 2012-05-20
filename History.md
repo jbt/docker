@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.1.1
+
+ * Fixed problem with commend delimiters being matched inside string literals
+
 ## 0.1.0
 
  * Added `-w` flag to watch a directory for changes (experimental). Not sure how useful it'll actually be, but it's cool.
