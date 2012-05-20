@@ -370,9 +370,15 @@ Docker.prototype.parseSections = function(data, filename){
   // Loop through all the lines, and parse into sections
   for(var i = 0; i < codeLines.length; i += 1){
     var line = codeLines[i];
+
+    // Only match against parts of the line that don't appear in strings
+    var matchable = line.replace(/(["'])((\\.|[^\1\\])*?)\1/g,'');
+
     if(params.multiLine){
       // If we are currently in a multiline comment, behave differently
       if(inMultiLineComment){
+
+        // End-multiline comments should match regardless of whether they're 'quoted'
         if(line.match(params.multiLine[1])){
           // Once we have reached the end of the multiline, take the whole content
           // of the multiline comment, and pass it through **dox**, which will then
@@ -387,8 +393,8 @@ Docker.prototype.parseSections = function(data, filename){
               // standardize the comment block delimiters to the only ones that
               // dox seems to understand, namely, /* and */
               multiLine = multiLine
-                .replace(params.multiLine[0], "/"+"**")
-                .replace(params.multiLine[1], "*"+"/")
+                .replace(params.multiLine[0], "/**")
+                .replace(params.multiLine[1], "*/")
                 .replace(/\n (?:[^\*])/g, "\n * ");
 
               doxData = dox.parseComments(multiLine, {raw: true})[0];
@@ -416,9 +422,9 @@ Docker.prototype.parseSections = function(data, filename){
         // ```js
         //  alert('foo'); // Alert some foo /* Random open comment thing
         // ```
-        line.match(params.multiLine[0]) &&
-        !line.replace(params.multiLine[0],'').match(params.multiLine[1]) &&
-        !line.split(params.multiLine[0])[0].match(commentRegex)){
+        matchable.match(params.multiLine[0]) &&
+        !matchable.replace(params.multiLine[0],'').match(params.multiLine[1]) &&
+        !matchable.split(params.multiLine[0])[0].match(commentRegex)){
         // Here we start parsing a multiline comment. Store away the current section and start a new one
         if(section.code){
           if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
@@ -429,7 +435,7 @@ Docker.prototype.parseSections = function(data, filename){
         continue;
       }
     }
-    if(line.match(commentRegex) && (!params.commentsIgnore || !line.match(params.commentsIgnore)) && !line.match(/#!/)){
+    if(matchable.match(commentRegex) && (!params.commentsIgnore || !matchable.match(params.commentsIgnore)) && !matchable.match(/#!/)){
       // This is for single-line comments. Again, store away the last section and start a new one
       if(section.code){
         if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
