@@ -387,8 +387,8 @@ Docker.prototype.parseSections = function(data, filename){
               // standardize the comment block delimiters to the only ones that
               // dox seems to understand, namely, /* and */
               multiLine = multiLine
-                .replace(params.multiLine[0], "/**")
-                .replace(params.multiLine[1], "*/")
+                .replace(params.multiLine[0], "/"+"**")
+                .replace(params.multiLine[1], "*"+"/")
                 .replace(/\n (?:[^\*])/g, "\n * ");
 
               doxData = dox.parseComments(multiLine, {raw: true})[0];
