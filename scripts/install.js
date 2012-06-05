@@ -1,6 +1,6 @@
 var os = require('os');
 
-if(os.platform().substring(0,3) == "win"){
+if(os.type().toLowerCase().substring(0,3) == "win"){
   console.log("Remember to install Pygments for docker to work.");
   console.log("Check out http://pygments.org/ for instructions how to do this.");
 }else{
