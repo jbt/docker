@@ -738,7 +738,10 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
   // a relative href rather than an absolute one
   var outDir = path.dirname(outFile);
   var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
-  var levels = outDir.replace(this.outDir,'').replace(/^[\/\\]/,'').split(pathSeparator).length;
+  var levels = outDir
+                .replace(this.outDir,'')
+                .replace(/^[\/\\]/,'')
+                .split(pathSeparator).length;
   var relDir = Array(levels+1).join('../');
 
   for(var i = 0; i < sections.length; i += 1){
@@ -797,7 +800,10 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
     // a relative href rather than an absolute one
     var outDir = path.dirname(outFile);
     var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
-    var levels = outDir.replace(this.outDir,'').replace(/^[\/\\]/,'').split(pathSeparator).length;
+    var levels = outDir
+                  .replace(this.outDir,'')
+                  .replace(/^[\/\\]/,'')
+                  .split(pathSeparator).length;
     var relDir = Array(levels+1).join('../');
 
     // Render the html file using our template
@@ -872,7 +878,7 @@ Docker.prototype.copySharedResources = function(){
  * @return {string} Name to use for the generated doc file
  */
 Docker.prototype.outFile = function(filename){
-  return filename.replace(this.inDir, this.outDir) + '.html';
+  return path.normalize(filename.replace(this.inDir, this.outDir) + '.html');
 };
 
 /**
