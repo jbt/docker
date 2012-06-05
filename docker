@@ -2,7 +2,7 @@
 
 var path = require('path');
 var Docker = require('./src/docker.js');
-var pwd = process.env.PWD;
+var pwd = path.resolve('.');
 var program = require('commander');
 var watchr = require('watchr');
 

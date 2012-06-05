@@ -737,10 +737,9 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
   // This is necessary so we can link to the stylesheet in the output HTML using
   // a relative href rather than an absolute one
   var outDir = path.dirname(outFile);
-  var relDir = '';
-  while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
-    relDir += '../';
-  }
+  var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
+  var levels = outDir.replace(this.outDir,'').replace(/^[\/\\]/,'').split(pathSeparator).length;
+  var relDir = Array(levels+1).join('../');
 
   for(var i = 0; i < sections.length; i += 1){
     sections[i].docHtml = this.addAnchors(sections[i].docHtml, i, headings);
@@ -797,10 +796,9 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
     // This is necessary so we can link to the stylesheet in the output HTML using
     // a relative href rather than an absolute one
     var outDir = path.dirname(outFile);
-    var relDir = '';
-    while(path.join(outDir, relDir).replace(/\/$/,'') !== this.outDir.replace(/\/$/,'')){
-      relDir += '../';
-    }
+    var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
+    var levels = outDir.replace(this.outDir,'').replace(/^[\/\\]/,'').split(pathSeparator).length;
+    var relDir = Array(levels+1).join('../');
 
     // Render the html file using our template
     var html = this.renderTemplate({
