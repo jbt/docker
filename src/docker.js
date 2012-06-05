@@ -155,10 +155,10 @@ Docker.prototype.clean = function(){
 Docker.prototype.addNextFile = function(){
   if(this.scanQueue.length > 0){
     var self = this, filename = this.scanQueue.shift();
-    fs.stat(path.join(this.inDir, filename), function(err, stat){
+    fs.stat(path.resolve(this.inDir, filename), function(err, stat){
       if(stat && stat.isDirectory()){
         // Find all children of the directory and queue those
-        fs.readdir(path.join(self.inDir, filename), function(err, list){
+        fs.readdir(path.resolve(self.inDir, filename), function(err, list){
           for(var i = 0; i < list.length; i += 1){
             if(self.ignoreHidden && list[i].charAt(0).match(/[\._]/)) continue;
             self.scanQueue.push(path.join(filename, list[i]));
@@ -187,9 +187,11 @@ Docker.prototype.queueFile = function(filename){
   if(!this.canHandleFile(filename)) return;
   this.files.push(filename);
 
+  var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
+
   // Split the file's path into the individual directories
-  filename = filename.replace(/^\//,'');
-  var bits = filename.split('/');
+  filename = filename.replace(new RegExp('^' + pathSeparator.replace(/([\/\\])/g, '\\$1')),'');
+  var bits = filename.split(pathSeparator);
 
   // Loop through all the directories and process the folder structure into `this.tree`.
   //
@@ -259,7 +261,7 @@ Docker.prototype.canHandleFile = function(filename){
 Docker.prototype.generateDoc = function(filename, cb){
   var self = this;
   this.running = true;
-  filename = path.join(this.inDir, filename);
+  filename = path.resolve(this.inDir, filename);
   this.decideWhetherToProcess(filename, function(shouldProcess){
     if(!shouldProcess) return cb();
     fs.readFile(filename, 'utf-8', function(err, data){
@@ -831,7 +833,7 @@ Docker.prototype.copySharedResources = function(){
     }
   }
 
-  fs.readFile(path.join(path.dirname(__filename),'../res/script.js'), function(err, file){
+  fs.readFile(path.join(path.dirname(__filename),'..','res','script.js'), function(err, file){
     self.writeFileIfDifferent(
       path.join(self.outDir, 'doc-script.js'),
       file,
@@ -840,7 +842,7 @@ Docker.prototype.copySharedResources = function(){
     );
   });
 
-  fs.readFile(path.join(path.dirname(__filename),'../res/css/' + self.colourScheme + '.css'), function(err, file){
+  fs.readFile(path.join(path.dirname(__filename),'..','res','css', self.colourScheme + '.css'), function(err, file){
     exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
       if(code || stderr !== ''){
         console.error('Error generating CSS: \n' + stderr);
@@ -916,7 +918,7 @@ Docker.prototype.renderTemplate = function(obj){
   // It's a bit messy to be using readFileSync I know, but this
   // is the easiest way for now.
   if(!this.__tmpl){
-    var tmplFile = path.join(path.dirname(__filename),'../res/tmpl.jst');
+    var tmplFile = path.join(path.dirname(__filename),'..','res','tmpl.jst');
     this.__tmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__tmpl(obj);
@@ -932,7 +934,7 @@ Docker.prototype.renderTemplate = function(obj){
  */
 Docker.prototype.codeFileTemplate = function(obj){
   if(!this.__codeTmpl){
-    var tmplFile = path.join(path.dirname(__filename),'../res/code.jst');
+    var tmplFile = path.join(path.dirname(__filename),'..','res','code.jst');
     this.__codeTmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__codeTmpl(obj);
@@ -948,7 +950,7 @@ Docker.prototype.codeFileTemplate = function(obj){
  */
 Docker.prototype.doxTemplate = function(obj){
   if(!this.__doxtmpl){
-    var tmplFile = path.join(path.dirname(__filename), '../res/dox.jst');
+    var tmplFile = path.join(path.dirname(__filename), '..','res','dox.jst');
     this.__doxtmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
   return this.__doxtmpl(obj);
