@@ -62,7 +62,7 @@ var mkdirp = require('mkdirp'),
  * @param {string} outDir The directory into which to put all the doc pages
  * @param {boolean} onlyUpdated Whether to only process files that have been updated
  */
-var Docker = module.exports =function(inDir, outDir, onlyUpdated, colourScheme, ignoreHidden){
+var Docker = module.exports = function(inDir, outDir, onlyUpdated, colourScheme, ignoreHidden){
   this.inDir = inDir.replace(/\/$/,'');
   this.outDir = outDir;
   this.onlyUpdated = !!onlyUpdated;
@@ -759,7 +759,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
     content: content,
     headings: headings,
     colourScheme: this.colourScheme,
-    filename: filename.replace(this.inDir,'').replace(/^\//,'')
+    filename: filename.replace(this.inDir,'').replace(/^[\/\\]/,'')
   });
 
   var self = this;
@@ -813,7 +813,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
       content: content,
       headings: headings,
       colourScheme: this.colourScheme,
-      filename: filename.replace(this.inDir,'').replace(/^\//,'')
+      filename: filename.replace(this.inDir,'').replace(/^[\\\/]/,'')
     });
 
     // Recursively create the output directory, clean out any old version of the
