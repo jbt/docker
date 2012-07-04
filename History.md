@@ -1,5 +1,11 @@
 # Docker Version History
 
+## 0.1.2
+
+ * Windows compatibility
+ * Resolve infinite loop problem when files aren't actually inside the source dir
+ * A few minor typos
+
 ## 0.1.1
 
  * Fixed problem with commend delimiters being matched inside string literals

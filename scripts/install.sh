@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/usr/bin/env bash
 
 if [ -z "$(which pygmentize)" ]
 then
