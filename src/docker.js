@@ -56,22 +56,74 @@ var mkdirp = require('mkdirp'),
  *
  * Creates a new docker instance. All methods are called on one instance of this object.
  *
- * @constructor
- * @this {Docker}
- * @param {string} inDir The root directory containing all the code files
- * @param {string} outDir The directory into which to put all the doc pages
- * @param {boolean} onlyUpdated Whether to only process files that have been updated
+ * Input arguments are either
+ *
+ *  * Object containing any of the keys `inDir`, `outDir`, `onlyUpdated`, `colourScheme`, `ignoreHidden`, `sidebarState`, `exclude`
+ *  * Or `indir`, `outDir`, `onlyUpdated`, `colourScheme` and `ignoreHidden` in order
  */
-var Docker = module.exports = function(inDir, outDir, onlyUpdated, colourScheme, ignoreHidden){
-  this.inDir = inDir.replace(/\/$/,'');
-  this.outDir = outDir;
-  this.onlyUpdated = !!onlyUpdated;
-  this.colourScheme = colourScheme || 'default';
-  this.ignoreHidden = !!ignoreHidden;
+var Docker = module.exports = function( /* inDir, outDir, onlyUpdated, colourScheme, ignoreHidden */ ){
+  if(typeof arguments[0] === 'object'){
+    this.parseOpts(arguments[0]);
+  }else{
+    this.parseOpts({
+      inDir: arguments[0],
+      outDir: arguments[1],
+      onlyUpdated: arguments[2],
+      colourScheme: arguments[3],
+      ignoreHidden: arguments[4]
+    });
+  }
   this.running = false;
   this.scanQueue = [];
   this.files = [];
   this.tree = {};
+};
+
+/**
+ * ## Docker.prototype.parseOpts
+ *
+ * Parses options for this docker instance
+ *
+ * @param {object} opts Object containing all options fo rthis instance
+ */
+Docker.prototype.parseOpts = function(opts){
+  var defaults = {
+    inDir: path.resolve('.'),
+    outDir: path.resolve('doc'),
+    onlyUpdated: false,
+    colourScheme: 'default',
+    ignoreHidden: false,
+    sidebarState: true,
+    exclude: false
+  };
+
+  // Loop through and fix up any unspecified options with the defaults.
+  for(var i in defaults){
+    if(defaults.hasOwnProperty(i) && typeof opts[i] === 'undefined'){
+      opts[i] = defaults[i];
+    }
+  }
+
+  this.inDir = opts.inDir.replace(/\/$/,'');
+  this.outDir = opts.outDir;
+  this.onlyUpdated = !!opts.onlyUpdated;
+  this.colourScheme = opts.colourScheme;
+  this.ignoreHidden = !!opts.ignoreHidden;
+  this.sidebarState = opts.sidebarState;
+
+  // Generate an exclude regex for the given pattern
+  if(typeof opts.exclude === 'string'){
+    this.excludePattern = new RegExp('^(' +
+      opts.exclude.replace(/\./g,'\\.')
+                  .replace(/\*/g, '.*')
+                  .replace(/,/g, '|') +
+      ')(/|$)');
+  }else{
+    this.excludePattern = false;
+  }
+
+  // Oh go on then. Allow American-Enligsh spelling of colour if used programmatically
+  if(opts.colorScheme) opts.colourScheme = opts.colorScheme;
 };
 
 /**
@@ -155,6 +207,10 @@ Docker.prototype.clean = function(){
 Docker.prototype.addNextFile = function(){
   if(this.scanQueue.length > 0){
     var self = this, filename = this.scanQueue.shift();
+    if(this.excludePattern && this.excludePattern.test(filename)){
+      this.addNextFile();
+      return;
+    }
     fs.stat(path.resolve(this.inDir, filename), function(err, stat){
       if(stat && stat.isDirectory()){
         // Find all children of the directory and queue those
@@ -758,6 +814,7 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
     relativeDir: relDir,
     content: content,
     headings: headings,
+    sidebar: this.sidebarState,
     colourScheme: this.colourScheme,
     filename: filename.replace(this.inDir,'').replace(/^[\/\\]/,'')
   });
@@ -813,6 +870,7 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
       content: content,
       headings: headings,
       colourScheme: this.colourScheme,
+      sidebar: this.sidebarState,
       filename: filename.replace(this.inDir,'').replace(/^[\\\/]/,'')
     });
 

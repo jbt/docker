@@ -1,5 +1,11 @@
 # Docker Version History
 
+## 0.1.3
+
+ * Added `-s` option to specify default state of the sidebar
+ * Added `-x` option to specify paths to exclude
+ * Renamed `tree` to `sidebar` in some of the markup.
+
 ## 0.1.2
 
  * Windows compatibility

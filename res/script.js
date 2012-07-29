@@ -5,9 +5,10 @@
 // that means no jQuery.
 
 // Use localStorage to store data about the tree's state: whether or not
-// the tree is visible and which directories are expanded
-var treeVisible = (window.localStorage && window.localStorage.docker_showTree == 'yes');
-
+// the tree is visible and which directories are expanded. Unless the state
+var sidebarVisible = (window.localStorage && window.localStorage.docker_showSidebar) ?
+                        window.localStorage.docker_showSidebar == 'yes' :
+                        defaultSidebar;
 
 /**
  * ## makeTree
@@ -32,7 +33,7 @@ function makeTree(treeData, root, filename){
   // Attach click event handler
   treeNode.addEventListener('click', nodeClicked, false);
 
-  if(treeVisible) document.body.className += ' tree';
+  if(sidebarVisible) document.body.className += ' sidebar';
 
   // Restore scroll position from localStorage if set. And attach scroll handler
   if(window.localStorage && window.localStorage.docker_treeScroll) treeNode.scrollTop = window.localStorage.docker_treeScroll;
@@ -136,18 +137,18 @@ function nodeHtml(nodename, node, path, root){
  */
 function toggleTree(){
   // Do the actual toggling by modifying the class on the body element. That way we can get some nice CSS transitions going.
-  if(treeVisible){
-    document.body.className = document.body.className.replace(/\s*tree/g,'');
-    treeVisible = false;
+  if(sidebarVisible){
+    document.body.className = document.body.className.replace(/\s*sidebar/g,'');
+    sidebarVisible = false;
   }else{
-    document.body.className += ' tree';
-    treeVisible = true;
+    document.body.className += ' sidebar';
+    sidebarVisible = true;
   }
   if(window.localStorage){
-    if(treeVisible){
-      window.localStorage.docker_showTree = 'yes';
+    if(sidebarVisible){
+      window.localStorage.docker_showSidebar = 'yes';
     }else{
-      window.localStorage.removeItem('docker_showTree');
+      window.localStorage.docker_showSidebar = 'no';
     }
   }
 }
@@ -201,7 +202,7 @@ function switchTab(tab){
   }
 
   // Store the last open tab in localStorage
-  if(window.localStorage) window.localStorage.docker_siderbarTab = tab;
+  if(window.localStorage) window.localStorage.docker_sidebarTab = tab;
 }
 
 /**
@@ -214,8 +215,8 @@ window.onload = function(){
   wireUpTabs();
 
   // Switch to the last viewed sidebar tab if stored, otherwise default to folder tree
-  if(window.localStorage && window.localStorage.docker_siderbarTab){
-    switchTab(window.localStorage.docker_siderbarTab);
+  if(window.localStorage && window.localStorage.docker_sidebarTab){
+    switchTab(window.localStorage.docker_sidebarTab);
   }else{
     switchTab('tree');
   }

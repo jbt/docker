@@ -26,6 +26,8 @@ Available options are:
  * `-c` or `--colour_scheme` (yes, I'm British): Colour scheme to use. Colour schemes are as below.
  * `-I` or `--ignore_hidden`: Ignore files and directories whose names begin with `.` or `_`.
  * `-w` or `--watch`: Keep the process running, watch for changes on the directory, and process updated files.
+ * `-s` or `--sidebar`: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false)
+ * `-x` or `--exclude`: Comma-separated list of paths to exclude. Supports basic `*` wildcards too.
 
 If no file list is given, docker will run recursively on every file in the current directory
 
@@ -68,11 +70,11 @@ This is the command I use to generate [this project's documentation](http://jbt.
  * Use the "manni" colour scheme
  * Ignore files starting with `_` or `.`
  * Only process updated files
-   * The coffee-script parser in one of the `node_modules` dirs is huge, so definitely don't process that every time
+ * Exclude the node_modules directory
  * Watch the directory for further changes as the code is updated.
 
 ```sh
-$ docker -o ../docker_gh-pages -c manni -I -u --watch
+$ docker -o ../docker_gh-pages -c manni -I -u -x node_modules --watch
 ```
 
 

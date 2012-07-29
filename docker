@@ -7,16 +7,35 @@ var program = require('commander');
 var watchr = require('watchr');
 
 program
-  .version('0.1.1')
+  .version('0.1.3')
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
   .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc') )
   .option('-u, --updated_files', 'Only process files that have been changed')
   .option('-c, --colour_scheme [style]', 'Colour scheme to use (as in pygmentize -L styles)')
   .option('-I, --ignore_hidden', 'Ignore hidden files and directories (those starting with . or _)')
   .option('-w, --watch', 'Watch on the input directory for file changes (experimental)')
+  .option('-s, --sidebar [state]', 'Whether the sidebar should be open or not by default', 'yes')
+  .option('-x, --exclude [pattern]', 'Paths to exclude', false)
   .parse(process.argv);
 
-var d = new Docker(program.input_dir, program.output_dir, program.updated_files, program.colour_scheme, program.ignore_hidden);
+function booleanish(input){
+  if(input === true || input === false) return input;
+  if(typeof input === 'number' || (+input + '' === input + '')) return !!+input;
+  input = input.toString();
+  return input === '' ? true : /(y(es)?|ok|t(rue)?)/i.test(input);
+}
+
+var opts = {
+  inDir: program.input_dir,
+  outDir: program.output_dir,
+  onlyUpdated: program.updated_files,
+  colourScheme: program.colour_scheme,
+  ignoreHidden: program.ignore_hidden,
+  sidebarState: booleanish(program.sidebar),
+  exclude: program.exclude
+};
+
+var d = new Docker(opts);
 if(program.args.length === 0) program.args = ['./'];
 
 if(program.watch){
