@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../doc-style.css" />
   <script src="../doc-filelist.js"></script>
   <script>
-    var relativeDir = '../', thisFile = 'res/script.js';
+    var relativeDir = '../', thisFile = 'res/script.js', defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
 </head>
@@ -74,9 +74,11 @@ that means no jQuery.</p>
   <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
 </div>
 <p>Use localStorage to store data about the tree's state: whether or not
-the tree is visible and which directories are expanded</p>
+the tree is visible and which directories are expanded. Unless the state</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">treeVisible</span> <span class="o">=</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showTree</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">sidebarVisible</span> <span class="o">=</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span><span class="p">)</span> <span class="o">?</span>
+                        <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span> <span class="o">:</span>
+                        <span class="nx">defaultSidebar</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -147,7 +149,7 @@ the tree is visible and which directories are expanded</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">nodeClicked</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 
-  <span class="k">if</span><span class="p">(</span><span class="nx">treeVisible</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; tree&#39;</span><span class="p">;</span></pre></div>
+  <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; sidebar&#39;</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -412,18 +414,18 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Do the actual toggling by modifying the class on the body element. That way we can get some nice CSS transitions going.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">treeVisible</span><span class="p">){</span>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s*tree/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="nx">treeVisible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">){</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s*sidebar/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="nx">sidebarVisible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; tree&#39;</span><span class="p">;</span>
-    <span class="nx">treeVisible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; sidebar&#39;</span><span class="p">;</span>
+    <span class="nx">sidebarVisible</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">treeVisible</span><span class="p">){</span>
-      <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showTree</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">){</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span><span class="p">;</span>
     <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-      <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s1">&#39;docker_showTree&#39;</span><span class="p">);</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span> <span class="o">=</span> <span class="s1">&#39;no&#39;</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span></pre></div>
@@ -565,7 +567,7 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Store the last open tab in localStorage</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
 <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -596,8 +598,8 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Switch to the last viewed sidebar tab if stored, otherwise default to folder tree</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">){</span>
-    <span class="nx">switchTab</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_siderbarTab</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span><span class="p">){</span>
+    <span class="nx">switchTab</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span><span class="p">);</span>
   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
     <span class="nx">switchTab</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>
   <span class="p">}</span>

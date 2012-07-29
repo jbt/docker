@@ -52,7 +52,7 @@ h1 {
   -o-transition: width 250ms linear;
   transition: width 250ms linear; }
 
-.tree #sidebar_wrapper {
+.sidebar #sidebar_wrapper {
   width: 290px; }
 
 #tree .nodename {
@@ -126,7 +126,7 @@ h1 {
   -o-transition: all 250ms linear;
   transition: all 250ms linear; }
 
-.tree #sidebar-toggle {
+.sidebar #sidebar-toggle {
   left: 290px; }
 
 #container {
@@ -137,7 +137,7 @@ h1 {
   bottom: 0;
   overflow: auto; }
 
-.tree #container {
+.sidebar #container {
   left: 295px; }
 
 #page {
@@ -191,7 +191,8 @@ td.docs {
     font-style: italic; }
 
 .pilwrap {
-  position: relative; }
+  position: relative;
+  padding-top: 1px; }
   .pilwrap .pilcrow {
     font: 12px Arial;
     text-decoration: none;

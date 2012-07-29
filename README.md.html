@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = '', thisFile = 'README.md';
+    var relativeDir = '', thisFile = 'README.md', defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
 </head>
@@ -100,6 +100,8 @@
 <li><code>-c</code> or <code>--colour_scheme</code> (yes, I'm British): Colour scheme to use. Colour schemes are as below.</li>
 <li><code>-I</code> or <code>--ignore_hidden</code>: Ignore files and directories whose names begin with <code>.</code> or <code>_</code>.</li>
 <li><code>-w</code> or <code>--watch</code>: Keep the process running, watch for changes on the directory, and process updated files.</li>
+<li><code>-s</code> or <code>--sidebar</code>: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false)</li>
+<li><code>-x</code> or <code>--exclude</code>: Comma-separated list of paths to exclude. Supports basic <code>*</code> wildcards too.</li>
 </ul>
 
 <p>If no file list is given, docker will run recursively on every file in the current directory</p>
@@ -183,13 +185,13 @@ examples, the files will be created inside <code>documents/src</code></p>
 <li>Output to a directory on the <code>gh-pages</code> branch of this repo</li>
 <li>Use the "manni" colour scheme</li>
 <li>Ignore files starting with <code>_</code> or <code>.</code></li>
-<li>Only process updated files
-<ul><li>The coffee-script parser in one of the <code>node_modules</code> dirs is huge, so definitely don't process that every time</li></ul></li>
+<li>Only process updated files</li>
+<li>Exclude the node_modules directory</li>
 <li>Watch the directory for further changes as the code is updated.</li>
 </ul>
 
 
-<div class="highlight"><pre><code><span class="nv">$ </span>docker -o ../docker_gh-pages -c manni -I -u --watch
+<div class="highlight"><pre><code><span class="nv">$ </span>docker -o ../docker_gh-pages -c manni -I -u -x node_modules --watch
 </code></pre></div>
 
 
