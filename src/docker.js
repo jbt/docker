@@ -514,15 +514,36 @@ Docker.prototype.parseSections = function(data, language){
  * Provides language-specific params for a given file name.
  *
  * @param {string} filename The name of the file to test
+ * @param {string} filedata The contents of the file (to check for shebang)
  * @return {object} Object containing all of the language-specific params
  */
-Docker.prototype.languageParams = function(filename){
+Docker.prototype.languageParams = function(filename, filedata){
+
+  // First try to detect the language from the file extension
   var ext = path.extname(filename);
   ext = ext.replace(/^\./, '');
+
+  // Bit of a hacky way of incorporating .C for C++
+  if(ext === '.C') return 'cpp';
+  ext = ext.toLowerCase();
+
   for(var i in this.languages){
     if(!this.languages.hasOwnProperty(i)) continue;
     if(this.languages[i].extensions.indexOf(ext) !== -1) return i;
   }
+
+  // If that doesn't work, see if we can grab a shebang
+
+  var shebangRegex = /^\n*#!\s*(?:\/usr\/bin\/env)?\s*(?:[^\n]*\/)*([^\/\n]+)(?:\n|$)/;
+  var match = shebangRegex.exec(filedata);
+  if(match){
+    for(var j in this.languages){
+      if(!this.languages.hasOwnProperty(j)) continue;
+      if(this.languages[j].executables && this.languages[j].executables.indexOf(match[1]) !== -1) return j;
+    }
+  }
+
+  // If we still can't figure it out, give up and return false.
   return false;
 };
 
@@ -539,30 +560,37 @@ Docker.prototype.languageParams = function(filename){
 Docker.prototype.languages = {
   javascript: {
     extensions: [ 'js' ],
+    executables: [ 'node' ],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true
   },
   coffeescript: {
     extensions: [ 'coffee' ],
+    executables: [ 'coffee' ],
     comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], dox: true
   },
   ruby: {
     extensions: [ 'rb' ],
+    executables: [ 'ruby' ],
     comment: '#',  multiLine: [ /\=begin/, /\=end/ ]
   },
   python: {
     extensions: [ 'py' ],
+    executables: [ 'python' ],
     comment: '#' // Python has no block commments :-(
   },
   perl: {
     extensions: [ 'pl', 'pm' ],
+    executables: [ 'perl' ],
     comment: '#' // Nor (really) does perl.
   },
   c: {
     extensions: [ 'c', 'h' ],
+    executables: [ 'gcc' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
   },
   cpp: { // TODO get this to pick up .C
     extensions: [ 'cc', 'cpp' ],
+    executables: [ 'g++' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
   },
   csharp: {
@@ -575,6 +603,7 @@ Docker.prototype.languages = {
   },
   php: {
     extensions: [ 'php', 'php3', 'php4', 'php5' ],
+    executables: [ 'php' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
   },
   actionscript: {
@@ -583,6 +612,7 @@ Docker.prototype.languages = {
   },
   sh: {
     extensions: [ 'sh' ],
+    executables: [ 'bash', 'sh', 'zsh' ],
     comment: '#'
   },
   yaml: {
