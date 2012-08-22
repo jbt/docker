@@ -240,9 +240,19 @@ Docker.prototype.addNextFile = function(){
  * @param {string} filename Name of the file to queue
  */
 Docker.prototype.queueFile = function(filename){
-  if(!this.canHandleFile(filename)) return;
   this.files.push(filename);
+};
 
+/**
+ * ## Docker.prototype.addFileToFree
+ *
+ * Adds a file to the file tree to show in the sidebar. This used to be in `queueFile` but
+ * since we're now only deciding whether or not the file can be included at the point of
+ * reading it, this has to happen later.
+ *
+ * @param {string} filename Name of file to add to the tree
+ */
+Docker.prototype.addFileToTree = function(filename){
   var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
 
   // Split the file's path into the individual directories
@@ -294,18 +304,6 @@ Docker.prototype.processNextFile = function(){
 };
 
 /**
- * ## Docker.prototype.canHandleFile
- *
- * Check to see whether or not we can process a given file
- * For now, we can only do javascript and markdown files
- *
- * @param {string} filename File name to test
- */
-Docker.prototype.canHandleFile = function(filename){
-  return this.languageParams(filename) !== false;
-};
-
-/**
  * ## Docker.prototype.generateDoc
  * ### _This is where the magic happens_
  *
@@ -314,23 +312,25 @@ Docker.prototype.canHandleFile = function(filename){
  * @param {string} filename File name to generate documentation for
  * @param {function} cb Callback function to execute when we're done
  */
-Docker.prototype.generateDoc = function(filename, cb){
+Docker.prototype.generateDoc = function(infilename, cb){
   var self = this;
   this.running = true;
-  filename = path.resolve(this.inDir, filename);
+  filename = path.resolve(this.inDir, infilename);
   this.decideWhetherToProcess(filename, function(shouldProcess){
     if(!shouldProcess) return cb();
     fs.readFile(filename, 'utf-8', function(err, data){
       if(err) throw err;
-      var l = self.languageParams(filename);
-      switch(l.type){
+      var lang = self.languageParams(filename, data);
+      if(lang === false) return cb();
+      self.addFileToTree(infilename);
+      switch(self.languages[lang].type){
         case 'markdown':
           self.renderMarkdownHtml(data, filename, cb);
           break;
         default:
         case 'code':
-          var sections = self.parseSections(data, filename);
-          self.highlight(sections, filename, function(){
+          var sections = self.parseSections(data, lang);
+          self.highlight(sections, lang, function(){
             self.renderCodeHtml(sections, filename, cb);
           });
           break;
@@ -400,16 +400,16 @@ Docker.prototype.fileIsNewer = function(file, otherFile, callback){
  *  }
  * ```
  * @param {string} data The contents of the script file
- * @param {string} filename The name of the script file
+ * @param {string} language The language of the script file
 
  * @return {Array} array of section objects
  */
-Docker.prototype.parseSections = function(data, filename){
+Docker.prototype.parseSections = function(data, language){
   var codeLines = data.split('\n');
   var sections = [];
 
   // Fetch language-specific parameters for this code file
-  var params = this.languageParams(filename);
+  var params = this.languages[language];
   var section = {
     docs: '',
     code: ''
@@ -518,56 +518,80 @@ Docker.prototype.parseSections = function(data, filename){
  */
 Docker.prototype.languageParams = function(filename){
   var ext = path.extname(filename);
-  switch(ext.toLowerCase()){
-    // The language params can have the following keys:
-    //
-    //  * `name`: Name of Pygments lexer to use
-    //  * `comment`: String flag for single-line comments
-    //  * `multiline`: Two-element array of start and end flags for block comments
-    //  * `commentsIgnore`: Regex of comments to strip completely (don't even doc)
-    //  * `dox`: Whether to run block comments through Dox (only JavaScript)
-    //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
-    //
-    case '.js':
-      return { name: 'javascript',   comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true };
-    case '.coffee':
-      return { name: 'coffeescript', comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], dox: true };
-    case '.rb':
-      return { name: 'ruby',         comment: '#',  multiLine: [ /\=begin/, /\=end/ ] };
-    case '.py':
-      return { name: 'python',       comment: '#'   }; // Python has no block commments :-(
-    case '.pl':
-    case '.pm':
-      return { name: 'perl',         comment: '#'   }; // Nor (really) does perl.
-    case '.c':
-    case '.h':
-      if(ext !== '.C') // Sneakily fall through to C++ for .C files.
-        return { name: 'c',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
-    case '.cc':
-    case '.cpp':
-      return { name: 'cpp',          comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
-    case '.cs':
-      return { name: 'csharp',       comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
-    case '.java':
-      return { name: 'java',         comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true };
-    case '.php':
-    case '.php3':
-    case '.php4':
-    case '.php5':
-      return { name: 'php',          comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true };
-    case '.as':
-      return { name: 'actionscript', comment: '//', multiLine: [ /\/\*/, /\*\// ]     };
-    case '.sh':
-      return { name: 'sh',           comment: '#'   };
-    case '.yaml':
-    case '.yml':
-      return { name: 'yaml',         comment: '#'   };
-    case '.md':
-    case '.mkd':
-    case '.markdown':
-      return { name: 'markdown', type: 'markdown' };
-    default:
-      return false;
+  ext = ext.replace(/^\./, '');
+  for(var i in this.languages){
+    if(!this.languages.hasOwnProperty(i)) continue;
+    if(this.languages[i].extensions.indexOf(ext) !== -1) return i;
+  }
+  return false;
+};
+
+
+// The language params can have the following keys:
+//
+//  * `name`: Name of Pygments lexer to use
+//  * `comment`: String flag for single-line comments
+//  * `multiline`: Two-element array of start and end flags for block comments
+//  * `commentsIgnore`: Regex of comments to strip completely (don't even doc)
+//  * `dox`: Whether to run block comments through Dox (only JavaScript)
+//  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
+//
+Docker.prototype.languages = {
+  javascript: {
+    extensions: [ 'js' ],
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true
+  },
+  coffeescript: {
+    extensions: [ 'coffee' ],
+    comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], dox: true
+  },
+  ruby: {
+    extensions: [ 'rb' ],
+    comment: '#',  multiLine: [ /\=begin/, /\=end/ ]
+  },
+  python: {
+    extensions: [ 'py' ],
+    comment: '#' // Python has no block commments :-(
+  },
+  perl: {
+    extensions: [ 'pl', 'pm' ],
+    comment: '#' // Nor (really) does perl.
+  },
+  c: {
+    extensions: [ 'c', 'h' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  cpp: { // TODO get this to pick up .C
+    extensions: [ 'cc', 'cpp' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  csharp: {
+    extensions: [ 'cs' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  java: {
+    extensions: [ 'java' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
+  },
+  php: {
+    extensions: [ 'php', 'php3', 'php4', 'php5' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
+  },
+  actionscript: {
+    extensions: [ 'as' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  sh: {
+    extensions: [ 'sh' ],
+    comment: '#'
+  },
+  yaml: {
+    extensions: [ 'yaml', 'yml' ],
+    comment: '#'
+  },
+  markdown: {
+    extensions: [ 'md', 'mkd', 'markdown' ],
+    type: 'markdown'
   }
 };
 
@@ -621,11 +645,11 @@ Docker.prototype.pygments = function(data, language, cb){
  * `docHtml` and `codeHtml` respectively
  *
  * @param {Array} sections Array of section objects
- * @param {string} filename Name of the file being processed
+ * @param {string} language Language ith which to highlight the file
  * @param {function} cb Callback function to fire when we're done
  */
-Docker.prototype.highlight = function(sections, filename, cb){
-  var params = this.languageParams(filename), self = this;
+Docker.prototype.highlight = function(sections, language, cb){
+  var params = this.languages[language], self = this;
 
   var input = [];
   for(var i = 0; i < sections.length; i += 1){
@@ -634,7 +658,7 @@ Docker.prototype.highlight = function(sections, filename, cb){
   input = input.join('\n' + params.comment + '----{DIVIDER_THING}----\n');
 
   // Run our input through pygments, then split the output back up into its constituent sections
-  this.pygments(input, params.name, function(out){
+  this.pygments(input, language, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
     var bits = out.split(new RegExp('\\n*<span class="c1?">' + params.comment + '----\\{DIVIDER_THING\\}----<\\/span>\\n*'));
     for(var i = 0; i < sections.length; i += 1){
