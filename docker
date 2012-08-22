@@ -1,11 +1,17 @@
 #!/usr/bin/env node
 
+// Require all node modules
 var path = require('path');
-var Docker = require('./src/docker.js');
-var pwd = path.resolve('.');
 var program = require('commander');
 var watchr = require('watchr');
 
+// Require Docker
+var Docker = require('./src/docker.js');
+
+// Figure out PWD because it doesn't exist in process.env on windows.
+var pwd = path.resolve('.');
+
+// All program arguments using commander
 program
   .version('0.1.3')
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
@@ -18,6 +24,9 @@ program
   .option('-x, --exclude [pattern]', 'Paths to exclude', false)
   .parse(process.argv);
 
+
+// Super-simple function to test if ann argument is vaguely trueish or falseish.
+// Should match `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'y'`, `'n'`, `'yes'`, `'no'`, `'ok'`, `'true'`, `'false'`
 function booleanish(input){
   if(input === true || input === false) return input;
   if(typeof input === 'number' || (+input + '' === input + '')) return !!+input;
@@ -25,6 +34,7 @@ function booleanish(input){
   return input === '' ? true : /(y(es)?|ok|t(rue)?)/i.test(input);
 }
 
+// Put all the options into an object
 var opts = {
   inDir: program.input_dir,
   outDir: program.output_dir,
@@ -35,9 +45,13 @@ var opts = {
   exclude: program.exclude
 };
 
+// Create docker instance
 var d = new Docker(opts);
+
+// If no file list is specified, just run on whole directory
 if(program.args.length === 0) program.args = ['./'];
 
+// Set it running.
 if(program.watch){
   d.watch(program.args);
 }else{
