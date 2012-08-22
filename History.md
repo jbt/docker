@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.1.4
+
+ * Added language type detection from shebangs
+
 ## 0.1.3
 
  * Added `-s` option to specify default state of the sidebar

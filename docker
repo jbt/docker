@@ -13,7 +13,7 @@ var pwd = path.resolve('.');
 
 // All program arguments using commander
 program
-  .version('0.1.3')
+  .version('0.1.4')
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
   .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc') )
   .option('-u, --updated_files', 'Only process files that have been changed')
