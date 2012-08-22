@@ -588,7 +588,7 @@ Docker.prototype.languages = {
     executables: [ 'gcc' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
   },
-  cpp: { // TODO get this to pick up .C
+  cpp: {
     extensions: [ 'cc', 'cpp' ],
     executables: [ 'g++' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
