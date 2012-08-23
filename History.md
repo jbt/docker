@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.1.5
+
+ * Added smarter handling of symbolic links, allowing for handling of dead links
+
 ## 0.1.4
 
  * Added language type detection from shebangs

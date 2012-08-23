@@ -211,8 +211,21 @@ Docker.prototype.addNextFile = function(){
       this.addNextFile();
       return;
     }
-    fs.stat(path.resolve(this.inDir, filename), function(err, stat){
-      if(stat && stat.isDirectory()){
+    var currFile = path.resolve(this.inDir, filename);
+    fs.lstat(currFile, function cb(err, stat){
+      if(stat && stat.isSymbolicLink()){
+        fs.readlink(currFile, function(err, link){
+          currFile = path.resolve(path.dirname(currFile), link);
+          fs.exists(currFile, function(exists){
+            if(!exists){
+              console.error("Unable to follow symlink to " + currFile + ': file does not exist');
+              self.addNextFile();
+            }else{
+              fs.lstat(currFile, cb);
+            }
+          });
+        });
+      }else if(stat && stat.isDirectory()){
         // Find all children of the directory and queue those
         fs.readdir(path.resolve(self.inDir, filename), function(err, list){
           for(var i = 0; i < list.length; i += 1){
