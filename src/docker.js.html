@@ -528,8 +528,21 @@ If it's a file, add it to the queue.</p>
       <span class="k">this</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
       <span class="k">return</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="nx">fs</span><span class="p">.</span><span class="nx">stat</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">stat</span><span class="p">){</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">stat</span> <span class="o">&amp;&amp;</span> <span class="nx">stat</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">()){</span></pre></div>
+    <span class="kd">var</span> <span class="nx">currFile</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">lstat</span><span class="p">(</span><span class="nx">currFile</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">stat</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">stat</span> <span class="o">&amp;&amp;</span> <span class="nx">stat</span><span class="p">.</span><span class="nx">isSymbolicLink</span><span class="p">()){</span>
+        <span class="nx">fs</span><span class="p">.</span><span class="nx">readlink</span><span class="p">(</span><span class="nx">currFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">link</span><span class="p">){</span>
+          <span class="nx">currFile</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">currFile</span><span class="p">),</span> <span class="nx">link</span><span class="p">);</span>
+          <span class="nx">fs</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">currFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">exists</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">exists</span><span class="p">){</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Unable to follow symlink to &quot;</span> <span class="o">+</span> <span class="nx">currFile</span> <span class="o">+</span> <span class="s1">&#39;: file does not exist&#39;</span><span class="p">);</span>
+              <span class="nx">self</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+              <span class="nx">fs</span><span class="p">.</span><span class="nx">lstat</span><span class="p">(</span><span class="nx">currFile</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">});</span>
+        <span class="p">});</span>
+      <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">stat</span> <span class="o">&amp;&amp;</span> <span class="nx">stat</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">()){</span></pre></div>
         </td>
       </tr>
       <tr>
