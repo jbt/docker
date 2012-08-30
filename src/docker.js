@@ -606,9 +606,21 @@ Docker.prototype.languages = {
     executables: [ 'g++' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
   },
+  vbnet: {
+    extensions: [ 'vb', 'vbs', 'bas' ],
+    comment: "'" // No multiline
+  },
+  'aspx-vb': {
+    extensions: [ 'asp', 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
+    comment: "'" // No multiline
+  },
   csharp: {
     extensions: [ 'cs' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  'aspx-cs': {
+    extensions: [ 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
   },
   java: {
     extensions: [ 'java' ],
@@ -703,7 +715,7 @@ Docker.prototype.highlight = function(sections, language, cb){
   // Run our input through pygments, then split the output back up into its constituent sections
   this.pygments(input, language, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
-    var bits = out.split(new RegExp('\\n*<span class="c1?">' + params.comment + '----\\{DIVIDER_THING\\}----<\\/span>\\n*'));
+    var bits = out.split(/\n*<span class="c1?">[^<]*----\{DIVIDER_THING\}----<\/span>\n*/g);
     for(var i = 0; i < sections.length; i += 1){
       sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
