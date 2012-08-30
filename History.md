@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.1.6
+
+ * Added support for VB.NET, ASP C# and ASP VB courtesy of [peterhost](https://github.com/peterhost)
+
 ## 0.1.5
 
  * Added smarter handling of symbolic links, allowing for handling of dead links
