@@ -396,24 +396,24 @@ hash references.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>var text = text.replace(/
-      ^[ ]{0,3}[(.+)]:  // id = $1  attacklab: g_tab_width - 1
-        [ \t]*
-        \n?       // maybe <em>one</em> newline
-        [ \t]*
-      <?(\S+?)>?      // url = $2
-        [ \t]*
-        \n?       // maybe one newline
-        [ \t]*
-      (?:
-        (\n<em>)       // any lines skipped = $3 attacklab: lookbehind removed
-        ["(]
-        (.+?)       // title = $4
-        [")]
-        [ \t]</em>
-      )?          // title is optional
-      (?:\n+|$)
-      /gm,
-      function(){...});</p>
+^[ ]{0,3}[(.+)]:  // id = $1  attacklab: g_tab_width - 1
+[ \t]*
+\n?       // maybe <em>one</em> newline
+[ \t]*
+<?(\S+?)>?      // url = $2
+[ \t]*
+\n?       // maybe one newline
+[ \t]*
+(?:
+(\n<em>)       // any lines skipped = $3 attacklab: lookbehind removed
+["(]
+(.+?)       // title = $4
+[")]
+[ \t]</em>
+)?          // title is optional
+(?:\n+|$)
+/gm,
+function(){...});</p>
   </div>
   <div class="body">
   </div>
@@ -513,17 +513,17 @@ match will start at the first <code>&lt;div&gt;</code> and stop at the first <co
 
 <div class="dox">
   <div class="summary"><p>var text = text.replace(/
-  (           // save in $1
-    ^         // start of line  (with /m)
-    &lt;($block_tags_a)  // start tag = $2
-    \b          // word break
-              // attacklab: hack around khtml/pcre bug...
-    [^\r]<em>?\n     // any number of lines, minimally matching
-    </\2>       // the matching end tag
-    [ \t]</em>        // trailing spaces/tabs
-    (?=\n+)       // followed by a newline
-  )           // attacklab: there are sentinel newlines at end of document
-  /gm,function(){...}};</p>
+(           // save in $1
+^         // start of line  (with /m)
+&lt;($block_tags_a)  // start tag = $2
+\b          // word break
+// attacklab: hack around khtml/pcre bug...
+[^\r]<em>?\n     // any number of lines, minimally matching
+</\2>       // the matching end tag
+[ \t]</em>        // trailing spaces/tabs
+(?=\n+)       // followed by a newline
+)           // attacklab: there are sentinel newlines at end of document
+/gm,function(){...}};</p>
   </div>
   <div class="body">
   </div>
@@ -549,17 +549,17 @@ match will start at the first <code>&lt;div&gt;</code> and stop at the first <co
 </div>
 <div class="dox">
   <div class="summary"><p>var text = text.replace(/
-  (           // save in $1
-    ^         // start of line  (with /m)
-    &lt;($block_tags_b)  // start tag = $2
-    \b          // word break
-              // attacklab: hack around khtml/pcre bug...
-    [^\r]<em>?       // any number of lines, minimally matching
-    .</em></\2>       // the matching end tag
-    [ \t]*        // trailing spaces/tabs
-    (?=\n+)       // followed by a newline
-  )           // attacklab: there are sentinel newlines at end of document
-  /gm,function(){...}};</p>
+(           // save in $1
+^         // start of line  (with /m)
+&lt;($block_tags_b)  // start tag = $2
+\b          // word break
+// attacklab: hack around khtml/pcre bug...
+[^\r]<em>?       // any number of lines, minimally matching
+.</em></\2>       // the matching end tag
+[ \t]*        // trailing spaces/tabs
+(?=\n+)       // followed by a newline
+)           // attacklab: there are sentinel newlines at end of document
+/gm,function(){...}};</p>
   </div>
   <div class="body">
   </div>
@@ -586,17 +586,17 @@ to make the other regex more complicated.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (           // save in $1
-    \n\n        // Starting after a blank line
-    [ ]{0,3}
-    (&lt;(hr)        // start tag = $2
-    \b          // word break
-    ([^&lt;>])<em>?     //
-    \/?>)       // the matching end tag
-    [ \t]</em>
-    (?=\n{2,})      // followed by a blank line
-  )
-  /g,hashElement);</p>
+(           // save in $1
+\n\n        // Starting after a blank line
+[ ]{0,3}
+(&lt;(hr)        // start tag = $2
+\b          // word break
+([^&lt;>])<em>?     //
+\/?>)       // the matching end tag
+[ \t]</em>
+(?=\n{2,})      // followed by a blank line
+)
+/g,hashElement);</p>
   </div>
   <div class="body">
   </div>
@@ -622,16 +622,16 @@ to make the other regex more complicated.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (           // save in $1
-    \n\n        // Starting after a blank line
-    [ ]{0,3}      // attacklab: g_tab_width - 1
-    <!
-    (--[^\r]*?--\s*)+
-    >
-    [ \t]*
-    (?=\n{2,})      // followed by a blank line
-  )
-  /g,hashElement);</p>
+(           // save in $1
+\n\n        // Starting after a blank line
+[ ]{0,3}      // attacklab: g_tab_width - 1
+<!
+(--[^\r]*?--\s*)+
+>
+[ \t]*
+(?=\n{2,})      // followed by a blank line
+)
+/g,hashElement);</p>
   </div>
   <div class="body">
   </div>
@@ -657,20 +657,20 @@ to make the other regex more complicated.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (?:
-    \n\n        // Starting after a blank line
-  )
-  (           // save in $1
-    [ ]{0,3}      // attacklab: g_tab_width - 1
-    (?:
-      &lt;([?%])     // $2
-      [^\r]<em>?
-      \2>
-    )
-    [ \t]</em>
-    (?=\n{2,})      // followed by a blank line
-  )
-  /g,hashElement);</p>
+(?:
+\n\n        // Starting after a blank line
+)
+(           // save in $1
+[ ]{0,3}      // attacklab: g_tab_width - 1
+(?:
+&lt;([?%])     // $2
+[^\r]<em>?
+\2>
+)
+[ \t]</em>
+(?=\n{2,})      // followed by a blank line
+)
+/g,hashElement);</p>
   </div>
   <div class="body">
   </div>
@@ -885,30 +885,25 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (             // wrap whole match in $1
-    [
-    (
-      (?:
-        [[^]]<em>]    // allow brackets nested one level
-        |
-        [^[]     // or anything else
-      )</em>
-    )
-    ]</p>
+(             // wrap whole match in $1
+[
+(
+(?:
+[[^]]<em>]    // allow brackets nested one level
+|
+[^[]     // or anything else
+)</em>
+)
+]
+[ ]?          // one optional space
+(?:\n[ ]<em>)?       // one optional newline followed by spaces
+[
+(.</em>?)         // id = $3
+]
+)()()()()         // pad remaining backreferences
+/g,_DoAnchors_callback);</p>
   </div>
-  <div class="body"><p>[ ]?          // one optional space
-    (?:\n[ ]*)?       // one optional newline followed by spaces</p>
-
-
-<div class="highlight"><pre><code><span class="o">\</span><span class="p">[</span>
-<span class="p">(</span><span class="o">.*</span>?<span class="p">)</span>         <span class="o">//</span> <span class="n">id</span> <span class="p">=</span> $3
-<span class="o">\</span><span class="p">]</span>
-</code></pre></div>
-
-
-
-<p>)()()()()         // pad remaining backreferences
-  /g,_DoAnchors_callback);</p>
+  <div class="body">
   </div>
 </div>
         </td>
@@ -932,30 +927,30 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-    (           // wrap whole match in $1
-      [
-      (
-        (?:
-          [[^]]<em>]  // allow brackets nested one level
-        |
-        [^[]]     // or anything else
-      )
-    )
-    ]
-    (            // literal paren
-    [ \t]</em>
-    ()            // no id, so leave $3 empty
-    <?(.<em>?)>?       // href = $4
-    [ \t]</em>
-    (           // $5
-      (['"])        // quote char = $6
-      (.<em>?)       // Title = $7
-      \6          // matching quote
-      [ \t]</em>        // ignore any spaces/tabs between closing quote and )
-    )?            // title is optional
-    )
-  )
-  /g,writeAnchorTag);</p>
+(           // wrap whole match in $1
+[
+(
+(?:
+[[^]]<em>]  // allow brackets nested one level
+|
+[^[]]     // or anything else
+)
+)
+]
+(            // literal paren
+[ \t]</em>
+()            // no id, so leave $3 empty
+<?(.<em>?)>?       // href = $4
+[ \t]</em>
+(           // $5
+(['"])        // quote char = $6
+(.<em>?)       // Title = $7
+\6          // matching quote
+[ \t]</em>        // ignore any spaces/tabs between closing quote and )
+)?            // title is optional
+)
+)
+/g,writeAnchorTag);</p>
   </div>
   <div class="body">
   </div>
@@ -983,12 +978,12 @@ or <a href="/foo">link test</a></p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (             // wrap whole match in $1
-    [
-    ([^[]]+)        // link text = $2; can't contain '[' or ']'
-    ]
-  )()()()()()         // pad rest of backreferences
-  /g, writeAnchorTag);</p>
+(             // wrap whole match in $1
+[
+([^[]]+)        // link text = $2; can't contain '[' or ']'
+]
+)()()()()()         // pad rest of backreferences
+/g, writeAnchorTag);</p>
   </div>
   <div class="body">
   </div>
@@ -1091,24 +1086,19 @@ or <a href="/foo">link test</a></p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (           // wrap whole match in $1
-    ![
-    (.*?)       // alt text = $2
-    ]</p>
+(           // wrap whole match in $1
+![
+(.<em>?)       // alt text = $2
+]
+[ ]?        // one optional space
+(?:\n[ ]</em>)?     // one optional newline followed by spaces
+[
+(.*?)       // id = $3
+]
+)()()()()       // pad rest of backreferences
+/g,writeImageTag);</p>
   </div>
-  <div class="body"><p>[ ]?        // one optional space
-    (?:\n[ ]*)?     // one optional newline followed by spaces</p>
-
-
-<div class="highlight"><pre><code><span class="o">\</span><span class="p">[</span>
-<span class="p">(</span><span class="o">.*</span>?<span class="p">)</span>       <span class="o">//</span> <span class="n">id</span> <span class="p">=</span> $3
-<span class="o">\</span><span class="p">]</span>
-</code></pre></div>
-
-
-
-<p>)()()()()       // pad rest of backreferences
-  /g,writeImageTag);</p>
+  <div class="body">
   </div>
 </div>
         </td>
@@ -1133,25 +1123,25 @@ Don't forget: encode * and _</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-  (           // wrap whole match in $1
-    ![
-    (.<em>?)       // alt text = $2
-    ]
-    \s?         // One optional whitespace character
-    (          // literal paren
-    [ \t]</em>
-    ()          // no id, so leave $3 empty
-    <?(\S+?)>?      // src url = $4
-    [ \t]*
-    (         // $5
-      (['"])      // quote char = $6
-      (.<em>?)     // title = $7
-      \6        // matching quote
-      [ \t]</em>
-    )?          // title is optional
-  )
-  )
-  /g,writeImageTag);</p>
+(           // wrap whole match in $1
+![
+(.<em>?)       // alt text = $2
+]
+\s?         // One optional whitespace character
+(          // literal paren
+[ \t]</em>
+()          // no id, so leave $3 empty
+<?(\S+?)>?      // src url = $4
+[ \t]*
+(         // $5
+(['"])      // quote char = $6
+(.<em>?)     // title = $7
+\6        // matching quote
+[ \t]</em>
+)?          // title is optional
+)
+)
+/g,writeImageTag);</p>
   </div>
   <div class="body">
   </div>
@@ -1283,13 +1273,13 @@ Replicate this bug.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-    ^(#{1,6})        // $1 = string of #'s
-    [ \t]*
-    (.+?)         // $2 = Header text
-    [ \t]*
-    #*           // optional closing #'s (not counted)
-    \n+
-  /gm, function() {...});</p>
+^(#{1,6})        // $1 = string of #'s
+[ \t]*
+(.+?)         // $2 = Header text
+[ \t]*
+#*           // optional closing #'s (not counted)
+\n+
+/gm, function() {...});</p>
   </div>
   <div class="body">
   </div>
@@ -1355,24 +1345,24 @@ Replicate this bug.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>var whole_list = /
-  (                 // $1 = whole list
-    (               // $2
-      [ ]{0,3}          // attacklab: g_tab_width - 1
-      ([<em>+-]|\d+[.])        // $3 = first list item marker
-      [ \t]+
-    )
-    [^\r]+?
-    (               // $4
-      ~0              // sentinel for workaround; should be $
-    |
-      \n{2,}
-      (?=\S)
-      (?!             // Negative lookahead for another list item marker
-        [ \t]</em>
-        (?:[*+-]|\d+[.])[ \t]+
-      )
-    )
-  )/g</p>
+(                 // $1 = whole list
+(               // $2
+[ ]{0,3}          // attacklab: g_tab_width - 1
+([<em>+-]|\d+[.])        // $3 = first list item marker
+[ \t]+
+)
+[^\r]+?
+(               // $4
+~0              // sentinel for workaround; should be $
+|
+\n{2,}
+(?=\S)
+(?!             // Negative lookahead for another list item marker
+[ \t]</em>
+(?:[*+-]|\d+[.])[ \t]+
+)
+)
+)/g</p>
   </div>
   <div class="body">
   </div>
@@ -1511,13 +1501,13 @@ starting cardinal number; e.g. "1." or "a.".</p>
 </div>
 <div class="dox">
   <div class="summary"><p>list_str = list_str.replace(/
-    (\n)?             // leading line = $1
-    (^[ \t]<em>)           // leading whitespace = $2
-    ([</em>+-]|\d+[.]) [ \t]+     // list marker = $3
-    ([^\r]+?            // list item text   = $4
-    (\n{1,2}))
-    (?= \n* (~0 | \2 ([*+-]|\d+[.]) [ \t]+))
-  /gm, function(){...});</p>
+(\n)?             // leading line = $1
+(^[ \t]<em>)           // leading whitespace = $2
+([</em>+-]|\d+[.]) [ \t]+     // list marker = $3
+([^\r]+?            // list item text   = $4
+(\n{1,2}))
+(?= \n* (~0 | \2 ([*+-]|\d+[.]) [ \t]+))
+/gm, function(){...});</p>
   </div>
   <div class="body">
   </div>
@@ -1586,15 +1576,15 @@ starting cardinal number; e.g. "1." or "a.".</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(text,
-    /(?:\n\n|^)
-    (               // $1 = the code block -- one or more lines, starting with a space/tab
-      (?:
-        (?:[ ]{4}|\t)     // Lines must start with a tab or a tab-width of spaces - attacklab: g_tab_width
-        .<em>\n+
-      )+
-    )
-    (\n</em>[ ]{0,3}[^ \t\n]|(?=~0))  // attacklab: g_tab_width
-  /g,function(){...});</p>
+/(?:\n\n|^)
+(               // $1 = the code block -- one or more lines, starting with a space/tab
+(?:
+(?:[ ]{4}|\t)     // Lines must start with a tab or a tab-width of spaces - attacklab: g_tab_width
+.<em>\n+
+)+
+)
+(\n</em>[ ]{0,3}[^ \t\n]|(?=~0))  // attacklab: g_tab_width
+/g,function(){...});</p>
   </div>
   <div class="body">
   </div>
@@ -1625,7 +1615,7 @@ text = text.replace(text,
 /(?:\n|^)
 (?<code>{3,}[ a-z]*\n?)        // Code fence with optional language
 (                         // $1 = the code block -- one or more lines, and no occurrences of three or more backticks
-  [^</code>]</em>(?:<code>{1,2}[^</code>]+)*
+[^</code>]</em>(?:<code>{1,2}[^</code>]+)*
 )
 (?:\n*`{3,})              // Closing fence
 (?:\n|$)                  // And make sure we get all of the closing fence. Just in case someone used the wrong number of backticks
@@ -1738,15 +1728,15 @@ Turns to:
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-    (^|[^\])         // Character before opening <code>can't be a backslash
-    (</code>+)            // $2 = Opening run of <code>
-    (             // $3 = The code block
-      [^\r]*?
-      [^</code>]          // attacklab: work around lack of lookbehind
-    )
-    \2              // Matching closer
-    (?!`)
-  /gm, function(){...});</p>
+(^|[^\])         // Character before opening <code>can't be a backslash
+(</code>+)            // $2 = Opening run of <code>
+(             // $3 = The code block
+[^\r]*?
+[^</code>]          // attacklab: work around lack of lookbehind
+)
+\2              // Matching closer
+(?!`)
+/gm, function(){...});</p>
   </div>
   <div class="body">
   </div>
@@ -1823,43 +1813,35 @@ entities within a Markdown code span.</p>
   <a class="pilcrow" href="#section-100" id="section-100">&#182;</a>
 </div>
 <div class="dox">
-  <div class="summary"><p>Item</p>
+  <div class="summary"><p>Item
+//   1. Subitem
+//            special char: *
+//---
+return text;
+}
+var <em>DoItalicsAndBold = function(text) {
+// <strong> must go first:
+text = text.replace(/(**|</em><em>)(?=\S)([^\r]*?\S[*</em>]<em>)\1/g,
+"<strong>$2</strong>");
+text = text.replace(/(\w)_(\w)/g, "$1~E95E$2") // *</em> JT <em>*  "~E95E" == escaped "_"
+text = text.replace(/(*|_)(?=\S)([^\r]</em>?\S)\1/g,
+"<em>$2</em>");
+return text;
+}
+var _DoBlockQuotes = function(text) {
+/*
+text = text.replace(/
+(               // Wrap whole match in $1
+(
+^[ \t]<em>>[ \t]?      // '>' at the start of a line
+.+\n          // rest of the first line
+(.+\n)</em>         // subsequent consecutive lines
+\n*           // blanks
+)+
+)
+/gm, function(){...});</p>
   </div>
-  <div class="body"><p>//   1. Subitem</p>
-
-<p>//            special char: *
-//---</p>
-
-<p>return text;
-}</p>
-
-<p>var _DoItalicsAndBold = function(text) {</p>
-
-<p>// <strong> must go first:
-text = text.replace(/(**|<em>_)(?=\S)([^\r]*?\S[*</em>]*)\1/g,
-  "<strong>$2</strong>");</p>
-
-<p>text = text.replace(/(\w)<em>(\w)/g, "$1~E95E$2") // ** JT **  "~E95E" == escaped "</em>"</p>
-
-<p>text = text.replace(/(*|_)(?=\S)([^\r]*?\S)\1/g,
-  "<em>$2</em>");</p>
-
-<p>return text;
-}</p>
-
-<p>var _DoBlockQuotes = function(text) {</p>
-
-<p>/*
-  text = text.replace(/
-  (               // Wrap whole match in $1
-    (
-      ^[ \t]<em>>[ \t]?      // '>' at the start of a line
-      .+\n          // rest of the first line
-      (.+\n)</em>         // subsequent consecutive lines
-      \n*           // blanks
-    )+
-  )
-  /gm, function(){...});</p>
+  <div class="body">
   </div>
 </div>
         </td>
@@ -2096,7 +2078,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-116" id="section-116">&#182;</a>
 </div>
-<p>Email addresses: <a href="&#109;&#x61;&#105;&#108;&#116;&#x6F;:&#97;&#100;&#100;r&#x65;&#115;&#x73;&#64;&#100;o&#x6D;&#x61;&#105;&#110;&#46;&#102;&#111;o">&#97;&#100;&#100;r&#x65;&#115;&#x73;&#64;&#100;o&#x6D;&#x61;&#105;&#110;&#46;&#102;&#111;o</a></p>
+<p>Email addresses: <a href="&#x6D;&#x61;&#105;&#x6C;&#x74;&#x6F;:&#97;&#100;d&#114;&#x65;&#115;s&#64;&#100;&#x6F;&#109;&#97;&#105;&#110;&#46;&#x66;&#x6F;&#111;">&#97;&#100;d&#114;&#x65;&#115;s&#64;&#100;&#x6F;&#109;&#97;&#105;&#110;&#46;&#x66;&#x6F;&#111;</a></p>
         </td>
         <td class="code highlight"><div class="highlight"><pre></pre></div>
         </td>
@@ -2108,15 +2090,15 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-    &lt;
-    (?:mailto:)?
-    (
-      [-.\w]+
-      \@
-      [-a-z0-9]+(.[-a-z0-9]+)*.[a-z]+
-    )
-    >
-  /gi, _DoAutoLinks_callback());</p>
+&lt;
+(?:mailto:)?
+(
+[-.\w]+
+\@
+[-a-z0-9]+(.[-a-z0-9]+)*.[a-z]+
+)
+>
+/gi, _DoAutoLinks_callback());</p>
   </div>
   <div class="body">
   </div>

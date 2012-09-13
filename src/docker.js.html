@@ -1062,10 +1062,12 @@ non-javascript comments by <a href="https://github.com/brynbellomy">brynbellomy<
 <div class="pilwrap">
   <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
-<p>standardize the comment block delimiters to the only ones that
+<p>Remove whitespace at beginning of each comment line, and
+standardize the comment block delimiters to the only ones that
 dox seems to understand, namely, /* and */</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>              <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">multiLine</span>
+                <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s+/gm</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;/**&quot;</span><span class="p">)</span>
                 <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;*/&quot;</span><span class="p">)</span>
                 <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\n (?:[^\*])/g</span><span class="p">,</span> <span class="s2">&quot;\n * &quot;</span><span class="p">);</span>
