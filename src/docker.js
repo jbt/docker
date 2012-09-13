@@ -461,9 +461,11 @@ Docker.prototype.parseSections = function(data, language){
               // Slightly-hacky-but-hey-it-works way of persuading Dox to work with
               // non-javascript comments by [brynbellomy](https://github.com/brynbellomy)
 
+              // Remove whitespace at beginning of each comment line, and
               // standardize the comment block delimiters to the only ones that
               // dox seems to understand, namely, /* and */
               multiLine = multiLine
+                .replace(/^\s+/gm, "")
                 .replace(params.multiLine[0], "/**")
                 .replace(params.multiLine[1], "*/")
                 .replace(/\n (?:[^\*])/g, "\n * ");
