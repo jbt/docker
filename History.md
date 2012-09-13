@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.1.7
+
+ * Bugfix: indented jsDoc was breaking.
+
 ## 0.1.6
 
  * Added support for VB.NET, ASP C# and ASP VB courtesy of [peterhost](https://github.com/peterhost)
