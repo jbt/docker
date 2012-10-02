@@ -11,8 +11,8 @@ then
     echo "  sudo easy_install Pygments"
     echo "to install pygments"
   else
-    echo "Attempting to install Pygments. This requires sudo, so don't be alarmed."
-    echo "If you want to do this yourself instead, just run 'sudo easy_install Pygments'"
-    sudo easy_install Pygments
+    echo "You need to run:"
+    echo "  sudo easy_install Pygments"
+    echo "to install Pygments in order for docker to work"
   fi
 fi

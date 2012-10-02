@@ -26,7 +26,7 @@
 // The main differences from docco are:
 //
 //  - **jsDoc support**: support for **jsDoc**-style code comments, which
-// is provided by way of [Dox](https://github.com/visionmedia/dox). You can see some examples of
+// is provided in a style similar to [Dox](https://github.com/visionmedia/dox). You can see some examples of
 // the sort of output you get below.
 //
 //  - **Folder Tree** and **Heading Navigation**: collapsible sidebar with folder tree and jump-to
@@ -44,7 +44,6 @@
 // Include all the necessay node modules.
 var mkdirp = require('mkdirp'),
   fs = require('fs'),
-  dox = require('dox'),
   path = require('path'),
   exec = require('child_process').exec,
   spawn = require('child_process').spawn,
@@ -429,7 +428,7 @@ Docker.prototype.parseSections = function(data, language){
   };
   var inMultiLineComment = false;
   var multiLine = '';
-  var doxData;
+  var jsDocData;
 
   function md(a, stripParas){
     var h = showdown.makeHtml(a.replace(/(^\s*|\s*$)/,''));
@@ -452,33 +451,26 @@ Docker.prototype.parseSections = function(data, language){
         // End-multiline comments should match regardless of whether they're 'quoted'
         if(line.match(params.multiLine[1])){
           // Once we have reached the end of the multiline, take the whole content
-          // of the multiline comment, and pass it through **dox**, which will then
-          // extract any **jsDoc** parameters that are present.
+          // of the multiline comment, and parse it as jsDoc.
           inMultiLineComment = false;
-          if(params.dox){
+          if(params.jsDoc){
             multiLine += line;
-            try{
-              // Slightly-hacky-but-hey-it-works way of persuading Dox to work with
-              // non-javascript comments by [brynbellomy](https://github.com/brynbellomy)
 
-              // Remove whitespace at beginning of each comment line, and
-              // standardize the comment block delimiters to the only ones that
-              // dox seems to understand, namely, /* and */
-              multiLine = multiLine
-                .replace(/^\s+/gm, "")
-                .replace(params.multiLine[0], "/**")
-                .replace(params.multiLine[1], "*/")
-                .replace(/\n (?:[^\*])/g, "\n * ");
+            // Slightly-hacky-but-hey-it-works way of persuading Dox to work with
+            // non-javascript comments by [brynbellomy](https://github.com/brynbellomy)
 
-              doxData = dox.parseComments(multiLine, {raw: true})[0];
-              // Don't let dox do any markdown parsing. We'll do that all ourselves with md above
-              doxData.md = md;
-              section.docs += this.doxTemplate(doxData);
-            }catch(e){
-              console.log("Dox error: " + e);
-              multiLine += line.replace(params.multiLine[1],'') + '\n';
-              section.docs += '\n' + multiLine.replace(params.multiLine[0],'') + '\n';
-            }
+            // Remove whitespace at beginning of each comment line, and
+            // also block comment delimiters
+            multiLine = multiLine
+              .replace(/^\s*\* ?/gm, "")
+              .replace(params.multiLine[0], "")
+              .replace(params.multiLine[1], "");
+
+            jsDocData = this.parseMultiline(multiLine);
+
+            // Put markdown parser on the data so it can be accessed in the template
+            jsDocData.md = md;
+            section.docs += this.jsDocTemplate(jsDocData);
           }else{
             multiLine += line.replace(params.multiLine[1],'') + '\n';
             section.docs += '\n' + multiLine.replace(params.multiLine[0],'') + '\n';
@@ -521,6 +513,74 @@ Docker.prototype.parseSections = function(data, language){
   }
   sections.push(section);
   return sections;
+};
+
+/**
+ * ## Docker.prototype.parseMultline
+ *
+ * Parse a multiline comment for jsDoc &agrave; la [dox](https://github.com/visionmedia/dox)
+ *
+ * @param {string} comment The comment to parse
+ * @return {object} Object containing parsed comment data
+ */
+Docker.prototype.parseMultiline = function(comment){
+  var commentData = { tags: [], description: {} };
+
+  // Split out a summary and body from the comment
+  var full = comment.split('\n@')[0];
+
+  commentData.description.summary = full.split('\n\n')[0];
+  commentData.description.body = full.split('\n\n').slice(1).join('\n\n');
+
+  // If we have jsDoc-style parameters, parse them
+  if(comment.indexOf('\n@') !== -1){
+    var tags = comment.split('\n@').slice(1);
+
+    // Loop through all of the tags and process the ones we support
+    commentData.tags = tags.map(function(line){
+      var bits = line.split(' '), tag = {};
+      var tagType = tag.type = bits.shift();
+
+      switch(tagType){
+        case 'param':
+          // `@param {typename} paramname Parameter description`
+          tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          tag.name = bits.shift() || '';
+          tag.description = bits.join(' ');
+          break;
+
+        case 'return':
+          // `@return {typename} Return description`
+          tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          tag.description = bits.join(' ');
+          break;
+
+        case 'type':
+          // `@type {typename}`
+          tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          break;
+
+        case 'api':
+          // `@api public` or `@api private` etc.
+          tag.visibility = bits.shift();
+          break;
+
+        case 'see':
+          // `@see Title http://url` or `@see local place`
+          if(/http/.test(line)){
+            tag.title = bits.length > 1 ? bits.shift() : '';
+            tag.url = bits.join(' ');
+          }else{
+            tag.local = bits.join(' ');
+          }
+          break;
+      }
+
+      return tag;
+    });
+  }
+
+  return commentData;
 };
 
 /**
@@ -569,19 +629,19 @@ Docker.prototype.languageParams = function(filename, filedata){
 //  * `comment`: String flag for single-line comments
 //  * `multiline`: Two-element array of start and end flags for block comments
 //  * `commentsIgnore`: Regex of comments to strip completely (don't even doc)
-//  * `dox`: Whether to run block comments through Dox (only JavaScript)
+//  * `jsDoc`: Whether to parse multiline comments as jsDoc
 //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
 //
 Docker.prototype.languages = {
   javascript: {
     extensions: [ 'js' ],
     executables: [ 'node' ],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, dox: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, jsDoc: true
   },
   coffeescript: {
     extensions: [ 'coffee' ],
     executables: [ 'coffee' ],
-    comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], dox: true
+    comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], jsDoc: true
   },
   ruby: {
     extensions: [ 'rb' ],
@@ -622,16 +682,16 @@ Docker.prototype.languages = {
   },
   'aspx-cs': {
     extensions: [ 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
+    comment: '//', multiLine: [ /\/\*/, /\*\// ], jsDoc: true
   },
   java: {
     extensions: [ 'java' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
+    comment: '//', multiLine: [ /\/\*/, /\*\// ], jsDoc: true
   },
   php: {
     extensions: [ 'php', 'php3', 'php4', 'php5' ],
     executables: [ 'php' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ], dox: true
+    comment: '//', multiLine: [ /\/\*/, /\*\// ], jsDoc: true
   },
   actionscript: {
     extensions: [ 'as' ],
@@ -1085,19 +1145,19 @@ Docker.prototype.codeFileTemplate = function(obj){
 };
 
 /**
- * ## Docker.prototype.doxTemplate
+ * ## Docker.prototype.jsDocTemplate
  *
- * Renders the output of **dox** into a format suitable for compilation
+ * Renders parsed multiline commend data into a format suitable for compilation
  *
- * @param {object} obj Object containing output of dox
- * @return {string} Rendered output of dox properties
+ * @param {object} obj Object containing parsed multiline comment data
+ * @return {string} Rendered output of comment properties
  */
-Docker.prototype.doxTemplate = function(obj){
-  if(!this.__doxtmpl){
-    var tmplFile = path.join(path.dirname(__filename), '..','res','dox.jst');
-    this.__doxtmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
+Docker.prototype.jsDocTemplate = function(obj){
+  if(!this.__jsdoctmpl){
+    var tmplFile = path.join(path.dirname(__filename), '..','res','jsDoc.jst');
+    this.__jsdoctmpl = this.compileTemplate(fs.readFileSync(tmplFile).toString());
   }
-  return this.__doxtmpl(obj);
+  return this.__jsdoctmpl(obj);
 };
 
 /**
