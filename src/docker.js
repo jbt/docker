@@ -50,6 +50,9 @@ var mkdirp = require('mkdirp'),
   watchr = require('watchr'),
   showdown = require('../lib/showdown').Showdown;
 
+// Polyfill `fs.exists` for node <= 0.6
+if(typeof fs.exists != 'function') fs.exists = path.exists;
+
 /**
  * ## Docker Constructor
  *
@@ -194,7 +197,6 @@ Docker.prototype.finished = function(){
 Docker.prototype.clean = function(){
   this.scanQueue = [];
   this.files = [];
-  this.tree = {};
 };
 
 /**
@@ -294,7 +296,10 @@ Docker.prototype.addFileToTree = function(filename){
     currDir = currDir.dirs[bits[i]];
   }
   if(!currDir.files) currDir.files = [];
-  currDir.files.push(bits[bits.length-1]);
+
+  var lastBit = bits[bits.length-1];
+
+  if(currDir.files.indexOf(lastBit) === -1) currDir.files.push(bits[bits.length-1]);
 };
 
 /**
@@ -462,9 +467,9 @@ Docker.prototype.parseSections = function(data, language){
             // Remove whitespace at beginning of each comment line, and
             // also block comment delimiters
             multiLine = multiLine
-              .replace(/^\s*\* ?/gm, "")
               .replace(params.multiLine[0], "")
-              .replace(params.multiLine[1], "");
+              .replace(params.multiLine[1], "")
+              .replace(/^\s*\* ?/gm, "");
 
             jsDocData = this.parseMultiline(multiLine);
 
