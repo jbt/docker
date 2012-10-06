@@ -3,6 +3,7 @@
 ## 0.1.8
 
  * Removed dependency on dox; wrote more concise version of jsDoc parser based on dox, but which handles headings correctly
+ * Bugfixes for watch mode.
 
 ## 0.1.7
 
