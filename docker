@@ -11,6 +11,8 @@ var Docker = require('./src/docker.js');
 // Figure out PWD because it doesn't exist in process.env on windows.
 var pwd = path.resolve('.');
 
+function list(val){ return val.split(','); }
+
 // All program arguments using commander
 program
   .version('0.1.8')
@@ -22,6 +24,8 @@ program
   .option('-w, --watch', 'Watch on the input directory for file changes (experimental)')
   .option('-s, --sidebar [state]', 'Whether the sidebar should be open or not by default', 'yes')
   .option('-x, --exclude [pattern]', 'Paths to exclude', false)
+  .option('--js <files>', 'Additional javascript files to include', list)
+  .option('--css <files>', 'Additional CSS files to include', list)
   .parse(process.argv);
 
 
@@ -42,7 +46,9 @@ var opts = {
   colourScheme: program.colour_scheme,
   ignoreHidden: program.ignore_hidden,
   sidebarState: booleanish(program.sidebar),
-  exclude: program.exclude
+  exclude: program.exclude,
+  js: program.js,
+  css: program.css
 };
 
 // Create docker instance

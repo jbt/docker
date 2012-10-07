@@ -11,7 +11,7 @@
 if(tags.length){
   var hasParams = false, hasReturn = false, hasType = false;    %>
   <div class="details">
-<% 
+<%
   for(var i = 0; i < tags.length; i += 1){
     var tag = tags[i];
     if(tag.type == 'param'){
@@ -20,7 +20,7 @@ if(tags.length){
     <div class="dox_tag_title">Params</div>
 <%    }                                                         %>
     <div class="dox_tag_detail">
-      <span><%= tag.name %></span>
+      <span class="dox_tag_name"><%= tag.name %></span>
 <%    if(tag.types){
         for(var j = 0; j < tag.types.length; j += 1){           %>
       <span class="dox_type"><%= tag.types[j] %></span>
@@ -39,7 +39,7 @@ if(tags.length){
     <div class="dox_tag_title">Returns</div>
 <%    }                                                         %>
     <div class="dox_tag_detail">
-      <span><%= tag.name %></span>
+      <span class="dox_tag_name"><%= tag.name %></span>
 <%    if(tag.types){
         for(var j = 0; j < tag.types.length; j += 1){           %>
       <span class="dox_type"><%= tag.types[j] %></span>

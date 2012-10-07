@@ -189,6 +189,8 @@ td.docs {
       margin-right: 5px; }
   .dox .dox_type {
     font-style: italic; }
+  .dox .dox_tag_name {
+    font-weight: bold; }
 
 .pilwrap {
   position: relative;

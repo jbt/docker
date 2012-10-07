@@ -96,7 +96,9 @@ Docker.prototype.parseOpts = function(opts){
     colourScheme: 'default',
     ignoreHidden: false,
     sidebarState: true,
-    exclude: false
+    exclude: false,
+    js: [],
+    css: []
   };
 
   // Loop through and fix up any unspecified options with the defaults.
@@ -112,6 +114,8 @@ Docker.prototype.parseOpts = function(opts){
   this.colourScheme = opts.colourScheme;
   this.ignoreHidden = !!opts.ignoreHidden;
   this.sidebarState = opts.sidebarState;
+  this.extraJS = opts.js || [];
+  this.extraCSS = opts.css || [];
 
   // Generate an exclude regex for the given pattern
   if(typeof opts.exclude === 'string'){
@@ -458,18 +462,29 @@ Docker.prototype.parseSections = function(data, language){
           // Once we have reached the end of the multiline, take the whole content
           // of the multiline comment, and parse it as jsDoc.
           inMultiLineComment = false;
+
+          multiLine += line;
+
+          // Replace block comment delimiters with whitespace of the same length
+          // This way we can safely outdent without breaking too many things if the
+          // comment has been deliberately indented. For example, the lines in the
+          // followinc comment should all be outdented equally:
+          //
+          // ```c
+          //    /* A big long multiline
+          //       comment that should get
+          //       outdented properly       */
+          // ```
+          multiLine = multiLine
+            .replace(params.multiLine[0], function(a){ return Array(a.length + 1).join(' '); })
+            .replace(params.multiLine[1], function(a){ return Array(a.length + 1).join(' '); });
+
+          multiLine = this.outdent(multiLine);
+
           if(params.jsDoc){
-            multiLine += line;
 
-            // Slightly-hacky-but-hey-it-works way of persuading Dox to work with
-            // non-javascript comments by [brynbellomy](https://github.com/brynbellomy)
-
-            // Remove whitespace at beginning of each comment line, and
-            // also block comment delimiters
-            multiLine = multiLine
-              .replace(params.multiLine[0], "")
-              .replace(params.multiLine[1], "")
-              .replace(/^\s*\* ?/gm, "");
+            // Strip off leading * characters.
+            multiLine = multiLine.replace(/^\s*\* ?/gm, "");
 
             jsDocData = this.parseMultiline(multiLine);
 
@@ -477,8 +492,7 @@ Docker.prototype.parseSections = function(data, language){
             jsDocData.md = md;
             section.docs += this.jsDocTemplate(jsDocData);
           }else{
-            multiLine += line.replace(params.multiLine[1],'') + '\n';
-            section.docs += '\n' + multiLine.replace(params.multiLine[0],'') + '\n';
+            section.docs += '\n' + multiLine + '\n';
           }
           multiLine = '';
         }else{
@@ -549,14 +563,14 @@ Docker.prototype.parseMultiline = function(comment){
       switch(tagType){
         case 'param':
           // `@param {typename} paramname Parameter description`
-          tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          if(bits[0].charAt(0) == '{') tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
           tag.name = bits.shift() || '';
           tag.description = bits.join(' ');
           break;
 
         case 'return':
           // `@return {typename} Return description`
-          tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          if(bits[0].charAt(0) == '{') tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
           tag.description = bits.join(' ');
           break;
 
@@ -586,6 +600,45 @@ Docker.prototype.parseMultiline = function(comment){
   }
 
   return commentData;
+};
+
+/**
+ * ## Docker.prototype.outdent
+ *
+ * Attempts to automatically detect indented lines in multiline comments
+ * and bring them back to normal indentation level. This is to avoid markdown
+ * picking up indented lines and thinking they're code
+ *
+ * @param {string} code The code to attempt to outdent
+ * @return {string} Outdented code
+ */
+Docker.prototype.outdent = function(code){
+  var lines = code.split('\n');
+  var tabWidth = 2;
+  var smallestIndent = Infinity;
+
+  // Loop through all the lines, finding the least-indented of all of them
+  for(var i = 0; i < lines.length; i += 1){
+    var line = lines[i].replace(/\t/g, Array(tabWidth+1).join(' '));
+    if(/^\s$/.test(line)) continue;
+    var lineIndent = 0;
+    while(line.length && line.charAt(0) == ' '){
+      line = line.slice(1);
+      lineIndent += 1;
+    }
+
+    smallestIndent = Math.min(lineIndent, smallestIndent);
+  }
+
+  // Now loop over lines again and outdent them by the largest possible amount
+  var outLines = [];
+
+  for(var j = 0; j < lines.length; j += 1){
+    var line = lines[j].replace(/\t/g, Array(tabWidth+1).join(' '));
+    outLines.push(line.substr(smallestIndent));
+  }
+
+  return outLines.join('\n');
 };
 
 /**
@@ -666,12 +719,12 @@ Docker.prototype.languages = {
   c: {
     extensions: [ 'c', 'h' ],
     executables: [ 'gcc' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   cpp: {
     extensions: [ 'cc', 'cpp' ],
     executables: [ 'g++' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   vbnet: {
     extensions: [ 'vb', 'vbs', 'bas' ],
@@ -683,20 +736,20 @@ Docker.prototype.languages = {
   },
   csharp: {
     extensions: [ 'cs' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   'aspx-cs': {
     extensions: [ 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ], jsDoc: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   java: {
     extensions: [ 'java' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ], jsDoc: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   php: {
     extensions: [ 'php', 'php3', 'php4', 'php5' ],
     executables: [ 'php' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ], jsDoc: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   actionscript: {
     extensions: [ 'as' ],
@@ -962,7 +1015,9 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
     headings: headings,
     sidebar: this.sidebarState,
     colourScheme: this.colourScheme,
-    filename: filename.replace(this.inDir,'').replace(/^[\/\\]/,'')
+    filename: filename.replace(this.inDir,'').replace(/^[\/\\]/,''),
+    js: this.extraJS.map(path.basename),
+    css: this.extraCSS.map(path.basename)
   });
 
   var self = this;
@@ -1017,7 +1072,9 @@ Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
       headings: headings,
       colourScheme: this.colourScheme,
       sidebar: this.sidebarState,
-      filename: filename.replace(this.inDir,'').replace(/^[\\\/]/,'')
+      filename: filename.replace(this.inDir,'').replace(/^[\\\/]/,''),
+      js: this.extraJS.map(path.basename),
+      css: this.extraCSS.map(path.basename)
     });
 
     // Recursively create the output directory, clean out any old version of the
@@ -1071,6 +1128,34 @@ Docker.prototype.copySharedResources = function(){
     'Saved file tree to doc-filelist.js',
     done
   );
+
+  var extras = self.extraJS.concat(self.extraCSS);
+
+  for(var i = 0; i < extras.length; i += 1){
+    toDo += 1;
+    self.copyExtraFile(extras[i], done);
+  }
+};
+
+/**
+ * ## Docker.prototype.copyExtraFile
+ *
+ * Copies an additional JS or CSS file to the output
+ *
+ * @param {string} filename Path (relative to pwd) to the file
+ * @param {function} cb Callback to fire when done
+ */
+Docker.prototype.copyExtraFile = function(filename, cb){
+  var self = this;
+  var fn = path.basename(filename);
+  fs.readFile(path.resolve(filename), function(err, file){
+    self.writeFileIfDifferent(
+      path.join(self.outDir, fn),
+      file,
+      'Copied ' + fn,
+      cb
+    );
+  });
 };
 
 /**

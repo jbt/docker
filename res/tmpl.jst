@@ -9,6 +9,12 @@
     var relativeDir = '<%= relativeDir %>', thisFile = '<%= filename %>', defaultSidebar = <%= sidebar %>;
   </script>
   <script src="<%= relativeDir %>doc-script.js"></script>
+<% for(var i = 0; i < js.length; i += 1){ %>
+  <script src="<%= relativeDir + js[i] %>"></script>
+<% }
+   for(var i = 0; i < css.length; i += 1){ %>
+  <link rel="stylesheet" href="<%= relativeDir + css[i] %>" />
+<% } %>
 </head>
 <body>
   <div id="sidebar_wrapper">
