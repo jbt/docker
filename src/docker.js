@@ -143,7 +143,21 @@ Docker.prototype.parseOpts = function(opts){
 Docker.prototype.doc = function(files){
   this.running = true;
   [].push.apply(this.scanQueue, files);
-  this.addNextFile();
+
+  var self = this;
+  if(this.onlyUpdated){
+    // Attempt to grab the existing tree if possible.
+    fs.readFile(path.join(self.outDir, 'doc-filelist.js'), function(err, file){
+      if(err) return self.addNextFile();
+
+      file = file.toString().replace(/(^var tree=|;$)/g,'');
+      self.tree = JSON.parse(file);
+
+      self.addNextFile();
+    });
+  }else{
+    this.addNextFile();
+  }
 };
 
 /**
@@ -246,6 +260,7 @@ Docker.prototype.addNextFile = function(){
     });
   }else{
     // Once we're done scanning all the files, start processing them in order.
+    this.files = this.files.sort();
     this.processNextFile();
   }
 };
