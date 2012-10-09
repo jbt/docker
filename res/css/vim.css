@@ -239,7 +239,8 @@ pre, tt, code {
   width: 50px;
   text-align: right;
   opacity: 0.3;
-  margin-left: -20px; }
+  margin-left: -20px;
+  text-decoration: none; }
 
 /* All the stuff that can depend on colour scheme goes below here: */
 body {

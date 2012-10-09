@@ -1021,7 +1021,7 @@ Docker.prototype.addLineNumbers = function(html, first){
   var line = first;
 
   for(var i = 0; i < lines.length; i += 1){
-    out.push('<a class="line-num" id="line-' + line + '">' + line + ' </a> ' + lines[i]);
+    out.push('<a class="line-num" href="#line-' + line + '" id="line-' + line + '">' + line + '</a>  ' + lines[i]);
 
     line += 1;
   }
