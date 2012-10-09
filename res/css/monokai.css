@@ -234,6 +234,13 @@ pre, tt, code {
   margin: 0;
   padding: 0; }
 
+.line-num {
+  display: inline-block;
+  width: 50px;
+  text-align: right;
+  opacity: 0.3;
+  margin-left: -20px; }
+
 /* All the stuff that can depend on colour scheme goes below here: */
 body {
   background: #1a1a16;

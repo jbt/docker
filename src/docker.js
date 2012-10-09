@@ -97,6 +97,7 @@ Docker.prototype.parseOpts = function(opts){
     ignoreHidden: false,
     sidebarState: true,
     exclude: false,
+    lineNums: false,
     js: [],
     css: []
   };
@@ -114,6 +115,7 @@ Docker.prototype.parseOpts = function(opts){
   this.colourScheme = opts.colourScheme;
   this.ignoreHidden = !!opts.ignoreHidden;
   this.sidebarState = opts.sidebarState;
+  this.lineNums = !!opts.lineNums;
   this.extraJS = opts.js || [];
   this.extraCSS = opts.css || [];
 
@@ -542,6 +544,12 @@ Docker.prototype.parseSections = function(data, language){
       }
       section.docs += line.replace(commentRegex, '') + '\n';
     }else if(!params.commentsIgnore || !line.match(params.commentsIgnore)){
+
+      // If this is the first line of active code, store it in the section
+      // so we can grab it for line numbers later
+      if(!section.firstCodeLine){
+        section.firstCodeLine = i + 1;
+      }
       section.code += line + '\n';
     }
   }
@@ -996,6 +1004,32 @@ Docker.prototype.addAnchors = function(docHtml, idx, headings){
 };
 
 /**
+ * ## Docker.prototype.addLineNumbers
+ *
+ * Adds line numbers to rendered code HTML
+ *
+ * @param {string} html The code HTML
+ * @param {number} first Line number of the first code line
+ */
+Docker.prototype.addLineNumbers = function(html, first){
+  html = html.replace(/^<div class="highlight"><pre>/, '');
+  html = html.replace(/<\/pre><\/div>$/, '');
+
+  var lines = html.split('\n');
+
+  var out = [];
+  var line = first;
+
+  for(var i = 0; i < lines.length; i += 1){
+    out.push('<a class="line-num" id="line-' + line + '">' + line + ' </a> ' + lines[i]);
+
+    line += 1;
+  }
+
+  return '<div class="highlight"><pre>' + out.join('\n') + '</pre></div>';
+};
+
+/**
  * ## Docker.prototype.renderCodeHtml
  *
  * Given an array of sections, render them all out to a nice HTML file
@@ -1019,11 +1053,13 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
   var relativeOut = path.resolve(outDir)
                     .replace(path.resolve(this.outDir),'')
                     .replace(/^[\/\\]/,'');
-  var levels = relativeOut == '' ? 0 : relativeOut.split(pathSeparator).length;
+  var levels = relativeOut === '' ? 0 : relativeOut.split(pathSeparator).length;
   var relDir = Array(levels + 1).join('../');
 
   for(var i = 0; i < sections.length; i += 1){
     sections[i].docHtml = this.addAnchors(sections[i].docHtml, i, headings);
+
+    if(this.lineNums) sections[i].codeHtml = this.addLineNumbers(sections[i].codeHtml, sections[i].firstCodeLine);
   }
 
   // Render the html file using our template

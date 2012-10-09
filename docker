@@ -24,6 +24,7 @@ program
   .option('-w, --watch', 'Watch on the input directory for file changes (experimental)')
   .option('-s, --sidebar [state]', 'Whether the sidebar should be open or not by default', 'yes')
   .option('-x, --exclude [pattern]', 'Paths to exclude', false)
+  .option('-n, --line-numbers', 'Whether to include line numbers in output', false)
   .option('--js <files>', 'Additional javascript files to include', list)
   .option('--css <files>', 'Additional CSS files to include', list)
   .parse(process.argv);
@@ -47,6 +48,7 @@ var opts = {
   ignoreHidden: program.ignore_hidden,
   sidebarState: booleanish(program.sidebar),
   exclude: program.exclude,
+  lineNums: program.lineNumbers,
   js: program.js,
   css: program.css
 };
