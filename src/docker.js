@@ -451,7 +451,7 @@ Docker.prototype.parseSections = function(data, language){
     var line = codeLines[i];
 
     // Only match against parts of the line that don't appear in strings
-    var matchable = line.replace(/(["'])(?:\\.|(?!\1).)*\1/g,'');
+    var matchable = line.replace(/(["'])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g,'');
 
     if(params.multiLine){
       // If we are currently in a multiline comment, behave differently
@@ -767,6 +767,14 @@ Docker.prototype.languages = {
   markdown: {
     extensions: [ 'md', 'mkd', 'markdown' ],
     type: 'markdown'
+  },
+  sass: {
+    extensions: [ 'sass' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  scss: {
+    extensions: [ 'scss' ],
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
   }
 };
 
