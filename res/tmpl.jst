@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="<%= relativeDir %>doc-style.css" />
   <script src="<%= relativeDir %>doc-filelist.js"></script>
   <script>
-    var relativeDir = '<%= relativeDir %>', thisFile = '<%= filename %>', defaultSidebar = <%= sidebar %>;
+    var relativeDir = '<%= relativeDir %>', thisFile = '<%= filename %>', defaultSidebar = <%= sidebar === 'disable' ? 'false' : sidebar %>;
   </script>
   <script src="<%= relativeDir %>doc-script.js"></script>
 <% for(var i = 0; i < js.length; i += 1){ %>
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="<%= relativeDir + css[i] %>" />
 <% } %>
 </head>
-<body>
+<body<%= sidebar === 'disable' ? ' class="no-sidebar"' : '' %>>
   <div id="sidebar_wrapper">
     <div id="sidebar_switch">
       <span class="tree">Files</span>

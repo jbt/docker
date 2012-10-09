@@ -32,7 +32,8 @@ program
 
 // Super-simple function to test if ann argument is vaguely trueish or falseish.
 // Should match `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'y'`, `'n'`, `'yes'`, `'no'`, `'ok'`, `'true'`, `'false'`
-function booleanish(input){
+function coerceSidebar(input){
+  if(input === 'disable') return input;
   if(input === true || input === false) return input;
   if(typeof input === 'number' || (+input + '' === input + '')) return !!+input;
   input = input.toString();
@@ -46,7 +47,7 @@ var opts = {
   onlyUpdated: program.updated_files,
   colourScheme: program.colour_scheme,
   ignoreHidden: program.ignore_hidden,
-  sidebarState: booleanish(program.sidebar),
+  sidebarState: coerceSidebar(program.sidebar),
   exclude: program.exclude,
   lineNums: program.lineNumbers,
   js: program.js,

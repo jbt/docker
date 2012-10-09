@@ -140,6 +140,11 @@ h1 {
 .sidebar #container {
   left: 295px; }
 
+.no-sidebar #sidebar_wrapper, .no-sidebar #sidebar-toggle {
+  display: none; }
+.no-sidebar #container {
+  left: 0; }
+
 #page {
   padding-top: 40px; }
 
