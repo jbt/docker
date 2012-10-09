@@ -27,6 +27,7 @@ program
   .option('-n, --line-numbers', 'Whether to include line numbers in output', false)
   .option('--js <files>', 'Additional javascript files to include', list)
   .option('--css <files>', 'Additional CSS files to include', list)
+  .option('--extras <extras>', 'Bundled extras to include, see extras dir', list)
   .parse(process.argv);
 
 
@@ -51,7 +52,8 @@ var opts = {
   exclude: program.exclude,
   lineNums: program.lineNumbers,
   js: program.js,
-  css: program.css
+  css: program.css,
+  extras: program.extras
 };
 
 // Create docker instance

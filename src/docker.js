@@ -99,7 +99,8 @@ Docker.prototype.parseOpts = function(opts){
     exclude: false,
     lineNums: false,
     js: [],
-    css: []
+    css: [],
+    extras: []
   };
 
   // Loop through and fix up any unspecified options with the defaults.
@@ -132,6 +133,15 @@ Docker.prototype.parseOpts = function(opts){
 
   // Oh go on then. Allow American-Enligsh spelling of colour if used programmatically
   if(opts.colorScheme) opts.colourScheme = opts.colorScheme;
+
+  // Load bundled extras
+  var extrasRoot = path.resolve(__dirname, '..', 'extras');
+  for(var i = 0; i < opts.extras.length; i += 1){
+    var extraName = opts.extras[i];
+
+    this.extraJS.push(path.join(extrasRoot, extraName, extraName + '.js'));
+    this.extraCSS.push(path.join(extrasRoot, extraName, extraName + '.css'));
+  }
 };
 
 /**
