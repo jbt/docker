@@ -683,9 +683,15 @@ Docker.prototype.languageParams = function(filename, filedata){
   if(ext === '.C') return 'cpp';
   ext = ext.toLowerCase();
 
+  var base = path.basename(filename);
+  base = base.toLowerCase();
+
   for(var i in this.languages){
     if(!this.languages.hasOwnProperty(i)) continue;
-    if(this.languages[i].extensions.indexOf(ext) !== -1) return i;
+    if(this.languages[i].extensions &&
+      this.languages[i].extensions.indexOf(ext) !== -1) return i;
+    if(this.languages[i].names &&
+      this.languages[i].names.indexOf(base) !== -1) return i;
   }
 
   // If that doesn't work, see if we can grab a shebang
@@ -713,6 +719,11 @@ Docker.prototype.languageParams = function(filename, filedata){
 //  * `jsDoc`: Whether to parse multiline comments as jsDoc
 //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
 //
+// I'm not even going to pretend that this is an exhaustive list of
+// languages that Pygments can understand. This is just a list of the most
+// common ones I think are necessary. If you can think of another that
+// might be useful, and can find it on the [Pygments lexer page](http://pygments.org/docs/lexers/),
+// then let me know and I'll add it in
 Docker.prototype.languages = {
   javascript: {
     extensions: [ 'js' ],
@@ -725,8 +736,9 @@ Docker.prototype.languages = {
     comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], jsDoc: true
   },
   ruby: {
-    extensions: [ 'rb' ],
+    extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ],
     executables: [ 'ruby' ],
+    names: [ 'rakefile' ],
     comment: '#',  multiLine: [ /\=begin/, /\=end/ ]
   },
   python: {
@@ -779,7 +791,8 @@ Docker.prototype.languages = {
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
   },
   sh: {
-    extensions: [ 'sh' ],
+    extensions: [ 'sh', 'kst', 'bash' ],
+    names: [ '.bashrc', 'bashrc' ],
     executables: [ 'bash', 'sh', 'zsh' ],
     comment: '#'
   },
@@ -798,6 +811,14 @@ Docker.prototype.languages = {
   scss: {
     extensions: [ 'scss' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
+  },
+  make: {
+    names: [ 'makefile' ],
+    comment: '#'
+  },
+  apache: {
+    names: [ '.htaccess', 'apache.conf', 'apache2.conf' ],
+    comment: '#'
   }
 };
 
