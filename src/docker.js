@@ -914,7 +914,7 @@ Docker.prototype.extractDocCode = function(html, cb){
   html = html.replace(/<pre><code(\slanguage='([a-z]*)')?>([^<]*)<\/code><\/pre>/g, function(wholeMatch, langBlock, language, block){
     if(langBlock === '' || language === '') return "<div class='highlight'>" + wholeMatch + '</div>';
     // Unescape these HTML entities because they'll be re-escaped by pygments
-    block = block.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/,'&');
+    block = block.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
 
     // Store the code block away in `codeBlocks` and leave a flag in the original text.
     return "\n\n~C" + codeBlocks.push({
