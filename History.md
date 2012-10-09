@@ -1,5 +1,18 @@
 # Docker Version History
 
+## 0.2.0
+
+ * Added option to specify extra CSS and JavaScript files to include
+ * Added optional flag to enable line numbers in output
+ * Added "disable" value for sidebar to hide it completely
+ * Added support for matching files by name rather than just extension (e.g. Makefile)
+ * Added first two "extras" - optionally enable-able extras for the output
+   - **fileSearch**: performs fuzzy-matching on file names to quickly jump to a file
+   - **goToLine**: quickly jump to a line in the source. Currently only works if line numbers are enabled
+ * Fixed some bugs in Markdown parsing
+ * Improvements to indentation detection
+ * Fixed bug where processing only updated files would result in an empty tree
+
 ## 0.1.8
 
  * Removed dependency on dox; wrote more concise version of jsDoc parser based on dox, but which handles headings correctly
@@ -35,7 +48,7 @@
 
 ## 0.1.1
 
- * Fixed problem with commend delimiters being matched inside string literals
+ * Fixed problem with comment delimiters being matched inside string literals
 
 ## 0.1.0
 
