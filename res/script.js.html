@@ -9,6 +9,8 @@
     var relativeDir = '../', thisFile = 'res/script.js', defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
+  <script src="../fileSearch.js"></script>
+  <link rel="stylesheet" href="../fileSearch.css" />
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -97,17 +99,17 @@ the tree is visible and which directories are expanded. Unless the state</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>treeData</span>
+      <span class="dox_tag_name">treeData</span>
       <span class="dox_type">object</span>
       <span>Folder structure as in <a href="../src/docker.js.html#docker.prototype.queuefile">queueFile</a></span>
     </div>
     <div class="dox_tag_detail">
-      <span>root</span>
+      <span class="dox_tag_name">root</span>
       <span class="dox_type">string</span>
       <span>Path from current file to root (ie <code>'../../'</code> etc.)</span>
     </div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>The current file name</span>
     </div>
@@ -212,7 +214,7 @@ so it can be restored on the next pageview.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>e</span>
+      <span class="dox_tag_name">e</span>
       <span class="dox_type">Event</span>
       <span>The click event</span>
     </div>
@@ -296,22 +298,22 @@ so it can be restored on the next pageview.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>nodename</span>
+      <span class="dox_tag_name">nodename</span>
       <span class="dox_type">string</span>
       <span>The node name.</span>
     </div>
     <div class="dox_tag_detail">
-      <span>node</span>
+      <span class="dox_tag_name">node</span>
       <span class="dox_type">object</span>
       <span>Node object of same format as whole tree.</span>
     </div>
     <div class="dox_tag_detail">
-      <span>path</span>
+      <span class="dox_tag_name">path</span>
       <span class="dox_type">string</span>
       <span>The path form the base to this node</span>
     </div>
     <div class="dox_tag_detail">
-      <span>root</span>
+      <span class="dox_tag_name">root</span>
       <span class="dox_type">string</span>
       <span>Relative path from current page to root</span>
     </div>
@@ -492,7 +494,7 @@ so it can be restored on the next pageview.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>tab</span>
+      <span class="dox_tag_name">tab</span>
       <span class="dox_type">string</span>
       <span>The ID of the tab to switch to</span>
     </div>

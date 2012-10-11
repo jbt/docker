@@ -9,6 +9,8 @@
     var relativeDir = '', thisFile = 'README.md', defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
+  <script src="fileSearch.js"></script>
+  <link rel="stylesheet" href="fileSearch.css" />
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -38,6 +40,9 @@
       </div>
       <div class="heading h3">
         <a href="#generate-docker-docs">Generate Docker docs</a>
+      </div>
+      <div class="heading h2">
+        <a href="#extras">Extras</a>
       </div>
       <div class="heading h2">
         <a href="#colour-schemes">Colour Schemes</a>
@@ -74,7 +79,7 @@
 
 <p>Simple: <code>npm install -g docker</code></p>
 
-<p>Requires <a href="http://pygments.org/">Pygments</a></p>
+<p><strong>Requires <a href="http://pygments.org/">Pygments</a></strong></p>
 
 
 <div class="pilwrap" id="usage">
@@ -100,8 +105,12 @@
 <li><code>-c</code> or <code>--colour_scheme</code> (yes, I'm British): Colour scheme to use. Colour schemes are as below.</li>
 <li><code>-I</code> or <code>--ignore_hidden</code>: Ignore files and directories whose names begin with <code>.</code> or <code>_</code>.</li>
 <li><code>-w</code> or <code>--watch</code>: Keep the process running, watch for changes on the directory, and process updated files.</li>
-<li><code>-s</code> or <code>--sidebar</code>: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false)</li>
+<li><code>-s</code> or <code>--sidebar</code>: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false). Value <code>disable</code> will disable the sidebar entirely in the output.</li>
 <li><code>-x</code> or <code>--exclude</code>: Comma-separated list of paths to exclude. Supports basic <code>*</code> wildcards too.</li>
+<li><code>-n</code> or <code>--line-number</code>: Include line numbers in the output (default is off)</li>
+<li><code>--js</code>: Specify a comma-separated list of extra javascript files (relative to the current dir) to include</li>
+<li><code>--css</code>: Same as for <code>--js</code> but for CSS files</li>
+<li><code>--extras</code>: Comma-separated list of optional extras to activate (see below)</li>
 </ul>
 
 <p>If no file list is given, docker will run recursively on every file in the current directory</p>
@@ -184,17 +193,35 @@ examples, the files will be created inside <code>documents/src</code></p>
 <ul>
 <li>Output to a directory on the <code>gh-pages</code> branch of this repo</li>
 <li>Use the "manni" colour scheme</li>
+<li>Show the sidebar by default</li>
 <li>Ignore files starting with <code>_</code> or <code>.</code></li>
 <li>Only process updated files</li>
 <li>Exclude the node_modules directory</li>
 <li>Watch the directory for further changes as the code is updated.</li>
+<li>Include the File Search extra</li>
 </ul>
 
 
-<div class="highlight"><pre><code><span class="nv">$ </span>docker -o ../docker_gh-pages -c manni -I -u -x node_modules --watch
+<div class="highlight"><pre><code><span class="nv">$ </span>docker -o ../docker_gh-pages -c manni -s yes -I -u -x node_modules -w --extras fileSearch
 </code></pre></div>
 
 
+
+
+<div class="pilwrap" id="extras">
+  <h2>
+    <a href="#extras" class="pilcrow">&#182;</a>
+    Extras
+  </h2>
+</div>
+
+
+<p>The output of Docker is designed to be fairly lightweight, so doesn't include much other than the bare
+minimum to power the basic features. Optional extras like file searching and line jumping are therefore
+contained in there own files and can be turned on by a specific flag.</p>
+
+<p>If you're viewing this on GitHub, take a look <a href="/jbt/docker/tree/master/extras">here</a>; if you're looking
+at the Docker output, look <a href="extras/README.md.html">here</a>, for further explanation.</p>
 
 
 <div class="pilwrap" id="colour-schemes">
@@ -238,7 +265,8 @@ examples, the files will be created inside <code>documents/src</code></p>
 </div>
 
 
-<p>All files must be inside the input directory (specified by <code>-i</code>) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.</p></div>
+<p>All files must be inside the input directory (specified by <code>-i</code>) or one of its descendant subdirectories. If they're not then various file paths in the output won't work properly and the file will probably get generated
+in the wrong place. Still, it's better than what it used to do, which was to get stuck in an infinite loop.</p></div>
   </div>
 </body>
 </html>

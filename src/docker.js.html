@@ -9,6 +9,8 @@
     var relativeDir = '../', thisFile = 'src/docker.js', defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
+  <script src="../fileSearch.js"></script>
+  <link rel="stylesheet" href="../fileSearch.css" />
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -79,6 +81,9 @@
         <a href="#docker.prototype.parsemultline">Docker.prototype.parseMultline</a>
       </div>
       <div class="heading h2">
+        <a href="#docker.prototype.outdent">Docker.prototype.outdent</a>
+      </div>
+      <div class="heading h2">
         <a href="#docker.prototype.languageparams">Docker.prototype.languageParams</a>
       </div>
       <div class="heading h2">
@@ -100,6 +105,9 @@
         <a href="#docker.prototype.addanchors">Docker.prototype.addAnchors</a>
       </div>
       <div class="heading h2">
+        <a href="#docker.prototype.addlinenumbers">Docker.prototype.addLineNumbers</a>
+      </div>
+      <div class="heading h2">
         <a href="#docker.prototype.rendercodehtml">Docker.prototype.renderCodeHtml</a>
       </div>
       <div class="heading h2">
@@ -107,6 +115,9 @@
       </div>
       <div class="heading h2">
         <a href="#docker.prototype.copysharedresources">Docker.prototype.copySharedResources</a>
+      </div>
+      <div class="heading h2">
+        <a href="#docker.prototype.copyextrafile">Docker.prototype.copyExtraFile</a>
       </div>
       <div class="heading h2">
         <a href="#docker.prototype.outfile">Docker.prototype.outFile</a>
@@ -292,7 +303,7 @@ heading links for easy navigation between many files and within long files.</p><
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>opts</span>
+      <span class="dox_tag_name">opts</span>
       <span class="dox_type">object</span>
       <span>Object containing all options fo rthis instance</span>
     </div>
@@ -307,7 +318,11 @@ heading links for easy navigation between many files and within long files.</p><
     <span class="nx">colourScheme</span><span class="o">:</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
     <span class="nx">ignoreHidden</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="nx">sidebarState</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="nx">exclude</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="nx">exclude</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">lineNums</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">js</span><span class="o">:</span> <span class="p">[],</span>
+    <span class="nx">css</span><span class="o">:</span> <span class="p">[],</span>
+    <span class="nx">extras</span><span class="o">:</span> <span class="p">[]</span>
   <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -329,7 +344,10 @@ heading links for easy navigation between many files and within long files.</p><
   <span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">opts</span><span class="p">.</span><span class="nx">onlyUpdated</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">colourScheme</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">ignoreHidden</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">opts</span><span class="p">.</span><span class="nx">ignoreHidden</span><span class="p">;</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">sidebarState</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">sidebarState</span><span class="p">;</span></pre></div>
+  <span class="k">this</span><span class="p">.</span><span class="nx">sidebarState</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">sidebarState</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">lineNums</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">opts</span><span class="p">.</span><span class="nx">lineNums</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">extraJS</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">js</span> <span class="o">||</span> <span class="p">[];</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">extraCSS</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="p">[];</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -357,7 +375,23 @@ heading links for easy navigation between many files and within long files.</p><
 </div>
 <p>Oh go on then. Allow American-Enligsh spelling of colour if used programmatically</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">colorScheme</span><span class="p">)</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">colorScheme</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">colorScheme</span><span class="p">)</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">colourScheme</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">colorScheme</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Load bundled extras</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">extrasRoot</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;extras&#39;</span><span class="p">);</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">extras</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">extraName</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">extras</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">extraJS</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">extrasRoot</span><span class="p">,</span> <span class="nx">extraName</span><span class="p">,</span> <span class="nx">extraName</span> <span class="o">+</span> <span class="s1">&#39;.js&#39;</span><span class="p">));</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">extraCSS</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">extrasRoot</span><span class="p">,</span> <span class="nx">extraName</span><span class="p">,</span> <span class="nx">extraName</span> <span class="o">+</span> <span class="s1">&#39;.css&#39;</span><span class="p">));</span>
+  <span class="p">}</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -377,7 +411,7 @@ heading links for easy navigation between many files and within long files.</p><
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>files</span>
+      <span class="dox_tag_name">files</span>
       <span class="dox_type">Array</span>
       <span>Array of file paths relative to the <code>inDir</code> to generate documentation for.</span>
     </div>
@@ -387,7 +421,29 @@ heading links for easy navigation between many files and within long files.</p><
         <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">doc</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">files</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
   <span class="p">[].</span><span class="nx">push</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scanQueue</span><span class="p">,</span> <span class="nx">files</span><span class="p">);</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
+
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onlyUpdated</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>Attempt to grab the existing tree if possible.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="s1">&#39;doc-filelist.js&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
+
+      <span class="nx">file</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/(^var tree=|;$)/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">tree</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+
+      <span class="nx">self</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addNextFile</span><span class="p">();</span>
+  <span class="p">}</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -407,7 +463,7 @@ heading links for easy navigation between many files and within long files.</p><
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>files</span>
+      <span class="dox_tag_name">files</span>
       <span class="dox_type">Array</span>
       <span>Array of file paths relative to the <code>inDir</code> to generate documentation for.</span>
     </div>
@@ -422,7 +478,7 @@ heading links for easy navigation between many files and within long files.</p><
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>Function to call when a file is changed. We put this on a timeout to account
 for several file changes happening in quick succession.</p>
@@ -439,7 +495,7 @@ for several file changes happening in quick succession.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>Install watchr. The <code>null</code> here is a watchr bug - looks like he forgot to allow for exactly
 two arguments (like in his example)</p>
@@ -452,7 +508,7 @@ two arguments (like in his example)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>Aaaaand, go!</p>
         </td>
@@ -483,7 +539,7 @@ two arguments (like in his example)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>If we're in watch mode, switch "only updated files" mode on if it isn't already</p>
         </td>
@@ -559,7 +615,7 @@ If it's a file, add it to the queue.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>Find all children of the directory and queue those</p>
         </td>
@@ -581,11 +637,12 @@ If it's a file, add it to the queue.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>Once we're done scanning all the files, start processing them in order.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">processNextFile</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">this</span><span class="p">.</span><span class="nx">files</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">sort</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">processNextFile</span><span class="p">();</span>
   <span class="p">}</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -606,7 +663,7 @@ If it's a file, add it to the queue.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>Name of the file to queue</span>
     </div>
@@ -636,7 +693,7 @@ reading it, this has to happen later.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>Name of file to add to the tree</span>
     </div>
@@ -650,7 +707,7 @@ reading it, this has to happen later.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>Split the file's path into the individual directories</p>
         </td>
@@ -661,7 +718,7 @@ reading it, this has to happen later.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>Loop through all the directories and process the folder structure into <code>this.tree</code>.</p>
 
@@ -719,7 +776,7 @@ reading it, this has to happen later.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>If we still have files on the queue, process the first one</p>
         </td>
@@ -758,12 +815,12 @@ reading it, this has to happen later.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>File name to generate documentation for</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback function to execute when we're done</span>
     </div>
@@ -819,12 +876,12 @@ or not the file should be processed</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>The name of the file to check</span>
     </div>
     <div class="dox_tag_detail">
-      <span>callback</span>
+      <span class="dox_tag_name">callback</span>
       <span class="dox_type">function</span>
       <span>Callback function</span>
     </div>
@@ -837,7 +894,7 @@ or not the file should be processed</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>If we should be processing all files, then yes, we should process this one</p>
         </td>
@@ -847,7 +904,7 @@ or not the file should be processed</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>Find the doc this file would be compiled to</p>
         </td>
@@ -857,7 +914,7 @@ or not the file should be processed</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>See whether the file is newer than the output</p>
         </td>
@@ -881,17 +938,17 @@ or not the file should be processed</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>file</span>
+      <span class="dox_tag_name">file</span>
       <span class="dox_type">string</span>
       <span>File to check</span>
     </div>
     <div class="dox_tag_detail">
-      <span>otherFile</span>
+      <span class="dox_tag_name">otherFile</span>
       <span class="dox_type">string</span>
       <span>File to compare to</span>
     </div>
     <div class="dox_tag_detail">
-      <span>callback</span>
+      <span class="dox_tag_name">callback</span>
       <span class="dox_type">function</span>
       <span>Callback to fire with true if file is newer than otherFile</span>
     </div>
@@ -905,7 +962,7 @@ or not the file should be processed</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>If the output file doesn't exist, then definitely process this file</p>
         </td>
@@ -917,7 +974,7 @@ or not the file should be processed</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>Process the file if the input is newer than the output</p>
         </td>
@@ -955,18 +1012,18 @@ A section is defined to be one block of code with an accompanying comment</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>data</span>
+      <span class="dox_tag_name">data</span>
       <span class="dox_type">string</span>
       <span>The contents of the script file</span>
     </div>
     <div class="dox_tag_detail">
-      <span>language</span>
+      <span class="dox_tag_name">language</span>
       <span class="dox_type">string</span>
       <span>The language of the script file</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">Array</span>
       <span>array of section objects</span>
     </div>
@@ -981,7 +1038,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <p>Fetch language-specific parameters for this code file</p>
         </td>
@@ -1005,7 +1062,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>Loop through all the lines, and parse into sections</p>
         </td>
@@ -1016,11 +1073,11 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>Only match against parts of the line that don't appear in strings</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">matchable</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&quot;&#39;])(?:\\.|(?!\1).)*\1/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">matchable</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&quot;&#39;])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
 
     <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">){</span></pre></div>
         </td>
@@ -1028,7 +1085,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <p>If we are currently in a multiline comment, behave differently</p>
         </td>
@@ -1038,7 +1095,7 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>End-multiline comments should match regardless of whether they're 'quoted'</p>
         </td>
@@ -1048,41 +1105,14 @@ A section is defined to be one block of code with an accompanying comment</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>Once we have reached the end of the multiline, take the whole content
 of the multiline comment, and parse it as jsDoc.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>          <span class="nx">inMultiLineComment</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-          <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">jsDoc</span><span class="p">){</span>
-            <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">;</span></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
-</div>
-<p>Slightly-hacky-but-hey-it-works way of persuading Dox to work with
-non-javascript comments by <a href="https://github.com/brynbellomy">brynbellomy</a></p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
-        </td>
-      </tr>
-      <tr>
-        <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
-</div>
-<p>Remove whitespace at beginning of each comment line, and
-also block comment delimiters</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">multiLine</span>
-              <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-              <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-              <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s*\* ?/gm</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
 
-            <span class="nx">jsDocData</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseMultiline</span><span class="p">(</span><span class="nx">multiLine</span><span class="p">);</span></pre></div>
+          <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">;</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1090,13 +1120,51 @@ also block comment delimiters</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
+<p>Replace block comment delimiters with whitespace of the same length
+This way we can safely outdent without breaking too many things if the
+comment has been deliberately indented. For example, the lines in the
+followinc comment should all be outdented equally:</p>
+
+
+<div class="highlight"><pre><code>   <span class="cm">/* A big long multiline</span>
+<span class="cm">      comment that should get</span>
+<span class="cm">      outdented properly       */</span>
+</code></pre></div>
+
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">multiLine</span>
+            <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span> <span class="k">return</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span> <span class="k">return</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span> <span class="p">});</span>
+
+          <span class="nx">multiLine</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">outdent</span><span class="p">(</span><span class="nx">multiLine</span><span class="p">);</span>
+
+          <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">jsDoc</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>Strip off leading * characters.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">multiLine</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s*\* ?/gm</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
+
+            <span class="nx">jsDocData</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseMultiline</span><span class="p">(</span><span class="nx">multiLine</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
 <p>Put markdown parser on the data so it can be accessed in the template</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>            <span class="nx">jsDocData</span><span class="p">.</span><span class="nx">md</span> <span class="o">=</span> <span class="nx">md</span><span class="p">;</span>
             <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">jsDocTemplate</span><span class="p">(</span><span class="nx">jsDocData</span><span class="p">);</span>
           <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-            <span class="nx">multiLine</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
-            <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">multiLine</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
+            <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">multiLine</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
           <span class="p">}</span>
           <span class="nx">multiLine</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
         <span class="p">}</span><span class="k">else</span><span class="p">{</span>
@@ -1109,7 +1177,7 @@ also block comment delimiters</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
 </div>
 <p>We want to match the start of a multiline comment only if the line doesn't also match the
 end of the same comment, or if a single-line comment is started before the multiline
@@ -1129,7 +1197,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>Here we start parsing a multiline comment. Store away the current section and start a new one</p>
         </td>
@@ -1148,7 +1216,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
 </div>
 <p>This is for single-line comments. Again, store away the last section and start a new one</p>
         </td>
@@ -1157,7 +1225,20 @@ So for example the following would not be treated as a multiline starter:</p>
         <span class="nx">section</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">docs</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">code</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">};</span>
       <span class="p">}</span>
       <span class="nx">section</span><span class="p">.</span><span class="nx">docs</span> <span class="o">+=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">commentRegex</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span> <span class="o">||</span> <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span><span class="p">)){</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span> <span class="o">||</span> <span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">commentsIgnore</span><span class="p">)){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+</div>
+<p>If this is the first line of active code, store it in the section
+so we can grab it for line numbers later</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">section</span><span class="p">.</span><span class="nx">firstCodeLine</span><span class="p">){</span>
+        <span class="nx">section</span><span class="p">.</span><span class="nx">firstCodeLine</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
       <span class="nx">section</span><span class="p">.</span><span class="nx">code</span> <span class="o">+=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;\n&#39;</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
@@ -1182,13 +1263,13 @@ So for example the following would not be treated as a multiline starter:</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>comment</span>
+      <span class="dox_tag_name">comment</span>
       <span class="dox_type">string</span>
       <span>The comment to parse</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
       <span>Object containing parsed comment data</span>
     </div>
@@ -1202,7 +1283,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Split out a summary and body from the comment</p>
         </td>
@@ -1215,7 +1296,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
 </div>
 <p>If we have jsDoc-style parameters, parse them</p>
         </td>
@@ -1226,7 +1307,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
 </div>
 <p>Loop through all of the tags and process the ones we support</p>
         </td>
@@ -1241,11 +1322,11 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
 </div>
 <p><code>@param {typename} paramname Parameter description</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>          <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="k">if</span><span class="p">(</span><span class="nx">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
           <span class="nx">tag</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
           <span class="nx">tag</span><span class="p">.</span><span class="nx">description</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
           <span class="k">break</span><span class="p">;</span>
@@ -1256,11 +1337,11 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
 </div>
 <p><code>@return {typename} Return description</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>          <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="k">if</span><span class="p">(</span><span class="nx">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
           <span class="nx">tag</span><span class="p">.</span><span class="nx">description</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
           <span class="k">break</span><span class="p">;</span>
 
@@ -1270,7 +1351,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
 </div>
 <p><code>@type {typename}</code></p>
         </td>
@@ -1283,7 +1364,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p><code>@api public</code> or <code>@api private</code> etc.</p>
         </td>
@@ -1296,7 +1377,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p><code>@see Title http://url</code> or <code>@see local place</code></p>
         </td>
@@ -1320,6 +1401,81 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="docker.prototype.outdent">
+  <h2>
+    <a href="#docker.prototype.outdent" class="pilcrow">&#182;</a>
+    Docker.prototype.outdent
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Attempts to automatically detect indented lines in multiline comments
+and bring them back to normal indentation level. This is to avoid markdown
+picking up indented lines and thinking they're code</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">code</span>
+      <span class="dox_type">string</span>
+      <span>The code to attempt to outdent</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>Outdented code</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">outdent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">code</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">lines</span> <span class="o">=</span> <span class="nx">code</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">tabWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">smallestIndent</span> <span class="o">=</span> <span class="kc">Infinity</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+</div>
+<p>Loop through all the lines, finding the least-indented of all of them</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">lines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">lines</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\t/g</span><span class="p">,</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">tabWidth</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span><span class="sr">/^\s$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">line</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">lineIndent</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">line</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">){</span>
+      <span class="nx">line</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+      <span class="nx">lineIndent</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">smallestIndent</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">lineIndent</span><span class="p">,</span> <span class="nx">smallestIndent</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+</div>
+<p>Now loop over lines again and outdent them by the largest possible amount</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">outLines</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">lines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">lines</span><span class="p">[</span><span class="nx">j</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\t/g</span><span class="p">,</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">tabWidth</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">));</span>
+    <span class="nx">outLines</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">smallestIndent</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">outLines</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">);</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="docker.prototype.languageparams">
   <h2>
     <a href="#docker.prototype.languageparams" class="pilcrow">&#182;</a>
@@ -1333,18 +1489,18 @@ So for example the following would not be treated as a multiline starter:</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>The name of the file to test</span>
     </div>
     <div class="dox_tag_detail">
-      <span>filedata</span>
+      <span class="dox_tag_name">filedata</span>
       <span class="dox_type">string</span>
       <span>The contents of the file (to check for shebang)</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">object</span>
       <span>Object containing all of the language-specific params</span>
     </div>
@@ -1357,7 +1513,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
 </div>
 <p>First try to detect the language from the file extension</p>
         </td>
@@ -1368,23 +1524,29 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
 </div>
 <p>Bit of a hacky way of incorporating .C for C++</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">ext</span> <span class="o">===</span> <span class="s1">&#39;.C&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="s1">&#39;cpp&#39;</span><span class="p">;</span>
   <span class="nx">ext</span> <span class="o">=</span> <span class="nx">ext</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
 
+  <span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+  <span class="nx">base</span> <span class="o">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+
   <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">){</span>
     <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">extensions</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">ext</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">extensions</span> <span class="o">&amp;&amp;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">extensions</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">ext</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">names</span> <span class="o">&amp;&amp;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">languages</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">names</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">base</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
   <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>If that doesn't work, see if we can grab a shebang</p>
         </td>
@@ -1401,7 +1563,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
 </div>
 <p>If we still can't figure it out, give up and return false.</p>
         </td>
@@ -1412,7 +1574,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>The language params can have the following keys:</p>
 
@@ -1424,6 +1586,12 @@ So for example the following would not be treated as a multiline starter:</p>
 <li><code>jsDoc</code>: Whether to parse multiline comments as jsDoc</li>
 <li><code>type</code>: Either <code>'code'</code> (default) or <code>'markdown'</code> - format of page to render</li>
 </ul>
+
+<p>I'm not even going to pretend that this is an exhaustive list of
+languages that Pygments can understand. This is just a list of the most
+common ones I think are necessary. If you can think of another that
+might be useful, and can find it on the <a href="http://pygments.org/docs/lexers/">Pygments lexer page</a>,
+then let me know and I'll add it in</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">languages</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">javascript</span><span class="o">:</span> <span class="p">{</span>
@@ -1437,8 +1605,9 @@ So for example the following would not be treated as a multiline starter:</p>
     <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/^#{3}\s*$/m</span><span class="p">,</span> <span class="sr">/^#{3}\s*$/m</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">ruby</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;rb&#39;</span> <span class="p">],</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;rb&#39;</span><span class="p">,</span> <span class="s1">&#39;rbw&#39;</span><span class="p">,</span> <span class="s1">&#39;rake&#39;</span><span class="p">,</span> <span class="s1">&#39;gemspec&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;ruby&#39;</span> <span class="p">],</span>
+    <span class="nx">names</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;rakefile&#39;</span> <span class="p">],</span>
     <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\=begin/</span><span class="p">,</span> <span class="sr">/\=end/</span> <span class="p">]</span>
   <span class="p">},</span>
   <span class="nx">python</span><span class="o">:</span> <span class="p">{</span>
@@ -1454,12 +1623,12 @@ So for example the following would not be treated as a multiline starter:</p>
   <span class="nx">c</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;gcc&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">cpp</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;cc&#39;</span><span class="p">,</span> <span class="s1">&#39;cpp&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;g++&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">vbnet</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;vb&#39;</span><span class="p">,</span> <span class="s1">&#39;vbs&#39;</span><span class="p">,</span> <span class="s1">&#39;bas&#39;</span> <span class="p">],</span>
@@ -1471,27 +1640,28 @@ So for example the following would not be treated as a multiline starter:</p>
   <span class="p">},</span>
   <span class="nx">csharp</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;cs&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="s1">&#39;aspx-cs&#39;</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;aspx&#39;</span><span class="p">,</span> <span class="s1">&#39;asax&#39;</span><span class="p">,</span> <span class="s1">&#39;ascx&#39;</span><span class="p">,</span> <span class="s1">&#39;ashx&#39;</span><span class="p">,</span> <span class="s1">&#39;asmx&#39;</span><span class="p">,</span> <span class="s1">&#39;axd&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">java</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;java&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">php</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;php&#39;</span><span class="p">,</span> <span class="s1">&#39;php3&#39;</span><span class="p">,</span> <span class="s1">&#39;php4&#39;</span><span class="p">,</span> <span class="s1">&#39;php5&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;php&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">actionscript</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;as&#39;</span> <span class="p">],</span>
     <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>
   <span class="p">},</span>
   <span class="nx">sh</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;sh&#39;</span> <span class="p">],</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;sh&#39;</span><span class="p">,</span> <span class="s1">&#39;kst&#39;</span><span class="p">,</span> <span class="s1">&#39;bash&#39;</span> <span class="p">],</span>
+    <span class="nx">names</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;.bashrc&#39;</span><span class="p">,</span> <span class="s1">&#39;bashrc&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;bash&#39;</span><span class="p">,</span> <span class="s1">&#39;sh&#39;</span><span class="p">,</span> <span class="s1">&#39;zsh&#39;</span> <span class="p">],</span>
     <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span>
   <span class="p">},</span>
@@ -1502,6 +1672,22 @@ So for example the following would not be treated as a multiline starter:</p>
   <span class="nx">markdown</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;md&#39;</span><span class="p">,</span> <span class="s1">&#39;mkd&#39;</span><span class="p">,</span> <span class="s1">&#39;markdown&#39;</span> <span class="p">],</span>
     <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;markdown&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">sass</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;sass&#39;</span> <span class="p">],</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">scss</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;scss&#39;</span> <span class="p">],</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">make</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">names</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;makefile&#39;</span> <span class="p">],</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">apache</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">names</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;.htaccess&#39;</span><span class="p">,</span> <span class="s1">&#39;apache.conf&#39;</span><span class="p">,</span> <span class="s1">&#39;apache2.conf&#39;</span> <span class="p">],</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span>
   <span class="p">}</span>
 <span class="p">};</span></pre></div>
         </td>
@@ -1522,17 +1708,17 @@ So for example the following would not be treated as a multiline starter:</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>data</span>
+      <span class="dox_tag_name">data</span>
       <span class="dox_type">string</span>
       <span>The code to give to Pygments</span>
     </div>
     <div class="dox_tag_detail">
-      <span>language</span>
+      <span class="dox_tag_name">language</span>
       <span class="dox_type">string</span>
       <span>The name of the Pygments lexer to use</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback to fire with Pygments output</span>
     </div>
@@ -1545,7 +1731,7 @@ So for example the following would not be treated as a multiline starter:</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
 </div>
 <p>By default tell Pygments to guess the language, and if
 we have a language specified then tell pygments to use that lexer</p>
@@ -1557,7 +1743,7 @@ we have a language specified then tell pygments to use that lexer</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
 </div>
 <p>Spawn a new <strong>pygments</strong> process</p>
         </td>
@@ -1567,7 +1753,7 @@ we have a language specified then tell pygments to use that lexer</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
+  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
 </div>
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
@@ -1585,7 +1771,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
 </div>
 <p>When pygments is done, fire the callback with our output</p>
         </td>
@@ -1597,7 +1783,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
 </div>
 <p>Feed pygments with the code</p>
         </td>
@@ -1627,17 +1813,17 @@ section generate pretty html for the comments and the code, and put them in
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>sections</span>
+      <span class="dox_tag_name">sections</span>
       <span class="dox_type">Array</span>
       <span>Array of section objects</span>
     </div>
     <div class="dox_tag_detail">
-      <span>language</span>
+      <span class="dox_tag_name">language</span>
       <span class="dox_type">string</span>
       <span>Language ith which to highlight the file</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback function to fire when we're done</span>
     </div>
@@ -1657,7 +1843,7 @@ section generate pretty html for the comments and the code, and put them in
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
 </div>
 <p>Run our input through pygments, then split the output back up into its constituent sections</p>
         </td>
@@ -1690,12 +1876,12 @@ and highlights them</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>sections</span>
+      <span class="dox_tag_name">sections</span>
       <span class="dox_type">Array</span>
       <span>Sections array as above</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback to fire when done</span>
     </div>
@@ -1711,7 +1897,7 @@ and highlights them</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
+  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
 </div>
 <p>If we've reached the end of the sections array, we've highlighted everything,
 so we can stop and fire the callback</p>
@@ -1722,7 +1908,7 @@ so we can stop and fire the callback</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
+  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
 </div>
 <p>Process the code blocks on this section, each time returning the html
 and moving onto the next section when we're done</p>
@@ -1738,7 +1924,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
+  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
 </div>
 <p>Start off with the first section</p>
         </td>
@@ -1762,12 +1948,12 @@ and moving onto the next section when we're done</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>html</span>
+      <span class="dox_tag_name">html</span>
       <span class="dox_type">string</span>
       <span>The HTML to process</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback function to fire when done</span>
     </div>
@@ -1780,7 +1966,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
 <p>We'll store all extracted code blocks, along with information, in this array</p>
         </td>
@@ -1790,7 +1976,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
 </div>
 <p>Search in the HTML for any code tag with a language set (in the format that showdown returns)</p>
         </td>
@@ -1801,17 +1987,17 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
+  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
 </div>
 <p>Unescape these HTML entities because they'll be re-escaped by pygments</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">block</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;gt;/g</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;lt;/g</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;amp;/</span><span class="p">,</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">block</span> <span class="o">=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;gt;/g</span><span class="p">,</span><span class="s1">&#39;&gt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;lt;/g</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;amp;/g</span><span class="p">,</span><span class="s1">&#39;&amp;&#39;</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
+  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
 </div>
 <p>Store the code block away in <code>codeBlocks</code> and leave a flag in the original text.</p>
         </td>
@@ -1826,7 +2012,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>Once we're done with that, now we can move on to highlighting the code we've extracted</p>
         </td>
@@ -1854,17 +2040,17 @@ knows of a more efficient way of doing this, please let me know.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>html</span>
+      <span class="dox_tag_name">html</span>
       <span class="dox_type">string</span>
       <span>The HTML the code has been extracted from</span>
     </div>
     <div class="dox_tag_detail">
-      <span>codeBlocks</span>
+      <span class="dox_tag_name">codeBlocks</span>
       <span class="dox_type">Array</span>
       <span>Array of extracted code blocks as above</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback to fire when we're done with processed HTML</span>
     </div>
@@ -1881,7 +2067,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>If we're done, then stop and fire the callback</p>
         </td>
@@ -1891,7 +2077,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>Pull the next code block off the beginning of the array</p>
         </td>
@@ -1901,7 +2087,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>Run the code through pygments</p>
         </td>
@@ -1916,7 +2102,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
 </div>
 <p>Fire off on first block</p>
         </td>
@@ -1940,12 +2126,12 @@ knows of a more efficient way of doing this, please let me know.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>section</span>
+      <span class="dox_tag_name">section</span>
       <span class="dox_type">object</span>
       <span>The section object to look at</span>
     </div>
     <div class="dox_tag_detail">
-      <span>idx</span>
+      <span class="dox_tag_name">idx</span>
       <span class="dox_type">number</span>
       <span>The index of the section in the whole array.</span>
     </div>
@@ -1959,7 +2145,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
 </div>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
@@ -1980,7 +2166,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-93" id="section-93">&#182;</a>
 </div>
 <p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
@@ -1989,6 +2175,53 @@ the name a bit to make it more friendly for IDs, then use that</p>
               <span class="s1">&#39;\n&lt;/div&gt;\n&#39;</span> <span class="o">+</span> <span class="nx">docHtml</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">docHtml</span><span class="p">;</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.addlinenumbers">
+  <h2>
+    <a href="#docker.prototype.addlinenumbers" class="pilcrow">&#182;</a>
+    Docker.prototype.addLineNumbers
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Adds line numbers to rendered code HTML</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">html</span>
+      <span class="dox_type">string</span>
+      <span>The code HTML</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">first</span>
+      <span class="dox_type">number</span>
+      <span>Line number of the first code line</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addLineNumbers</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">html</span><span class="p">,</span> <span class="nx">first</span><span class="p">){</span>
+  <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+  <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/pre&gt;&lt;\/div&gt;$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">lines</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">first</span><span class="p">;</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">lines</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;&lt;a class=&quot;line-num&quot; href=&quot;#line-&#39;</span> <span class="o">+</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;&quot; id=&quot;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">line</span> <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;  &#39;</span> <span class="o">+</span> <span class="nx">lines</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+
+    <span class="nx">line</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="s1">&#39;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&#39;</span> <span class="o">+</span> <span class="nx">out</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/pre&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -2008,17 +2241,17 @@ the name a bit to make it more friendly for IDs, then use that</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>sections</span>
+      <span class="dox_tag_name">sections</span>
       <span class="dox_type">Array</span>
       <span>Array of sections containing parsed data</span>
     </div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>Name of the file being processed</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback function to fire when we're done</span>
     </div>
@@ -2031,7 +2264,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
+  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -2043,7 +2276,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
+  <a class="pilcrow" href="#section-97" id="section-97">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -2054,18 +2287,20 @@ a relative href rather than an absolute one</p>
   <span class="kd">var</span> <span class="nx">relativeOut</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">outDir</span><span class="p">)</span>
                     <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">outDir</span><span class="p">),</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
                     <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\/\\]/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">levels</span> <span class="o">=</span> <span class="nx">relativeOut</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">relativeOut</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">pathSeparator</span><span class="p">).</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">levels</span> <span class="o">=</span> <span class="nx">relativeOut</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nx">relativeOut</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">pathSeparator</span><span class="p">).</span><span class="nx">length</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">relDir</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">levels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;../&#39;</span><span class="p">);</span>
 
   <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
     <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addAnchors</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">docHtml</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">headings</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">lineNums</span><span class="p">)</span> <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">codeHtml</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">addLineNumbers</span><span class="p">(</span><span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">codeHtml</span><span class="p">,</span> <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">firstCodeLine</span><span class="p">);</span>
   <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-91" id="section-91">&#182;</a>
+  <a class="pilcrow" href="#section-98" id="section-98">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -2080,7 +2315,9 @@ a relative href rather than an absolute one</p>
     <span class="nx">headings</span><span class="o">:</span> <span class="nx">headings</span><span class="p">,</span>
     <span class="nx">sidebar</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">sidebarState</span><span class="p">,</span>
     <span class="nx">colourScheme</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">colourScheme</span><span class="p">,</span>
-    <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\/\\]/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\/\\]/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="nx">js</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">extraJS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">),</span>
+    <span class="nx">css</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">extraCSS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">)</span>
   <span class="p">});</span>
 
   <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>
@@ -2089,7 +2326,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
+  <a class="pilcrow" href="#section-99" id="section-99">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -2114,17 +2351,17 @@ output file, then save our new file.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>content</span>
+      <span class="dox_tag_name">content</span>
       <span class="dox_type">string</span>
       <span>The markdown file content</span>
     </div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>Name of the file being processed</span>
     </div>
     <div class="dox_tag_detail">
-      <span>cb</span>
+      <span class="dox_tag_name">cb</span>
       <span class="dox_type">function</span>
       <span>Callback function to fire when we're done</span>
     </div>
@@ -2137,7 +2374,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-94" id="section-94">&#182;</a>
+  <a class="pilcrow" href="#section-101" id="section-101">&#182;</a>
 </div>
 <p>Run the markdown through <em>showdown</em></p>
         </td>
@@ -2151,7 +2388,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
+  <a class="pilcrow" href="#section-102" id="section-102">&#182;</a>
 </div>
 <p>Add anchors to all headings</p>
         </td>
@@ -2161,7 +2398,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
+  <a class="pilcrow" href="#section-103" id="section-103">&#182;</a>
 </div>
 <p>Wrap up with necessary classes</p>
         </td>
@@ -2171,7 +2408,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-97" id="section-97">&#182;</a>
+  <a class="pilcrow" href="#section-104" id="section-104">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -2181,7 +2418,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-98" id="section-98">&#182;</a>
+  <a class="pilcrow" href="#section-105" id="section-105">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -2199,7 +2436,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-99" id="section-99">&#182;</a>
+  <a class="pilcrow" href="#section-106" id="section-106">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -2210,14 +2447,16 @@ a relative href rather than an absolute one</p>
       <span class="nx">headings</span><span class="o">:</span> <span class="nx">headings</span><span class="p">,</span>
       <span class="nx">colourScheme</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">colourScheme</span><span class="p">,</span>
       <span class="nx">sidebar</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">sidebarState</span><span class="p">,</span>
-      <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\\\/]/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="nx">filename</span><span class="o">:</span> <span class="nx">filename</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\\\/]/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+      <span class="nx">js</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">extraJS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">),</span>
+      <span class="nx">css</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">extraCSS</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">)</span>
     <span class="p">});</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-100" id="section-100">&#182;</a>
+  <a class="pilcrow" href="#section-107" id="section-107">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -2282,6 +2521,55 @@ output file, then save our new file.</p>
     <span class="s1">&#39;Saved file tree to doc-filelist.js&#39;</span><span class="p">,</span>
     <span class="nx">done</span>
   <span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">extras</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">extraJS</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">extraCSS</span><span class="p">);</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">extras</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="nx">toDo</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">copyExtraFile</span><span class="p">(</span><span class="nx">extras</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">done</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="docker.prototype.copyextrafile">
+  <h2>
+    <a href="#docker.prototype.copyextrafile" class="pilcrow">&#182;</a>
+    Docker.prototype.copyExtraFile
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Copies an additional JS or CSS file to the output</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">filename</span>
+      <span class="dox_type">string</span>
+      <span>Path (relative to pwd) to the file</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb</span>
+      <span class="dox_type">function</span>
+      <span>Callback to fire when done</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">copyExtraFile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">filename</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">file</span><span class="p">){</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">writeFileIfDifferent</span><span class="p">(</span>
+      <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">outDir</span><span class="p">,</span> <span class="nx">fn</span><span class="p">),</span>
+      <span class="nx">file</span><span class="p">,</span>
+      <span class="s1">&#39;Copied &#39;</span> <span class="o">+</span> <span class="nx">fn</span><span class="p">,</span>
+      <span class="nx">cb</span>
+    <span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
@@ -2301,13 +2589,13 @@ output file, then save our new file.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>Name of the input file</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span>Name to use for the generated doc file</span>
     </div>
@@ -2336,13 +2624,13 @@ output file, then save our new file.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>str</span>
+      <span class="dox_tag_name">str</span>
       <span class="dox_type">string</span>
       <span>Template content</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">function</span>
       <span>Compiled template function</span>
     </div>
@@ -2386,13 +2674,13 @@ output file, then save our new file.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>obj</span>
+      <span class="dox_tag_name">obj</span>
       <span class="dox_type">object</span>
       <span>Object containing parameters for the template</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span>Rendered doc page</span>
     </div>
@@ -2405,7 +2693,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-105" id="section-105">&#182;</a>
+  <a class="pilcrow" href="#section-113" id="section-113">&#182;</a>
 </div>
 <p>If we haven't already loaded the template, load it now.
 It's a bit messy to be using readFileSync I know, but this
@@ -2435,13 +2723,13 @@ is the easiest way for now.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>obj</span>
+      <span class="dox_tag_name">obj</span>
       <span class="dox_type">object</span>
       <span>Object containing parameters for the template</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span>Rendered content</span>
     </div>
@@ -2473,13 +2761,13 @@ is the easiest way for now.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>obj</span>
+      <span class="dox_tag_name">obj</span>
       <span class="dox_type">object</span>
       <span>Object containing parsed multiline comment data</span>
     </div>
     <div class="dox_tag_title">Returns</div>
     <div class="dox_tag_detail">
-      <span></span>
+      <span class="dox_tag_name"></span>
       <span class="dox_type">string</span>
       <span>Rendered output of comment properties</span>
     </div>
@@ -2511,22 +2799,22 @@ is the easiest way for now.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>The name of the file to save</span>
     </div>
     <div class="dox_tag_detail">
-      <span>fileContent</span>
+      <span class="dox_tag_name">fileContent</span>
       <span class="dox_type">string</span>
       <span>Content to save to the file</span>
     </div>
     <div class="dox_tag_detail">
-      <span>doneLog</span>
+      <span class="dox_tag_name">doneLog</span>
       <span class="dox_type">string</span>
       <span>String to console.log when done</span>
     </div>
     <div class="dox_tag_detail">
-      <span>doneCallback</span>
+      <span class="dox_tag_name">doneCallback</span>
       <span class="dox_type">function</span>
       <span>Callback to fire when done</span>
     </div>
@@ -2562,22 +2850,22 @@ is the easiest way for now.</p>
   <div class="details">
     <div class="dox_tag_title">Params</div>
     <div class="dox_tag_detail">
-      <span>filename</span>
+      <span class="dox_tag_name">filename</span>
       <span class="dox_type">string</span>
       <span>The name of the file to save</span>
     </div>
     <div class="dox_tag_detail">
-      <span>fileContent</span>
+      <span class="dox_tag_name">fileContent</span>
       <span class="dox_type">string</span>
       <span>Content to save to the file</span>
     </div>
     <div class="dox_tag_detail">
-      <span>doneLog</span>
+      <span class="dox_tag_name">doneLog</span>
       <span class="dox_type">string</span>
       <span>String to console.log when done</span>
     </div>
     <div class="dox_tag_detail">
-      <span>doneCallback</span>
+      <span class="dox_tag_name">doneCallback</span>
       <span class="dox_type">function</span>
       <span>Callback to fire when done</span>
     </div>

@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>fileSearch.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../../', thisFile = 'extras/fileSearch/fileSearch.js', defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+  <script src="../../fileSearch.js"></script>
+  <link rel="stylesheet" href="../../fileSearch.css" />
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#filesearch.js">fileSearch.js</a>
+      </div>
+      <div class="heading h2">
+        <a href="#escaperegex">escapeRegex</a>
+      </div>
+      <div class="heading h2">
+        <a href="#chartype">charType</a>
+      </div>
+      <div class="heading h2">
+        <a href="#comparecharacters">compareCharacters</a>
+      </div>
+      <div class="heading h2">
+        <a href="#bestrank">bestRank</a>
+      </div>
+      <div class="heading h2">
+        <a href="#fuzzyscorestr">fuzzyScoreStr</a>
+      </div>
+      <div class="heading h2">
+        <a href="#fuzzyscore">fuzzyScore</a>
+      </div>
+      <div class="heading h2">
+        <a href="#right--that-s-the-end-of-the-ranking-stuff">Right, that's the end of the ranking stuff</a>
+      </div>
+      <div class="heading h2">
+        <a href="#dosearch">doSearch</a>
+      </div>
+      <div class="heading h2">
+        <a href="#highlightstring">highlightString</a>
+      </div>
+      <div class="heading h2">
+        <a href="#rendersearchresults">renderSearchResults</a>
+      </div>
+      <div class="heading h2">
+        <a href="#selectindex">selectIndex</a>
+      </div>
+      <div class="heading h2">
+        <a href="#selectnextitem">selectNextItem</a>
+      </div>
+      <div class="heading h2">
+        <a href="#selectpreviouis">selectPreviouis</a>
+      </div>
+      <div class="heading h2">
+        <a href="#searchformkeydown">searchFormKeyDown</a>
+      </div>
+      <div class="heading h2">
+        <a href="#addevent">addEvent</a>
+      </div>
+      <div class="heading h2">
+        <a href="#searchformsubmitted">searchFormSubmitted</a>
+      </div>
+      <div class="heading h2">
+        <a href="#itemclicked">itemClicked</a>
+      </div>
+      <div class="heading h2">
+        <a href="#showsearchbox">showSearchBox</a>
+      </div>
+      <div class="heading h2">
+        <a href="#filesearch_kd">fileSearch_kd</a>
+      </div>
+      <div class="heading h2">
+        <a href="#filesearch_kp">fileSearch_kp</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="filesearch.js">
+  <h1>
+    <a href="#filesearch.js" class="pilcrow">&#182;</a>
+    fileSearch.js
+  </h1>
+</div>
+
+
+<p>Contains methods for performing a fuzzy string search on file names
+for easily jumping between files. The ranking algorithm is not based
+on anything in particular - it's just a hack project that works reasonably
+well. If anyone has any suggestions on how it can be improved, then
+let me know.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Wrap everything inside a closure so we don't get any collisions in
+the global scope</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="escaperegex">
+  <h2>
+    <a href="#escaperegex" class="pilcrow">&#182;</a>
+    escapeRegex
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Escapes special characters in a string to use when creating a new RegExp</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">term</span>
+      <span class="dox_type">string</span>
+      <span>String to escape</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>Regex-compatible escaped string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">term</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\[\]\{\}\(\)\^\$\.\*\+\|/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
+      <span class="k">return</span> <span class="s1">&#39;\\&#39;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">;</span>
+    <span class="p">});</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>A few heper constants; they don't really do much, but they
+indicate the corresponding rows and columns in the matrix below.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">UPPER</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">LOWER</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">NUMBER</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">COMMON_DELIMS</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">OTHER</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>Amount by which one character stands out when compared
+to another character. Row = character in question,
+col = character to compare to. E.g. uppercase letter
+stands out with a factor of 240 compared to lowercase letter.
+These numbers are pretty much plucked out of thin air.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">relevanceMatrix</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span>  <span class="mi">0</span><span class="p">,</span>   <span class="mi">240</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">240</span><span class="p">,</span>   <span class="mi">220</span><span class="p">],</span>
+    <span class="p">[</span> <span class="mi">20</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="mi">20</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">140</span><span class="p">,</span>   <span class="mi">140</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">140</span><span class="p">,</span>   <span class="mi">140</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">120</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">160</span><span class="p">,</span>     <span class="mi">0</span><span class="p">]</span>
+  <span class="p">];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="chartype">
+  <h2>
+    <a href="#chartype" class="pilcrow">&#182;</a>
+    charType
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Categorizes a character as either lowercase, uppercase,
+digit, strong delimiter, or other.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">c</span>
+      <span class="dox_type">string</span>
+      <span>The character to check</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">number</span>
+      <span>One of the constants defined above</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="sr">/[a-z]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">LOWER</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="sr">/[A-Z]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">UPPER</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="sr">/[0-9]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">NUMBER</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="sr">/[\/\-_\.]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">COMMON_DELIMS</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">OTHER</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="comparecharacters">
+  <h2>
+    <a href="#comparecharacters" class="pilcrow">&#182;</a>
+    compareCharacters
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Compares a character to the characters before and
+after it to see how much it stands out. For example
+The letter B would stand out strongly in aBc</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">theChar</span>
+      <span class="dox_type">string</span>
+      <span>The character in question</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">before</span>
+      <span class="dox_type">string</span>
+      <span>The immediately preceding character</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">after</span>
+      <span class="dox_type">string</span>
+      <span>The immediately following character</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">compareCharacters</span><span class="p">(</span><span class="nx">theChar</span><span class="p">,</span> <span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>Grab the character types of all three characters</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">theType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">theChar</span><span class="p">),</span>
+        <span class="nx">beforeType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">before</span><span class="p">),</span>
+        <span class="nx">afterType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">after</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p><strong>MAGIC NUMBER ALERT</strong> 0.4 is a number that makes it work best in my tests</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">beforeType</span><span class="p">]</span> <span class="o">+</span>
+     <span class="mf">0.4</span> <span class="o">*</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">afterType</span><span class="p">];</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="bestrank">
+  <h2>
+    <a href="#bestrank" class="pilcrow">&#182;</a>
+    bestRank
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>The real meat of this searching algorithm. Provides a score for a
+given string against a given search term.</p>
+
+<p>The <code>startingFrom</code> parameter is necessary (rather than just truncating
+<code>item</code> so we can use the initial characters of <code>item</code> to provide better
+context.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">item</span>
+      <span class="dox_type">string</span>
+      <span>The string to rank</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">term</span>
+      <span class="dox_type">string</span>
+      <span>The search term against which to rank it</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">startingFrom</span>
+      <span class="dox_type">number</span>
+      <span>Ignore the first <em>n</em> characters</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>Rank of <code>item</code> against <code>term</code> with highlights</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="nx">startingFrom</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>If we've reached the end of our search term, add some extra points for being short</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">startingFrom</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>If we've reached the end of the item but not the term, then fail.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>Quick sanity check to make sure the remaining item has all the characters we need in order</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startingFrom</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span>
+      <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;^&#39;</span> <span class="o">+</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.*&#39;</span><span class="p">),</span> <span class="s1">&#39;i&#39;</span> <span class="p">)</span>
+    <span class="p">)){</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>Grab the first character that we're going to look at</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">firstSearchChar</span> <span class="o">=</span> <span class="nx">term</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>These variables store our best guess so far, and the character
+indices to which it applies</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">bestRankSoFar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">highlights</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>Now loop over the item, and test all instances of <code>firstSearchChar</code> (case-insensitive)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">startingFrom</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!==</span> <span class="nx">firstSearchChar</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Find out what the rest of the string scores against the rest of the term</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">subsequentRank</span> <span class="o">=</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span> <span class="nx">term</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">subsequentRank</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>Inverse linear score for the character. Earlier in string = much better</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">characterScore</span> <span class="o">=</span> <span class="mi">400</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>If, starting at this character, we have the whole of the search term in order, that's really
+good. And if the term is really long, make it cubically good (quadratic scores added up)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">characterScore</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="nx">term</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="nx">term</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>Add on score for how much this character stands out</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">characterScore</span> <span class="o">+=</span> <span class="nx">compareCharacters</span><span class="p">(</span>
+        <span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span>
+        <span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="s1">&#39;/&#39;</span> <span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="nx">i</span> <span class="o">===</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">?</span> <span class="s1">&#39;/&#39;</span> <span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>Add on score from the rest of the string</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">characterScore</span> <span class="o">+=</span> <span class="nx">subsequentRank</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>If we've managed to better what we have so far, store it away</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">characterScore</span> <span class="o">&gt;</span> <span class="nx">bestRankSoFar</span><span class="p">){</span>
+        <span class="nx">bestRankSoFar</span> <span class="o">=</span> <span class="nx">characterScore</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>Save highlighted characters as well</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">highlights</span> <span class="o">=</span> <span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">subsequentHighlights</span> <span class="o">=</span> <span class="nx">subsequentRank</span><span class="p">.</span><span class="nx">highlights</span> <span class="o">||</span> <span class="p">[];</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">subsequentHighlights</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+          <span class="nx">highlights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">subsequentHighlights</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+</span> <span class="nx">i</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>Return an object with valueOf so it can be directly compared using &lt; and >
+but also stores the highlight indices</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">__score</span><span class="o">:</span> <span class="nx">bestRankSoFar</span><span class="p">,</span>
+      <span class="nx">valueOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">__score</span><span class="p">;</span> <span class="p">},</span>
+      <span class="nx">highlights</span><span class="o">:</span> <span class="nx">highlights</span>
+    <span class="p">};</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="fuzzyscorestr">
+  <h2>
+    <a href="#fuzzyscorestr" class="pilcrow">&#182;</a>
+    fuzzyScoreStr
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Actual function to use when matching an item against a term
+(bestRank should only be used internally)</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">item</span>
+      <span class="dox_type">string</span>
+      <span>Item to search</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">term</span>
+      <span class="dox_type">string</span>
+      <span>Term against which to search</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>Rank of <code>item</code> against <code>term</code> with highlights</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="fuzzyscore">
+  <h2>
+    <a href="#fuzzyscore" class="pilcrow">&#182;</a>
+    fuzzyScore
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Matches an object against a given term with particular weights being
+applied to different properties. If the given item is instead a string,
+just match it directly against the term.</p>
+
+<p>The <code>relevances</code> parameter should be an object containing properties
+with the same names as those on <code>item</code> that should be counted. For
+example, a value of <code>{ propA: 2, propB: 1}</code> would count matches in
+<code>propA</code> twice as highly as matches in <code>propB</code>.</p>
+
+<p>The returned <code>highlights</code> property contains arrays of character indices
+to highlight in the term, indexed by the same property names</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">item</span>
+      <span class="dox_type">object</span>
+      <span>Item containing multiple properties to search</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">term</span>
+      <span class="dox_type">string</span>
+      <span>Term against which to search</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">relevances</span>
+      <span class="dox_type">object</span>
+      <span>Object congaining key/val pairs as above</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>Rank of <code>item</code> against <code>term</code> with highlights.</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fuzzyScore</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="nx">relevances</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>If we have a string, just match it directly</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">item</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>Initialize the return object</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">__score</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nx">valueOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">__score</span><span class="p">;</span> <span class="p">},</span>
+      <span class="nx">highlights</span><span class="o">:</span> <span class="p">{}</span>
+    <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>Loop through all the specified properties</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">relevances</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">relevances</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>Grab the score for that particular property</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">thatScore</span> <span class="o">=</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">term</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>Add the rank on to the return object</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">result</span><span class="p">.</span><span class="nx">__score</span> <span class="o">+=</span> <span class="nx">relevances</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="nx">thatScore</span><span class="p">;</span>
+      <span class="nx">result</span><span class="p">.</span><span class="nx">highlights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">thatScore</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">thatScore</span><span class="p">.</span><span class="nx">highlights</span> <span class="o">:</span> <span class="p">[];</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="right--that-s-the-end-of-the-ranking-stuff">
+  <h2>
+    <a href="#right--that-s-the-end-of-the-ranking-stuff" class="pilcrow">&#182;</a>
+    Right, that's the end of the ranking stuff
+  </h2>
+</div>
+
+
+<p>Now onwards to building it into our page!</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>Loop through the tree and parse it all into a big array</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">fileList</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="kd">function</span> <span class="nx">addDirToList</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">path</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">dir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">){</span>
+      <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">dir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">dir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="nx">addDirToList</span><span class="p">(</span><span class="nx">dir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">path</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">dir</span><span class="p">.</span><span class="nx">files</span><span class="p">){</span>
+      <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">dir</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">fileList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">path</span> <span class="o">+</span> <span class="nx">dir</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">addDirToList</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>Some variables to store the state of the search box</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">searchingTimeout</span><span class="p">,</span> <span class="nx">selectedSearchIndex</span><span class="p">,</span> <span class="nx">selectedItem</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dosearch">
+  <h2>
+    <a href="#dosearch" class="pilcrow">&#182;</a>
+    doSearch
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Actually perform the file search</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">doSearch</span><span class="p">(){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>Grab the search term from the input</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">term</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchbox&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>Loop through all the files and rank them all</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">fileList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">fileList</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>Split up the file name so we can grab the base name</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<p>This is the object that'll get passed to fuzzyScore</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">file</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">fullPath</span><span class="o">:</span> <span class="nx">f</span><span class="p">,</span>
+        <span class="nx">fileName</span><span class="o">:</span> <span class="nx">parts</span><span class="p">[</span><span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+      <span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+</div>
+<p>Rank the file, primarily against the full path,
+but if the file base name also matches, give it a
+boost. 0.6 is a number that produces nice results</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">rank</span> <span class="o">=</span> <span class="nx">fuzzyScore</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">fullPath</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nx">fileName</span><span class="o">:</span> <span class="mf">0.6</span>
+      <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+</div>
+<p>If the file scores positively against the search, add it in</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">rank</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="nx">file</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="nx">rank</span><span class="p">.</span><span class="nx">highlights</span><span class="p">;</span>
+        <span class="nx">file</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="o">+</span><span class="nx">rank</span><span class="p">;</span>
+        <span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+</div>
+<p>Sort the items order of decreasing relevance</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">items</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">score</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">score</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">score</span> <span class="o">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">score</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">});</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>And render them all</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">renderSearchResults</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="highlightstring">
+  <h2>
+    <a href="#highlightstring" class="pilcrow">&#182;</a>
+    highlightString
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Highlights the characters at given indices in a string</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">str</span>
+      <span class="dox_type">string</span>
+      <span>String to highlight</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">indexes</span>
+      <span class="dox_type">array</span>
+      <span>Array of indices to make bold</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>HTML of string with given characters made bold</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">highlightString</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">indexes</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>If there's nothing to do, return immediately</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">indexes</span> <span class="o">||</span> <span class="o">!</span><span class="nx">indexes</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">str</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+</div>
+<p>Loop through string one character at a time, highlighting as necessary</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="nx">out</span> <span class="o">+=</span> <span class="nx">indexes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">?</span> <span class="nx">str</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">bold</span><span class="p">()</span> <span class="o">:</span> <span class="nx">str</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="rendersearchresults">
+  <h2>
+    <a href="#rendersearchresults" class="pilcrow">&#182;</a>
+    renderSearchResults
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Renders the processed search items as HTML with highlighting
+in the results list</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">items</span>
+      <span class="dox_type">array</span>
+      <span>Search results to render</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">renderSearchResults</span><span class="p">(</span><span class="nx">items</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+</div>
+<p>Loop through items, building up an HTML string</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">items</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+      <span class="nx">html</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="s1">&#39;&lt;a class=&quot;item&quot; data-value=&quot;&#39;</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">fullPath</span><span class="p">,</span> <span class="s1">&#39;.html&quot;&gt;&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;&lt;span class=&quot;score&quot;&gt;&#39;</span><span class="p">,</span> <span class="o">~~</span><span class="nx">f</span><span class="p">.</span><span class="nx">score</span><span class="p">,</span> <span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;&lt;span class=&quot;filename&quot;&gt;&#39;</span><span class="p">,</span> <span class="nx">highlightString</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">fileName</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">highlight</span><span class="p">.</span><span class="nx">fileName</span><span class="p">),</span> <span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;&lt;span class=&quot;fullpath&quot;&gt;&#39;</span><span class="p">,</span> <span class="nx">highlightString</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">fullPath</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">highlight</span><span class="p">.</span><span class="nx">fullPath</span><span class="p">),</span> <span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;/a&gt;&#39;</span>
+      <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+</div>
+<p>Dump all the html into the results list</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+</div>
+<p>Select the first item</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">selectIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="selectindex">
+  <h2>
+    <a href="#selectindex" class="pilcrow">&#182;</a>
+    selectIndex
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Selects the search result at the given index in the list,
+and deselcts any currently-selected item</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">idx</span>
+      <span class="dox_type">number</span>
+      <span>Index of the item to select</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">selectIndex</span><span class="p">(</span><span class="nx">idx</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<p>If another item is currently selected, deselect it</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">selectedItem</span><span class="p">)</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s?selected/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+</div>
+<p>Grab the search results straight from the DOM</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+</div>
+<p>If we actually have no items, there's not much we can do</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="nx">selectedSearchIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="nx">selectedItem</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+</div>
+<p>Store the item and its index in helper variables</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">selectedSearchIndex</span> <span class="o">=</span> <span class="nx">idx</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">selectedItem</span> <span class="o">=</span> <span class="nx">items</span><span class="p">[</span><span class="nx">idx</span><span class="p">];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+</div>
+<p>Select the item</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">s</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; selected&#39;</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+</div>
+<p>Figure out whether or not the item is fully visible inside
+the scrollable view, and if not, then scroll appropriately</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">o</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetTop</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">o</span> <span class="o">&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">-</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">){</span>
+      <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nx">o</span> <span class="o">+</span> <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">+</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="selectnextitem">
+  <h2>
+    <a href="#selectnextitem" class="pilcrow">&#182;</a>
+    selectNextItem
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Selects the result immediately after the currently selected item,
+or the first item if the currently selected one is last in the list</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">selectNextItem</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">childNodes</span><span class="p">;</span>
+    <span class="nx">selectIndex</span><span class="p">((</span><span class="nx">selectedSearchIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="selectpreviouis">
+  <h2>
+    <a href="#selectpreviouis" class="pilcrow">&#182;</a>
+    selectPreviouis
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Selects the result immediately preceding the currently selected item,
+or the last item if the currently selected one is first in the list</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">selectPreviousItem</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">childNodes</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="nx">selectIndex</span><span class="p">((</span><span class="nx">selectedSearchIndex</span> <span class="o">+</span> <span class="nx">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">l</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="searchformkeydown">
+  <h2>
+    <a href="#searchformkeydown" class="pilcrow">&#182;</a>
+    searchFormKeyDown
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Fired whenever a key is pressed on the search form and triggers
+the necessary events</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">e</span>
+      <span class="dox_type">KeyDownEvent</span>
+      <span>The event object</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">searchFormKeyDown</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+</div>
+<p>27 = escape, so hide the form</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">27</span><span class="p">){</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">));</span>
+      <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+</div>
+<p>40 = down arrow, select the next item</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">40</span><span class="p">){</span>
+      <span class="nx">selectNextItem</span><span class="p">();</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+</div>
+<p>38 = up arrow, select the previous item</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">38</span><span class="p">){</span>
+      <span class="nx">selectPreviousItem</span><span class="p">();</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+</div>
+<p>Most likely a letter typed or deleted in the search box.
+So queue another search</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">searchingTimeout</span><span class="p">);</span>
+      <span class="nx">searchingTimeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">doSearch</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="addevent">
+  <h2>
+    <a href="#addevent" class="pilcrow">&#182;</a>
+    addEvent
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Helper function for binding DOM events</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">obj</span>
+      <span class="dox_type">Element</span>
+      <span>The DOM element to bind to</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">evt</span>
+      <span class="dox_type">string</span>
+      <span>The name of the event to bind to</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">func</span>
+      <span class="dox_type">function</span>
+      <span>Listener to attach to the event</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">a</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+</div>
+<p>Sensible browsers use <code>addEventListener</code></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">((</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)){</span>
+      <span class="nx">a</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+</div>
+<p>IE uses <code>attachEvent</code></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="searchformsubmitted">
+  <h2>
+    <a href="#searchformsubmitted" class="pilcrow">&#182;</a>
+    searchFormSubmitted
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Called when the user hits enter on the search form
+so find the selected item and jump to that page</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">e</span>
+      <span class="dox_type">FormSubmitEvent</span>
+      <span>The submit event</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">searchFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+</div>
+<p>If there's no selected item, do nothing</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">selectedItem</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
+</div>
+<p>Otherwise, jump to the page</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">relativeDir</span> <span class="o">+</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="itemclicked">
+  <h2>
+    <a href="#itemclicked" class="pilcrow">&#182;</a>
+    itemClicked
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Called when a search result item is clicked. So jump
+to the relecant page using <a href="#searchformsubmitted">searchFormSubmitted</a></p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">e</span>
+      <span class="dox_type">MouseClickEvent</span>
+      <span>The mouse event</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">itemClicked</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
+</div>
+<p>Maximum number of levels to jump up the DOM tree</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">levels</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">).</span><span class="nx">target</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
+</div>
+<p>The click event may have propagated from a child node,
+so loop upwards until we actually find the result item</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">while</span><span class="p">(</span><span class="nx">levels</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="nx">target</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">!==</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
+</div>
+<p>Set the selected item, then fire off the submit event on the form</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">selectedItem</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
+    <span class="nx">searchFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="showsearchbox">
+  <h2>
+    <a href="#showsearchbox" class="pilcrow">&#182;</a>
+    showSearchBox
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Constructs and shows the search box, optionally pre-populated
+with a value for the search field</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">val</span>
+      <span class="dox_type">string</span>
+      <span class="dox_type">optional</span>
+      <span>Pre-populated value for the search field</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">showSearchBox</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
+</div>
+<p>If the box is already visible, do nothing</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">searchBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
+</div>
+<p>Create the containing element</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+    <span class="nx">f</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&quot;search&quot;</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
+</div>
+<p>Construct some basic HTML</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">f</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="s1">&#39;&lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;&lt;div class=&quot;box&quot;&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;form id=&quot;searchform&quot;&gt;&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;&lt;input id=&quot;searchbox&quot; type=&quot;text&quot; name=&quot;file&quot; placeholder=&quot;Go to file...&quot; autocomplete=&quot;off&quot; value=&quot;&#39;</span><span class="p">,</span> <span class="nx">val</span><span class="p">,</span> <span class="s1">&#39;&quot;/&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;div id=&quot;searchresults&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
+      <span class="s1">&#39;&lt;/div&gt;&#39;</span>
+    <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
+</div>
+<p>Add the keydown event</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">addEvent</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">searchFormKeyDown</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+</div>
+<p>Add the container straight onto the body</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+</div>
+<p>Focus the search field, and bind the necessary events</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchbox&#39;</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
+    <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchform&#39;</span><span class="p">),</span> <span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="nx">searchFormSubmitted</span><span class="p">);</span>
+    <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">),</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">itemClicked</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+</div>
+<p>If we have a pre-populated value, also fire off a search immediately</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="nx">doSearch</span><span class="p">();</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="filesearch_kd">
+  <h2>
+    <a href="#filesearch_kd" class="pilcrow">&#182;</a>
+    fileSearch_kd
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Fired as a global keyDown event on the document. Checks
+if ctrl/cmd+P has been pressed and shows the search form</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">e</span>
+      <span class="dox_type">KeyDownEvent</span>
+      <span>The key event</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fileSearch_kd</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+</div>
+<p>80 = p, so listen for ctrl/cmd+P</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">80</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span><span class="p">)){</span>
+      <span class="nx">showSearchBox</span><span class="p">();</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="filesearch_kp">
+  <h2>
+    <a href="#filesearch_kp" class="pilcrow">&#182;</a>
+    fileSearch_kp
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Fired as a global keyPress event. Checks to see if the key pressed
+was a sensible character, and if so then shows the search box and
+fires off the first search</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fileSearch_kp</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+</div>
+<p>If there are any modifiers or if we're already entering text into
+another input field elsewhere, then do nothing</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">altKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="s1">&#39;INPUT&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+</div>
+<p>Grab the typed character, test it, and show the box if appropriate</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">theChar</span> <span class="o">=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="sr">/[a-zA-Z0-9\.\/\_\-]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">theChar</span><span class="p">))</span> <span class="nx">showSearchBox</span><span class="p">(</span><span class="nx">theChar</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+</div>
+<p>Attach the global events to the document</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">fileSearch_kd</span><span class="p">);</span>
+  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keypress&#39;</span><span class="p">,</span> <span class="nx">fileSearch_kp</span><span class="p">);</span>
+
+<span class="p">})();</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

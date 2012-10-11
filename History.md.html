@@ -9,6 +9,8 @@
     var relativeDir = '', thisFile = 'History.md', defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
+  <script src="fileSearch.js"></script>
+  <link rel="stylesheet" href="fileSearch.css" />
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -20,6 +22,9 @@
     <div id="headings">
       <div class="heading h1">
         <a href="#docker-version-history">Docker Version History</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.2.0">0.2.0</a>
       </div>
       <div class="heading h2">
         <a href="#0.1.8">0.1.8</a>
@@ -88,6 +93,28 @@
 
 
 
+<div class="pilwrap" id="0.2.0">
+  <h2>
+    <a href="#0.2.0" class="pilcrow">&#182;</a>
+    0.2.0
+  </h2>
+</div>
+
+
+<ul>
+<li>Added <code>--js</code> and <code>--css</code> options to specify extra CSS and JavaScript files to include</li>
+<li>Added optional <code>-n</code> flag to enable line numbers in output</li>
+<li>Added "disable" value for sidebar to hide it completely</li>
+<li>Added support for matching files by name rather than just extension (e.g. Makefile)</li>
+<li>Added first two "extras" - optionally enable-able extras for the output
+<ul><li><strong>fileSearch</strong>: performs fuzzy-matching on file names to quickly jump to a file</li>
+<li><strong>goToLine</strong>: quickly jump to a line in the source. Currently only works if line numbers are enabled</li></ul></li>
+<li>Fixed some bugs in Markdown parsing</li>
+<li>Improvements to indentation detection</li>
+<li>Fixed bug where processing only updated files would result in an empty tree</li>
+</ul>
+
+
 <div class="pilwrap" id="0.1.8">
   <h2>
     <a href="#0.1.8" class="pilcrow">&#182;</a>
@@ -98,6 +125,7 @@
 
 <ul>
 <li>Removed dependency on dox; wrote more concise version of jsDoc parser based on dox, but which handles headings correctly</li>
+<li>Bugfixes for watch mode.</li>
 </ul>
 
 
@@ -192,7 +220,7 @@
 
 
 <ul>
-<li>Fixed problem with commend delimiters being matched inside string literals</li>
+<li>Fixed problem with comment delimiters being matched inside string literals</li>
 </ul>
 
 

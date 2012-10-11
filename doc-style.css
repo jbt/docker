@@ -140,6 +140,11 @@ h1 {
 .sidebar #container {
   left: 295px; }
 
+.no-sidebar #sidebar_wrapper, .no-sidebar #sidebar-toggle {
+  display: none; }
+.no-sidebar #container {
+  left: 0; }
+
 #page {
   padding-top: 40px; }
 
@@ -189,6 +194,8 @@ td.docs {
       margin-right: 5px; }
   .dox .dox_type {
     font-style: italic; }
+  .dox .dox_tag_name {
+    font-weight: bold; }
 
 .pilwrap {
   position: relative;
@@ -231,6 +238,14 @@ pre, tt, code {
   font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
   margin: 0;
   padding: 0; }
+
+.line-num {
+  display: inline-block;
+  width: 50px;
+  text-align: right;
+  opacity: 0.3;
+  margin-left: -20px;
+  text-decoration: none; }
 
 /* All the stuff that can depend on colour scheme goes below here: */
 body {

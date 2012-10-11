@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>README.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../', thisFile = 'extras/README.md', defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+  <script src="../fileSearch.js"></script>
+  <link rel="stylesheet" href="../fileSearch.css" />
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#optional-docker-extras">Optional Docker Extras</a>
+      </div>
+      <div class="heading h1">
+        <a href="#current-extras">Current Extras</a>
+      </div>
+      <div class="heading h2">
+        <a href="#filesearch">fileSearch</a>
+      </div>
+      <div class="heading h2">
+        <a href="#gotoline">goToLine</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="docs markdown">
+<div class="pilwrap" id="optional-docker-extras">
+  <h1>
+    <a href="#optional-docker-extras" class="pilcrow">&#182;</a>
+    Optional Docker Extras
+  </h1>
+</div>
+
+
+<p>This directory contains optional files that can be enabled in Docker output</p>
+
+<p>File stucture in this directory is incredibly simple: for a given extra name
+(e.g. <code>extraName</code>) create a directory with that name, and one single JavaScript
+and one CSS file for the extra (i.e. <code>extraName/extraName.js</code>, <code>extraName/extraName.css</code>).
+This format may change in the future to allow for multiple files or for extending
+the functionality of the Docker process itself, but this format will remain supported.</p>
+
+
+<div class="pilwrap" id="current-extras">
+  <h1>
+    <a href="#current-extras" class="pilcrow">&#182;</a>
+    Current Extras
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="filesearch">
+  <h2>
+    <a href="#filesearch" class="pilcrow">&#182;</a>
+    fileSearch
+  </h2>
+</div>
+
+
+<p>Fuzzy string-matching against file names. Once enabled, hit Ctrl/Cmd + P
+(&agrave; la Sublime Text 2) to bring up a search field, type some important
+characters that should be enough to identify a file, hit return and jump straight
+to the file. Alternatively, just start typing and the search field will automatically appear.</p>
+
+
+<div class="pilwrap" id="gotoline">
+  <h2>
+    <a href="#gotoline" class="pilcrow">&#182;</a>
+    goToLine
+  </h2>
+</div>
+
+
+<p>Simple option to quickly jump to a particular code line. Just hit Ctrl/Cmd + G and
+type a line number into the field to instantly jump to the given line. Currently this
+only works when the <code>--line-numbers</code> option is used, and only works for code lines
+(i.e. it won't allow you to jump to a line with a comment on it)</p></div>
+  </div>
+</body>
+</html>

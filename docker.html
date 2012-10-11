@@ -9,6 +9,8 @@
     var relativeDir = '', thisFile = 'docker', defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
+  <script src="fileSearch.js"></script>
+  <link rel="stylesheet" href="fileSearch.css" />
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -69,7 +71,9 @@
 </div>
 <p>Figure out PWD because it doesn't exist in process.env on windows.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">pwd</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">pwd</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">list</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span> <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span> <span class="p">}</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -80,7 +84,7 @@
 <p>All program arguments using commander</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="nx">program</span>
-  <span class="p">.</span><span class="nx">version</span><span class="p">(</span><span class="s1">&#39;0.1.8&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">version</span><span class="p">(</span><span class="s1">&#39;0.2.0&#39;</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-i, --input_dir [dir]&#39;</span><span class="p">,</span> <span class="s1">&#39;Input directory (defaults to current dir)&#39;</span><span class="p">,</span> <span class="nx">pwd</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-o, --output_dir [dir]&#39;</span><span class="p">,</span> <span class="s1">&#39;Output directory (defaults to ./doc)&#39;</span><span class="p">,</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">pwd</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">)</span> <span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-u, --updated_files&#39;</span><span class="p">,</span> <span class="s1">&#39;Only process files that have been changed&#39;</span><span class="p">)</span>
@@ -89,6 +93,10 @@
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-w, --watch&#39;</span><span class="p">,</span> <span class="s1">&#39;Watch on the input directory for file changes (experimental)&#39;</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-s, --sidebar [state]&#39;</span><span class="p">,</span> <span class="s1">&#39;Whether the sidebar should be open or not by default&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-x, --exclude [pattern]&#39;</span><span class="p">,</span> <span class="s1">&#39;Paths to exclude&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-n, --line-numbers&#39;</span><span class="p">,</span> <span class="s1">&#39;Whether to include line numbers in output&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--js &lt;files&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Additional javascript files to include&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--css &lt;files&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Additional CSS files to include&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--extras &lt;extras&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Bundled extras to include, see extras dir&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">);</span></pre></div>
         </td>
       </tr>
@@ -100,7 +108,8 @@
 <p>Super-simple function to test if ann argument is vaguely trueish or falseish.
 Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</code>, <code>'0'</code>, <code>'1'</code>, <code>'y'</code>, <code>'n'</code>, <code>'yes'</code>, <code>'no'</code>, <code>'ok'</code>, <code>'true'</code>, <code>'false'</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">booleanish</span><span class="p">(</span><span class="nx">input</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">coerceSidebar</span><span class="p">(</span><span class="nx">input</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;disable&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">input</span><span class="p">;</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">||</span> <span class="nx">input</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="k">return</span> <span class="nx">input</span><span class="p">;</span>
   <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">||</span> <span class="p">(</span><span class="o">+</span><span class="nx">input</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span> <span class="o">===</span> <span class="nx">input</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="k">return</span> <span class="o">!!+</span><span class="nx">input</span><span class="p">;</span>
   <span class="nx">input</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
@@ -121,8 +130,12 @@ Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</cod
   <span class="nx">onlyUpdated</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">updated_files</span><span class="p">,</span>
   <span class="nx">colourScheme</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">colour_scheme</span><span class="p">,</span>
   <span class="nx">ignoreHidden</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">ignore_hidden</span><span class="p">,</span>
-  <span class="nx">sidebarState</span><span class="o">:</span> <span class="nx">booleanish</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">sidebar</span><span class="p">),</span>
-  <span class="nx">exclude</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">exclude</span>
+  <span class="nx">sidebarState</span><span class="o">:</span> <span class="nx">coerceSidebar</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">sidebar</span><span class="p">),</span>
+  <span class="nx">exclude</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">exclude</span><span class="p">,</span>
+  <span class="nx">lineNums</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">lineNumbers</span><span class="p">,</span>
+  <span class="nx">js</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span>
+  <span class="nx">css</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">css</span><span class="p">,</span>
+  <span class="nx">extras</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">extras</span>
 <span class="p">};</span></pre></div>
         </td>
       </tr>
