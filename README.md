@@ -10,7 +10,7 @@ Take a look at this project's [public page](http://jbt.github.com/docker) for an
 
 Simple: `npm install -g docker`
 
-Requires [Pygments](http://pygments.org/)
+**Requires [Pygments](http://pygments.org/)**
 
 ## Usage
 
@@ -26,8 +26,12 @@ Available options are:
  * `-c` or `--colour_scheme` (yes, I'm British): Colour scheme to use. Colour schemes are as below.
  * `-I` or `--ignore_hidden`: Ignore files and directories whose names begin with `.` or `_`.
  * `-w` or `--watch`: Keep the process running, watch for changes on the directory, and process updated files.
- * `-s` or `--sidebar`: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false)
+ * `-s` or `--sidebar`: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false). Value `disable` will disable the sidebar entirely in the output.
  * `-x` or `--exclude`: Comma-separated list of paths to exclude. Supports basic `*` wildcards too.
+ * `-n` or `--line-number`: Include line numbers in the output (default is off)
+ * `--js`: Specify a comma-separated list of extra javascript files (relative to the current dir) to include
+ * `--css`: Same as for `--js` but for CSS files
+ * `--extras`: Comma-separated list of optional extras to activate (see below)
 
 If no file list is given, docker will run recursively on every file in the current directory
 
@@ -68,14 +72,26 @@ This is the command I use to generate [this project's documentation](http://jbt.
 
  * Output to a directory on the `gh-pages` branch of this repo
  * Use the "manni" colour scheme
+ * Show the sidebar by default
  * Ignore files starting with `_` or `.`
  * Only process updated files
  * Exclude the node_modules directory
  * Watch the directory for further changes as the code is updated.
+ * Include the File Search extra
 
 ```sh
-$ docker -o ../docker_gh-pages -c manni -I -u -x node_modules --watch
+$ docker -o ../docker_gh-pages -c manni -s yes -I -u -x node_modules -w --extras fileSearch
 ```
+
+## Extras
+
+The output of Docker is designed to be fairly lightweight, so doesn't include much other than the bare
+minimum to power the basic features. Optional extras like file searching and line jumping are therefore
+contained in there own files and can be turned on by a specific flag.
+
+If you're viewing this on GitHub, take a look [here](/jbt/docker/tree/master/extras); if you're looking
+at the Docker output, look [here](extras/README.md.html), for further explanation.
+
 
 
 ## Colour Schemes
@@ -105,4 +121,5 @@ These are exactly as in `pygmentize -L styles`:
 
 ## Important note
 
-All files must be inside the input directory (specified by `-i`) or one of its descendant subdirectories. If they're not then it'll just get horribly confused and get into an infinite loop. Which isn't nice.
+All files must be inside the input directory (specified by `-i`) or one of its descendant subdirectories. If they're not then various file paths in the output won't work properly and the file will probably get generated
+in the wrong place. Still, it's better than what it used to do, which was to get stuck in an infinite loop.

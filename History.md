@@ -2,8 +2,8 @@
 
 ## 0.2.0
 
- * Added option to specify extra CSS and JavaScript files to include
- * Added optional flag to enable line numbers in output
+ * Added `--js` and `--css` options to specify extra CSS and JavaScript files to include
+ * Added optional `-n` flag to enable line numbers in output
  * Added "disable" value for sidebar to hide it completely
  * Added support for matching files by name rather than just extension (e.g. Makefile)
  * Added first two "extras" - optionally enable-able extras for the output
