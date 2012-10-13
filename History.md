@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.2.1
+
+ * Temporarily disable multiline comments in SASS and SCSS as `/*` can be used to open a single-line comment. Will reinstate when I have time to figure it out properly
+
 ## 0.2.0
 
  * Added `--js` and `--css` options to specify extra CSS and JavaScript files to include

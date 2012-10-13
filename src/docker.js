@@ -816,11 +816,11 @@ Docker.prototype.languages = {
   },
   sass: {
     extensions: [ 'sass' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
   },
   scss: {
     extensions: [ 'scss' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
   },
   make: {
     names: [ 'makefile' ],
