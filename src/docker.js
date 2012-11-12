@@ -660,14 +660,24 @@ Docker.prototype.outdent = function(code){
       lineIndent += 1;
     }
 
-    smallestIndent = Math.min(lineIndent, smallestIndent);
+    // If the line consists entirely of whitespace, don't factor it into
+    // the calculation (editors that trim trailing whitespace may make the
+    // line shorter)
+    if(line.length) smallestIndent = Math.min(lineIndent, smallestIndent);
   }
+
+  // This should only happen if the input code was entirely
+  // whitespace, which should never be the case
+  if(isInfinite(smallestIndent)) smallestIndent = 0;
 
   // Now loop over lines again and outdent them by the largest possible amount
   var outLines = [];
 
   for(var j = 0; j < lines.length; j += 1){
     var line = lines[j].replace(/\t/g, Array(tabWidth+1).join(' '));
+
+    // If the line was smaller than the smallestIndent it's because
+    // it was entirely whitespace anyway, so we're safe to do this.
     outLines.push(line.substr(smallestIndent));
   }
 
@@ -743,7 +753,7 @@ Docker.prototype.languages = {
   coffeescript: {
     extensions: [ 'coffee' ],
     executables: [ 'coffee' ],
-    comment: '#',  multiLine: [ /^#{3}\s*$/m, /^#{3}\s*$/m ], jsDoc: true
+    comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true
   },
   ruby: {
     extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ],
