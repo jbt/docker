@@ -668,7 +668,7 @@ Docker.prototype.outdent = function(code){
 
   // This should only happen if the input code was entirely
   // whitespace, which should never be the case
-  if(isInfinite(smallestIndent)) smallestIndent = 0;
+  if(!isFinite(smallestIndent)) smallestIndent = 0;
 
   // Now loop over lines again and outdent them by the largest possible amount
   var outLines = [];
