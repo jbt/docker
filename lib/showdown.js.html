@@ -887,29 +887,25 @@ don't conflict with their use in Markdown for code, italics and strong.</p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-    (             // wrap whole match in $1
-      [
-      (
-        (?:
-          [[^]]<em>]    // allow brackets nested one level
-          |
-          [^[]     // or anything else
-        )</em>
-      )
-      ]</p>
+(             // wrap whole match in $1
+  [
+  (
+    (?:
+      [[^]]<em>]    // allow brackets nested one level
+      |
+      [^[]     // or anything else
+    )</em>
+  )
+  ]</p>
   </div>
   <div class="body"><p>[ ]?          // one optional space
-      (?:\n[ ]*)?       // one optional newline followed by spaces</p>
+  (?:\n[ ]*)?       // one optional newline followed by spaces</p>
 
-
-<div class="highlight"><pre><code>  <span class="o">\</span><span class="p">[</span>
-  <span class="p">(</span><span class="o">.*</span>?<span class="p">)</span>         <span class="o">//</span> <span class="n">id</span> <span class="p">=</span> $3
-  <span class="o">\</span><span class="p">]</span>
-<span class="p">)()()()()</span>         <span class="o">//</span> <span class="n">pad</span> <span class="n">remaining</span> <span class="n">backreferences</span>
-<span class="o">/</span><span class="n">g</span><span class="p">,</span><span class="n">_DoAnchors_callback</span><span class="p">);</span>
-</code></pre></div>
-
-
+<p>[
+  (.*?)         // id = $3
+  ]
+)()()()()         // pad remaining backreferences
+/g,_DoAnchors_callback);</p>
   </div>
 </div>
         </td>
@@ -1092,23 +1088,19 @@ or <a href="/foo">link test</a></p>
 </div>
 <div class="dox">
   <div class="summary"><p>text = text.replace(/
-    (           // wrap whole match in $1
-      ![
-      (.*?)       // alt text = $2
-      ]</p>
+(           // wrap whole match in $1
+  ![
+  (.*?)       // alt text = $2
+  ]</p>
   </div>
   <div class="body"><p>[ ]?        // one optional space
-      (?:\n[ ]*)?     // one optional newline followed by spaces</p>
+  (?:\n[ ]*)?     // one optional newline followed by spaces</p>
 
-
-<div class="highlight"><pre><code>  <span class="o">\</span><span class="p">[</span>
-  <span class="p">(</span><span class="o">.*</span>?<span class="p">)</span>       <span class="o">//</span> <span class="n">id</span> <span class="p">=</span> $3
-  <span class="o">\</span><span class="p">]</span>
-<span class="p">)()()()()</span>       <span class="o">//</span> <span class="n">pad</span> <span class="n">rest</span> <span class="n">of</span> <span class="n">backreferences</span>
-<span class="o">/</span><span class="n">g</span><span class="p">,</span><span class="n">writeImageTag</span><span class="p">);</span>
-</code></pre></div>
-
-
+<p>[
+  (.*?)       // id = $3
+  ]
+)()()()()       // pad rest of backreferences
+/g,writeImageTag);</p>
   </div>
 </div>
         </td>
@@ -2096,7 +2088,7 @@ as an optimization for Firefox.  This function gets called a LOT.</p>
 <div class="pilwrap">
   <a class="pilcrow" href="#section-116" id="section-116">&#182;</a>
 </div>
-<p>Email addresses: <a href="&#x6D;ai&#x6C;&#116;&#111;:a&#x64;&#x64;&#114;&#101;ss&#x40;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;&#x2E;&#102;&#111;&#111;">a&#x64;&#x64;&#114;&#101;ss&#x40;&#100;&#x6F;&#x6D;&#x61;&#105;&#x6E;&#x2E;&#102;&#111;&#111;</a></p>
+<p>Email addresses: <a href="&#109;&#97;&#105;&#108;t&#x6F;:&#x61;&#100;&#x64;&#x72;&#101;&#115;&#115;&#x40;&#x64;&#x6F;&#109;&#x61;&#x69;&#x6E;&#x2E;&#x66;&#111;&#111;">&#x61;&#100;&#x64;&#x72;&#101;&#115;&#115;&#x40;&#x64;&#x6F;&#109;&#x61;&#x69;&#x6E;&#x2E;&#x66;&#111;&#111;</a></p>
         </td>
         <td class="code highlight"><div class="highlight"><pre></pre></div>
         </td>
