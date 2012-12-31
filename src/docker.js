@@ -584,6 +584,28 @@ Docker.prototype.parseMultiline = function(comment){
   commentData.description.summary = full.split('\n\n')[0];
   commentData.description.body = full.split('\n\n').slice(1).join('\n\n');
 
+
+  // grabType function grabs the type out of an array of space-separated
+  // bits, so for example we can pick up {string, optional} from the beginning
+  // of a tag. `bits` is passed in as an array so we can shift and unshift
+  // to remove the type from it.
+  function grabType(bits){
+    var type = bits.shift();
+
+    // Carry on adding bits until we reach a closing brace
+    while(bits.length && type.indexOf('}') === -1) type += bits.shift();
+
+    // If for whatever reason the tag was of the format {type}blah without
+    // the trailing space after the }, extract whatever was left over and
+    // put it back onto the bits array.
+    if(!/\}$/.test(type)){
+      bits.unshift(type.replace(/^.*\}(.*)$/, '$1'));
+      type = type.replace(/\}.*$/,'}');
+    }
+
+    return type.replace(/[{}]/g,'');
+  }
+
   // If we have jsDoc-style parameters, parse them
   if(comment.indexOf('\n@') !== -1){
     var tags = comment.split('\n@').slice(1);
@@ -596,20 +618,20 @@ Docker.prototype.parseMultiline = function(comment){
       switch(tagType){
         case 'param':
           // `@param {typename} paramname Parameter description`
-          if(bits[0].charAt(0) == '{') tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.name = bits.shift() || '';
           tag.description = bits.join(' ');
           break;
 
         case 'return':
           // `@return {typename} Return description`
-          if(bits[0].charAt(0) == '{') tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.description = bits.join(' ');
           break;
 
         case 'type':
           // `@type {typename}`
-          tag.types = bits.shift().replace(/[{}]/g, '').split(/ *[|,\/] */);
+          tag.types = grabType(bits).split(/ *[|,\/] */);
           break;
 
         case 'api':
