@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.2.3
+
+ * Lots of minor tweaks and improvements
+
 ## 0.2.2
 
  * Fixes for indented multiline comments and indented comments in CoffeeScript
