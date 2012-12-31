@@ -511,7 +511,7 @@ Docker.prototype.parseSections = function(data, language){
           if(params.jsDoc){
 
             // Strip off leading * characters.
-            multiLine = multiLine.replace(/^\s*\* ?/gm, "");
+            multiLine = multiLine.replace(/^[ \t]*\*? ?/gm, "");
 
             jsDocData = this.parseMultiline(multiLine);
 
@@ -578,11 +578,20 @@ Docker.prototype.parseSections = function(data, language){
 Docker.prototype.parseMultiline = function(comment){
   var commentData = { tags: [], description: {} };
 
-  // Split out a summary and body from the comment
-  var full = comment.split('\n@')[0];
+  if(!/^\s*@/.test(comment)){
 
-  commentData.description.summary = full.split('\n\n')[0];
-  commentData.description.body = full.split('\n\n').slice(1).join('\n\n');
+    // Split out a summary and body from the comment
+    var full = comment.split('\n@')[0];
+
+    commentData.description.summary = full.split(/\n\s*\n\s*/)[0];
+    commentData.description.body = full.split(/\n\s*\n\s*/).slice(1).join('\n\n');
+
+  }else{
+
+    // If the comment starts with a tag, do nothing
+    commentData.description.summary = '';
+    commentData.description.body = '';
+  }
 
 
   // grabType function grabs the type out of an array of space-separated
@@ -605,6 +614,9 @@ Docker.prototype.parseMultiline = function(comment){
 
     return type.replace(/[{}]/g,'');
   }
+
+  // Prepend a newline here in case the comment starts with a tag
+  comment = '\n' + comment;
 
   // If we have jsDoc-style parameters, parse them
   if(comment.indexOf('\n@') !== -1){
