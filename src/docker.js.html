@@ -262,8 +262,8 @@ heading links for easy navigation between many files and within long files.</p><
 <p>Input arguments are either</p>
 
 <ul>
-<li>Object containing any of the keys <code>inDir</code>, <code>outDir</code>, <code>onlyUpdated</code>, <code>colourScheme</code>, <code>ignoreHidden</code>, <code>sidebarState</code>, <code>exclude</code></li>
-<li>Or <code>indir</code>, <code>outDir</code>, <code>onlyUpdated</code>, <code>colourScheme</code> and <code>ignoreHidden</code> in order</li>
+<li>Object containing any of the keys <code>inDir</code>, <code>outDir</code>, <code>onlyUpdated</code>, <code>colourScheme</code>, <code>ignoreHidden</code>, <code>sidebarState</code>, <code>exclude</code>
+<ul><li>Or <code>indir</code>, <code>outDir</code>, <code>onlyUpdated</code>, <code>colourScheme</code> and <code>ignoreHidden</code> in order</li></ul></li>
 </ul>
   </div>
 </div>
@@ -1149,7 +1149,7 @@ followinc comment should all be outdented equally:</p>
 </div>
 <p>Strip off leading * characters.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">multiLine</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s*\* ?/gm</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>            <span class="nx">multiLine</span> <span class="o">=</span> <span class="nx">multiLine</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[ \t]*\*? ?/gm</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
 
             <span class="nx">jsDocData</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseMultiline</span><span class="p">(</span><span class="nx">multiLine</span><span class="p">);</span></pre></div>
         </td>
@@ -1277,7 +1277,9 @@ so we can grab it for line numbers later</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="nx">Docker</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">parseMultiline</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">comment</span><span class="p">){</span>
-  <span class="kd">var</span> <span class="nx">commentData</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">tags</span><span class="o">:</span> <span class="p">[],</span> <span class="nx">description</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span></pre></div>
+  <span class="kd">var</span> <span class="nx">commentData</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">tags</span><span class="o">:</span> <span class="p">[],</span> <span class="nx">description</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="sr">/^\s*@/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">comment</span><span class="p">)){</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -1287,16 +1289,82 @@ so we can grab it for line numbers later</p>
 </div>
 <p>Split out a summary and body from the comment</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">full</span> <span class="o">=</span> <span class="nx">comment</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">full</span> <span class="o">=</span> <span class="nx">comment</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n@&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
 
-  <span class="nx">commentData</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">summary</span> <span class="o">=</span> <span class="nx">full</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n\n&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
-  <span class="nx">commentData</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="nx">full</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n\n&#39;</span><span class="p">).</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n\n&#39;</span><span class="p">);</span></pre></div>
+    <span class="nx">commentData</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">summary</span> <span class="o">=</span> <span class="nx">full</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\n\s*\n\s*/</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="nx">commentData</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="nx">full</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\n\s*\n\s*/</span><span class="p">).</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n\n&#39;</span><span class="p">);</span>
+
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span></pre></div>
         </td>
       </tr>
       <tr>
         <td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<p>If the comment starts with a tag, do nothing</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">commentData</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">summary</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="nx">commentData</span><span class="p">.</span><span class="nx">description</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+</div>
+<p>grabType function grabs the type out of an array of space-separated
+bits, so for example we can pick up {string, optional} from the beginning
+of a tag. <code>bits</code> is passed in as an array so we can shift and unshift
+to remove the type from it.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">grabType</span><span class="p">(</span><span class="nx">bits</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+</div>
+<p>Carry on adding bits until we reach a closing brace</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">while</span><span class="p">(</span><span class="nx">bits</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">type</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="nx">type</span> <span class="o">+=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+</div>
+<p>If for whatever reason the tag was of the format {type}blah without
+the trailing space after the }, extract whatever was left over and
+put it back onto the bits array.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="sr">/\}$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">type</span><span class="p">)){</span>
+      <span class="nx">bits</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^.*\}(.*)$/</span><span class="p">,</span> <span class="s1">&#39;$1&#39;</span><span class="p">));</span>
+      <span class="nx">type</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\}.*$/</span><span class="p">,</span><span class="s1">&#39;}&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">type</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+  <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+</div>
+<p>Prepend a newline here in case the comment starts with a tag</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">comment</span> <span class="o">=</span> <span class="s1">&#39;\n&#39;</span> <span class="o">+</span> <span class="nx">comment</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p>If we have jsDoc-style parameters, parse them</p>
         </td>
@@ -1307,7 +1375,7 @@ so we can grab it for line numbers later</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>Loop through all of the tags and process the ones we support</p>
         </td>
@@ -1322,11 +1390,11 @@ so we can grab it for line numbers later</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+  <a class="pilcrow" href="#section-59" id="section-59">&#182;</a>
 </div>
 <p><code>@param {typename} paramname Parameter description</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>          <span class="k">if</span><span class="p">(</span><span class="nx">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="k">if</span><span class="p">(</span><span class="nx">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">grabType</span><span class="p">(</span><span class="nx">bits</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
           <span class="nx">tag</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">()</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
           <span class="nx">tag</span><span class="p">.</span><span class="nx">description</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
           <span class="k">break</span><span class="p">;</span>
@@ -1337,11 +1405,11 @@ so we can grab it for line numbers later</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
 </div>
 <p><code>@return {typename} Return description</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>          <span class="k">if</span><span class="p">(</span><span class="nx">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="k">if</span><span class="p">(</span><span class="nx">bits</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">grabType</span><span class="p">(</span><span class="nx">bits</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
           <span class="nx">tag</span><span class="p">.</span><span class="nx">description</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
           <span class="k">break</span><span class="p">;</span>
 
@@ -1351,11 +1419,11 @@ so we can grab it for line numbers later</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
 </div>
 <p><code>@type {typename}</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>          <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">bits</span><span class="p">.</span><span class="nx">shift</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[{}]/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>          <span class="nx">tag</span><span class="p">.</span><span class="nx">types</span> <span class="o">=</span> <span class="nx">grabType</span><span class="p">(</span><span class="nx">bits</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="sr">/ *[|,\/] */</span><span class="p">);</span>
           <span class="k">break</span><span class="p">;</span>
 
         <span class="k">case</span> <span class="s1">&#39;api&#39;</span><span class="o">:</span></pre></div>
@@ -1364,7 +1432,7 @@ so we can grab it for line numbers later</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
 </div>
 <p><code>@api public</code> or <code>@api private</code> etc.</p>
         </td>
@@ -1377,7 +1445,7 @@ so we can grab it for line numbers later</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
 </div>
 <p><code>@see Title http://url</code> or <code>@see local place</code></p>
         </td>
@@ -1438,7 +1506,7 @@ picking up indented lines and thinking they're code</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-60" id="section-60">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>Loop through all the lines, finding the least-indented of all of them</p>
         </td>
@@ -1455,7 +1523,7 @@ picking up indented lines and thinking they're code</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
 </div>
 <p>If the line consists entirely of whitespace, don't factor it into
 the calculation (editors that trim trailing whitespace may make the
@@ -1468,7 +1536,7 @@ line shorter)</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>This should only happen if the input code was entirely
 whitespace, which should never be the case</p>
@@ -1479,7 +1547,7 @@ whitespace, which should never be the case</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
 </div>
 <p>Now loop over lines again and outdent them by the largest possible amount</p>
         </td>
@@ -1492,7 +1560,7 @@ whitespace, which should never be the case</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
 </div>
 <p>If the line was smaller than the smallestIndent it's because
 it was entirely whitespace anyway, so we're safe to do this.</p>
@@ -1544,7 +1612,7 @@ it was entirely whitespace anyway, so we're safe to do this.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
 </div>
 <p>First try to detect the language from the file extension</p>
         </td>
@@ -1555,7 +1623,7 @@ it was entirely whitespace anyway, so we're safe to do this.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
 </div>
 <p>Bit of a hacky way of incorporating .C for C++</p>
         </td>
@@ -1577,7 +1645,7 @@ it was entirely whitespace anyway, so we're safe to do this.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
+  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
 </div>
 <p>If that doesn't work, see if we can grab a shebang</p>
         </td>
@@ -1594,7 +1662,7 @@ it was entirely whitespace anyway, so we're safe to do this.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
 </div>
 <p>If we still can't figure it out, give up and return false.</p>
         </td>
@@ -1605,7 +1673,7 @@ it was entirely whitespace anyway, so we're safe to do this.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
+  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
 </div>
 <p>The language params can have the following keys:</p>
 
@@ -1762,7 +1830,7 @@ then let me know and I'll add it in</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
+  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
 </div>
 <p>By default tell Pygments to guess the language, and if
 we have a language specified then tell pygments to use that lexer</p>
@@ -1774,7 +1842,7 @@ we have a language specified then tell pygments to use that lexer</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
+  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
 </div>
 <p>Spawn a new <strong>pygments</strong> process</p>
         </td>
@@ -1784,7 +1852,7 @@ we have a language specified then tell pygments to use that lexer</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
+  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
 </div>
 <p>Hook up errors, for either when pygments itself throws an error,
 or for when we're unable to send the code to pygments for some reason</p>
@@ -1802,7 +1870,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
 </div>
 <p>When pygments is done, fire the callback with our output</p>
         </td>
@@ -1814,7 +1882,7 @@ or for when we're unable to send the code to pygments for some reason</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
 <p>Feed pygments with the code</p>
         </td>
@@ -1874,7 +1942,7 @@ section generate pretty html for the comments and the code, and put them in
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
+  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
 </div>
 <p>Run our input through pygments, then split the output back up into its constituent sections</p>
         </td>
@@ -1928,7 +1996,7 @@ and highlights them</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>If we've reached the end of the sections array, we've highlighted everything,
 so we can stop and fire the callback</p>
@@ -1939,7 +2007,7 @@ so we can stop and fire the callback</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
 </div>
 <p>Process the code blocks on this section, each time returning the html
 and moving onto the next section when we're done</p>
@@ -1955,7 +2023,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>Start off with the first section</p>
         </td>
@@ -1997,7 +2065,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>We'll store all extracted code blocks, along with information, in this array</p>
         </td>
@@ -2007,7 +2075,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
+  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
 </div>
 <p>Search in the HTML for any code tag with a language set (in the format that showdown returns)</p>
         </td>
@@ -2018,7 +2086,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-91" id="section-91">&#182;</a>
 </div>
 <p>Unescape these HTML entities because they'll be re-escaped by pygments</p>
         </td>
@@ -2028,7 +2096,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
 </div>
 <p>Store the code block away in <code>codeBlocks</code> and leave a flag in the original text.</p>
         </td>
@@ -2043,7 +2111,7 @@ and moving onto the next section when we're done</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+  <a class="pilcrow" href="#section-93" id="section-93">&#182;</a>
 </div>
 <p>Once we're done with that, now we can move on to highlighting the code we've extracted</p>
         </td>
@@ -2098,7 +2166,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-90" id="section-90">&#182;</a>
+  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
 </div>
 <p>If we're done, then stop and fire the callback</p>
         </td>
@@ -2108,7 +2176,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-91" id="section-91">&#182;</a>
+  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
 </div>
 <p>Pull the next code block off the beginning of the array</p>
         </td>
@@ -2118,7 +2186,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-92" id="section-92">&#182;</a>
+  <a class="pilcrow" href="#section-97" id="section-97">&#182;</a>
 </div>
 <p>Run the code through pygments</p>
         </td>
@@ -2133,7 +2201,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-93" id="section-93">&#182;</a>
+  <a class="pilcrow" href="#section-98" id="section-98">&#182;</a>
 </div>
 <p>Fire off on first block</p>
         </td>
@@ -2176,7 +2244,7 @@ knows of a more efficient way of doing this, please let me know.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-95" id="section-95">&#182;</a>
+  <a class="pilcrow" href="#section-100" id="section-100">&#182;</a>
 </div>
 <p>If there is a heading tag, pick out the first one (likely the most important), sanitize
 the name a bit to make it more friendly for IDs, then use that</p>
@@ -2197,7 +2265,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-96" id="section-96">&#182;</a>
+  <a class="pilcrow" href="#section-101" id="section-101">&#182;</a>
 </div>
 <p>If however we can't find a heading, then just use the section index instead.</p>
         </td>
@@ -2295,7 +2363,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-99" id="section-99">&#182;</a>
+  <a class="pilcrow" href="#section-104" id="section-104">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -2307,7 +2375,7 @@ the name a bit to make it more friendly for IDs, then use that</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-100" id="section-100">&#182;</a>
+  <a class="pilcrow" href="#section-105" id="section-105">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -2331,7 +2399,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-101" id="section-101">&#182;</a>
+  <a class="pilcrow" href="#section-106" id="section-106">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -2357,7 +2425,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-102" id="section-102">&#182;</a>
+  <a class="pilcrow" href="#section-107" id="section-107">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -2405,7 +2473,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-104" id="section-104">&#182;</a>
+  <a class="pilcrow" href="#section-109" id="section-109">&#182;</a>
 </div>
 <p>Run the markdown through <em>showdown</em></p>
         </td>
@@ -2419,7 +2487,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-105" id="section-105">&#182;</a>
+  <a class="pilcrow" href="#section-110" id="section-110">&#182;</a>
 </div>
 <p>Add anchors to all headings</p>
         </td>
@@ -2429,7 +2497,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-106" id="section-106">&#182;</a>
+  <a class="pilcrow" href="#section-111" id="section-111">&#182;</a>
 </div>
 <p>Wrap up with necessary classes</p>
         </td>
@@ -2439,7 +2507,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-107" id="section-107">&#182;</a>
+  <a class="pilcrow" href="#section-112" id="section-112">&#182;</a>
 </div>
 <p>Decide which path to store the output on.</p>
         </td>
@@ -2449,7 +2517,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-108" id="section-108">&#182;</a>
+  <a class="pilcrow" href="#section-113" id="section-113">&#182;</a>
 </div>
 <p>Calculate the location of the input root relative to the output file.
 This is necessary so we can link to the stylesheet in the output HTML using
@@ -2467,7 +2535,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-109" id="section-109">&#182;</a>
+  <a class="pilcrow" href="#section-114" id="section-114">&#182;</a>
 </div>
 <p>Render the html file using our template</p>
         </td>
@@ -2487,7 +2555,7 @@ a relative href rather than an absolute one</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-110" id="section-110">&#182;</a>
+  <a class="pilcrow" href="#section-115" id="section-115">&#182;</a>
 </div>
 <p>Recursively create the output directory, clean out any old version of the
 output file, then save our new file.</p>
@@ -2724,7 +2792,7 @@ output file, then save our new file.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-116" id="section-116">&#182;</a>
+  <a class="pilcrow" href="#section-121" id="section-121">&#182;</a>
 </div>
 <p>If we haven't already loaded the template, load it now.
 It's a bit messy to be using readFileSync I know, but this
