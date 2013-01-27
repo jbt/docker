@@ -1,5 +1,10 @@
 # Docker Version History
 
+## 0.2.4
+
+ * Update watchr dependency
+ * Tweaks to fileSearch extra
+
 ## 0.2.3
 
  * Lots of minor tweaks and improvements
