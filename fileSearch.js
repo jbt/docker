@@ -20,7 +20,7 @@
    * @return {string} Regex-compatible escaped string
    */
   function escapeRegex(term){
-    return term.replace(/\[\]\{\}\(\)\^\$\.\*\+\|/g, function(a){
+    return term.replace(/[\[\]\{\}\(\)\^\$\.\*\+\|]/g, function(a){
       return '\\' + a;
     });
   }
@@ -69,6 +69,7 @@
    * @param {string} theChar The character in question
    * @param {string} before The immediately preceding character
    * @param {string} after The immediately following character
+   * @return {number} Score according to how much the character stands out
    */
   function compareCharacters(theChar, before, after){
 
@@ -81,6 +82,32 @@
     return relevanceMatrix[theType][beforeType] +
      0.4 * relevanceMatrix[theType][afterType];
   }
+
+  /**
+   * ## stripAccents
+   *
+   * Replaces all accented characters in a string with their
+   * unaccented equivalent.
+   *
+   * @param {string} str The input accented string
+   * @return {string} String with accents removed
+   */
+  var stripAccents = (function(accented, unaccented){
+    var matchRegex = new RegExp('[' + accented + ']', 'g'),
+        translationTable = {}, i;
+        lookup = function(chr){
+          return translationTable[chr] || chr;
+        };
+
+    for(i = 0; i < accented.length; i += 1){
+      translationTable[accented.charAt(i)] = unaccented.charAt(i);
+    }
+
+    return function(str){
+      return str.replace(matchRegex, lookup);
+    };
+  })('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
+     'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
 
   /**
    * ## bestRank
@@ -107,7 +134,7 @@
 
     // Quick sanity check to make sure the remaining item has all the characters we need in order
     if(!item.slice(startingFrom).match(
-      new RegExp( ('^' + escapeRegex(term) + '$').split('').join('.*'), 'i' )
+      new RegExp( ('^.*' + escapeRegex(term.split('').join('~~K~~')) + '.*$').split('~~K~~').join('.*'), 'i' )
     )){
       return -1;
     }
@@ -178,7 +205,7 @@
    * @return {object} Rank of `item` against `term` with highlights
    */
   function fuzzyScoreStr(item, term){
-    return bestRank(item, term, 0);
+    return bestRank(stripAccents(item), stripAccents(term), 0);
   }
 
   /**
@@ -190,7 +217,7 @@
    *
    * The `relevances` parameter should be an object containing properties
    * with the same names as those on `item` that should be counted. For
-   * example, a value of `{ propA: 2, propB: 1}` would count matches in
+   * example, a value of `{ propA: 2, propB: 1 }` would count matches in
    * `propA` twice as highly as matches in `propB`.
    *
    * The returned `highlights` property contains arrays of character indices

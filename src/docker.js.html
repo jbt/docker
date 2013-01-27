@@ -500,9 +500,12 @@ for several file changes happening in quick succession.</p>
 <p>Install watchr. The <code>null</code> here is a watchr bug - looks like he forgot to allow for exactly
 two arguments (like in his example)</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">watchr</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">uto</span><span class="p">)</span><span class="nx">uto</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">update</span><span class="p">,</span> <span class="mi">250</span><span class="p">);</span>
-  <span class="p">},</span> <span class="kc">null</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">watchr</span><span class="p">.</span><span class="nx">watch</span><span class="p">({</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">inDir</span><span class="p">,</span>
+    <span class="nx">listener</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">uto</span><span class="p">)</span> <span class="nx">uto</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">update</span><span class="p">,</span> <span class="mi">250</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span></pre></div>
         </td>
       </tr>
       <tr>

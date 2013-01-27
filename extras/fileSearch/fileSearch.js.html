@@ -33,6 +33,9 @@
         <a href="#comparecharacters">compareCharacters</a>
       </div>
       <div class="heading h2">
+        <a href="#stripaccents">stripAccents</a>
+      </div>
+      <div class="heading h2">
         <a href="#bestrank">bestRank</a>
       </div>
       <div class="heading h2">
@@ -149,7 +152,7 @@ the global scope</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">){</span>
-    <span class="k">return</span> <span class="nx">term</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\[\]\{\}\(\)\^\$\.\*\+\|/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">term</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\[\]\{\}\(\)\^\$\.\*\+\|]/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
       <span class="k">return</span> <span class="s1">&#39;\\&#39;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">;</span>
     <span class="p">});</span>
   <span class="p">}</span></pre></div>
@@ -257,6 +260,12 @@ The letter B would stand out strongly in aBc</p>
       <span class="dox_type">string</span>
       <span>The immediately following character</span>
     </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">number</span>
+      <span>Score according to how much the character stands out</span>
+    </div>
   </div>
 </div>
         </td>
@@ -285,6 +294,54 @@ The letter B would stand out strongly in aBc</p>
         <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">beforeType</span><span class="p">]</span> <span class="o">+</span>
      <span class="mf">0.4</span> <span class="o">*</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">afterType</span><span class="p">];</span>
   <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="stripaccents">
+  <h2>
+    <a href="#stripaccents" class="pilcrow">&#182;</a>
+    stripAccents
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Replaces all accented characters in a string with their
+unaccented equivalent.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">str</span>
+      <span class="dox_type">string</span>
+      <span>The input accented string</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>String with accents removed</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">stripAccents</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">accented</span><span class="p">,</span> <span class="nx">unaccented</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">matchRegex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="nx">accented</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>
+        <span class="nx">translationTable</span> <span class="o">=</span> <span class="p">{},</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="nx">lookup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">chr</span><span class="p">){</span>
+          <span class="k">return</span> <span class="nx">translationTable</span><span class="p">[</span><span class="nx">chr</span><span class="p">]</span> <span class="o">||</span> <span class="nx">chr</span><span class="p">;</span>
+        <span class="p">};</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">accented</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="nx">translationTable</span><span class="p">[</span><span class="nx">accented</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">)]</span> <span class="o">=</span> <span class="nx">unaccented</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+      <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">matchRegex</span><span class="p">,</span> <span class="nx">lookup</span><span class="p">);</span>
+    <span class="p">};</span>
+  <span class="p">})(</span><span class="s1">&#39;àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ&#39;</span><span class="p">,</span>
+     <span class="s1">&#39;aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY&#39;</span><span class="p">);</span></pre></div>
         </td>
       </tr>
       <tr>
@@ -337,7 +394,7 @@ context.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
 </div>
 <p>If we've reached the end of our search term, add some extra points for being short</p>
         </td>
@@ -347,7 +404,7 @@ context.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>If we've reached the end of the item but not the term, then fail.</p>
         </td>
@@ -357,12 +414,12 @@ context.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
 </div>
 <p>Quick sanity check to make sure the remaining item has all the characters we need in order</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startingFrom</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span>
-      <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;^&#39;</span> <span class="o">+</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;$&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.*&#39;</span><span class="p">),</span> <span class="s1">&#39;i&#39;</span> <span class="p">)</span>
+      <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;^.*&#39;</span> <span class="o">+</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;~~K~~&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;.*$&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;~~K~~&#39;</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.*&#39;</span><span class="p">),</span> <span class="s1">&#39;i&#39;</span> <span class="p">)</span>
     <span class="p">)){</span>
       <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span></pre></div>
@@ -371,7 +428,7 @@ context.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <p>Grab the first character that we're going to look at</p>
         </td>
@@ -381,7 +438,7 @@ context.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <p>These variables store our best guess so far, and the character
 indices to which it applies</p>
@@ -393,7 +450,7 @@ indices to which it applies</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>Now loop over the item, and test all instances of <code>firstSearchChar</code> (case-insensitive)</p>
         </td>
@@ -404,7 +461,7 @@ indices to which it applies</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>Find out what the rest of the string scores against the rest of the term</p>
         </td>
@@ -415,7 +472,7 @@ indices to which it applies</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>Inverse linear score for the character. Earlier in string = much better</p>
         </td>
@@ -425,7 +482,7 @@ indices to which it applies</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>If, starting at this character, we have the whole of the search term in order, that's really
 good. And if the term is really long, make it cubically good (quadratic scores added up)</p>
@@ -436,7 +493,7 @@ good. And if the term is really long, make it cubically good (quadratic scores a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>Add on score for how much this character stands out</p>
         </td>
@@ -450,7 +507,7 @@ good. And if the term is really long, make it cubically good (quadratic scores a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <p>Add on score from the rest of the string</p>
         </td>
@@ -460,7 +517,7 @@ good. And if the term is really long, make it cubically good (quadratic scores a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <p>If we've managed to better what we have so far, store it away</p>
         </td>
@@ -471,7 +528,7 @@ good. And if the term is really long, make it cubically good (quadratic scores a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
 </div>
 <p>Save highlighted characters as well</p>
         </td>
@@ -487,7 +544,7 @@ good. And if the term is really long, make it cubically good (quadratic scores a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>Return an object with valueOf so it can be directly compared using &lt; and >
 but also stores the highlight indices</p>
@@ -536,7 +593,7 @@ but also stores the highlight indices</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">){</span>
-    <span class="k">return</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">stripAccents</span><span class="p">(</span><span class="nx">item</span><span class="p">),</span> <span class="nx">stripAccents</span><span class="p">(</span><span class="nx">term</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
   <span class="p">}</span></pre></div>
         </td>
       </tr>
@@ -557,7 +614,7 @@ just match it directly against the term.</p>
 
 <p>The <code>relevances</code> parameter should be an object containing properties
 with the same names as those on <code>item</code> that should be counted. For
-example, a value of <code>{ propA: 2, propB: 1}</code> would count matches in
+example, a value of <code>{ propA: 2, propB: 1 }</code> would count matches in
 <code>propA</code> twice as highly as matches in <code>propB</code>.</p>
 
 <p>The returned <code>highlights</code> property contains arrays of character indices
@@ -595,7 +652,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>If we have a string, just match it directly</p>
         </td>
@@ -605,7 +662,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>Initialize the return object</p>
         </td>
@@ -619,7 +676,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>Loop through all the specified properties</p>
         </td>
@@ -630,7 +687,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>Grab the score for that particular property</p>
         </td>
@@ -640,7 +697,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>Add the rank on to the return object</p>
         </td>
@@ -670,7 +727,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>Loop through the tree and parse it all into a big array</p>
         </td>
@@ -692,7 +749,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>Some variables to store the state of the search box</p>
         </td>
@@ -721,7 +778,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <p>Grab the search term from the input</p>
         </td>
@@ -733,7 +790,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>Loop through all the files and rank them all</p>
         </td>
@@ -744,7 +801,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>Split up the file name so we can grab the base name</p>
         </td>
@@ -754,7 +811,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <p>This is the object that'll get passed to fuzzyScore</p>
         </td>
@@ -767,7 +824,7 @@ to highlight in the term, indexed by the same property names</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <p>Rank the file, primarily against the full path,
 but if the file base name also matches, give it a
@@ -782,7 +839,7 @@ boost. 0.6 is a number that produces nice results</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
 </div>
 <p>If the file scores positively against the search, add it in</p>
         </td>
@@ -797,7 +854,7 @@ boost. 0.6 is a number that produces nice results</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
 </div>
 <p>Sort the items order of decreasing relevance</p>
         </td>
@@ -811,7 +868,7 @@ boost. 0.6 is a number that produces nice results</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
 </div>
 <p>And render them all</p>
         </td>
@@ -859,7 +916,7 @@ boost. 0.6 is a number that produces nice results</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
 </div>
 <p>If there's nothing to do, return immediately</p>
         </td>
@@ -871,7 +928,7 @@ boost. 0.6 is a number that produces nice results</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>Loop through string one character at a time, highlighting as necessary</p>
         </td>
@@ -913,7 +970,7 @@ in the results list</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>Loop through items, building up an HTML string</p>
         </td>
@@ -932,7 +989,7 @@ in the results list</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>Dump all the html into the results list</p>
         </td>
@@ -942,7 +999,7 @@ in the results list</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
 </div>
 <p>Select the first item</p>
         </td>
@@ -980,7 +1037,7 @@ and deselcts any currently-selected item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
 </div>
 <p>If another item is currently selected, deselect it</p>
         </td>
@@ -990,7 +1047,7 @@ and deselcts any currently-selected item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
 </div>
 <p>Grab the search results straight from the DOM</p>
         </td>
@@ -1001,7 +1058,7 @@ and deselcts any currently-selected item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
 </div>
 <p>If we actually have no items, there's not much we can do</p>
         </td>
@@ -1015,7 +1072,7 @@ and deselcts any currently-selected item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
 </div>
 <p>Store the item and its index in helper variables</p>
         </td>
@@ -1026,7 +1083,7 @@ and deselcts any currently-selected item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
 </div>
 <p>Select the item</p>
         </td>
@@ -1036,7 +1093,7 @@ and deselcts any currently-selected item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-57" id="section-57">&#182;</a>
+  <a class="pilcrow" href="#section-58" id="section-58">&#182;</a>
 </div>
 <p>Figure out whether or not the item is fully visible inside
 the scrollable view, and if not, then scroll appropriately</p>
@@ -1126,7 +1183,7 @@ the necessary events</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-61" id="section-61">&#182;</a>
+  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
 </div>
 <p>27 = escape, so hide the form</p>
         </td>
@@ -1138,7 +1195,7 @@ the necessary events</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-62" id="section-62">&#182;</a>
+  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
 </div>
 <p>40 = down arrow, select the next item</p>
         </td>
@@ -1152,7 +1209,7 @@ the necessary events</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-63" id="section-63">&#182;</a>
+  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
 </div>
 <p>38 = up arrow, select the previous item</p>
         </td>
@@ -1166,7 +1223,7 @@ the necessary events</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-64" id="section-64">&#182;</a>
+  <a class="pilcrow" href="#section-65" id="section-65">&#182;</a>
 </div>
 <p>Most likely a letter typed or deleted in the search box.
 So queue another search</p>
@@ -1218,7 +1275,7 @@ So queue another search</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-66" id="section-66">&#182;</a>
+  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
 </div>
 <p>Sensible browsers use <code>addEventListener</code></p>
         </td>
@@ -1229,7 +1286,7 @@ So queue another search</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-67" id="section-67">&#182;</a>
+  <a class="pilcrow" href="#section-68" id="section-68">&#182;</a>
 </div>
 <p>IE uses <code>attachEvent</code></p>
         </td>
@@ -1271,7 +1328,7 @@ so find the selected item and jump to that page</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-69" id="section-69">&#182;</a>
+  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
 </div>
 <p>If there's no selected item, do nothing</p>
         </td>
@@ -1281,7 +1338,7 @@ so find the selected item and jump to that page</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-70" id="section-70">&#182;</a>
+  <a class="pilcrow" href="#section-71" id="section-71">&#182;</a>
 </div>
 <p>Otherwise, jump to the page</p>
         </td>
@@ -1321,7 +1378,7 @@ to the relecant page using <a href="#searchformsubmitted">searchFormSubmitted</a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-72" id="section-72">&#182;</a>
+  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
 </div>
 <p>Maximum number of levels to jump up the DOM tree</p>
         </td>
@@ -1332,7 +1389,7 @@ to the relecant page using <a href="#searchformsubmitted">searchFormSubmitted</a
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-73" id="section-73">&#182;</a>
+  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
 </div>
 <p>The click event may have propagated from a child node,
 so loop upwards until we actually find the result item</p>
@@ -1343,7 +1400,7 @@ so loop upwards until we actually find the result item</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-74" id="section-74">&#182;</a>
+  <a class="pilcrow" href="#section-75" id="section-75">&#182;</a>
 </div>
 <p>Set the selected item, then fire off the submit event on the form</p>
         </td>
@@ -1383,7 +1440,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-76" id="section-76">&#182;</a>
+  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
 </div>
 <p>If the box is already visible, do nothing</p>
         </td>
@@ -1394,7 +1451,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-77" id="section-77">&#182;</a>
+  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
 </div>
 <p>Create the containing element</p>
         </td>
@@ -1405,7 +1462,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-78" id="section-78">&#182;</a>
+  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
 </div>
 <p>Construct some basic HTML</p>
         </td>
@@ -1423,7 +1480,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-79" id="section-79">&#182;</a>
+  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
 </div>
 <p>Add the keydown event</p>
         </td>
@@ -1433,7 +1490,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-80" id="section-80">&#182;</a>
+  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
 </div>
 <p>Add the container straight onto the body</p>
         </td>
@@ -1443,7 +1500,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-81" id="section-81">&#182;</a>
+  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
 </div>
 <p>Focus the search field, and bind the necessary events</p>
         </td>
@@ -1455,7 +1512,7 @@ with a value for the search field</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-82" id="section-82">&#182;</a>
+  <a class="pilcrow" href="#section-83" id="section-83">&#182;</a>
 </div>
 <p>If we have a pre-populated value, also fire off a search immediately</p>
         </td>
@@ -1494,7 +1551,7 @@ if ctrl/cmd+P has been pressed and shows the search form</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-84" id="section-84">&#182;</a>
+  <a class="pilcrow" href="#section-85" id="section-85">&#182;</a>
 </div>
 <p>80 = p, so listen for ctrl/cmd+P</p>
         </td>
@@ -1530,7 +1587,7 @@ fires off the first search</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-86" id="section-86">&#182;</a>
+  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
 </div>
 <p>If there are any modifiers or if we're already entering text into
 another input field elsewhere, then do nothing</p>
@@ -1541,7 +1598,7 @@ another input field elsewhere, then do nothing</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-87" id="section-87">&#182;</a>
+  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
 </div>
 <p>Grab the typed character, test it, and show the box if appropriate</p>
         </td>
@@ -1553,7 +1610,7 @@ another input field elsewhere, then do nothing</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-88" id="section-88">&#182;</a>
+  <a class="pilcrow" href="#section-89" id="section-89">&#182;</a>
 </div>
 <p>Attach the global events to the document</p>
         </td>
