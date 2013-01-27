@@ -195,9 +195,12 @@ Docker.prototype.watch = function(files){
 
   // Install watchr. The `null` here is a watchr bug - looks like he forgot to allow for exactly
   // two arguments (like in his example)
-  watchr.watch(this.inDir, function(){
-    if(!uto)uto = setTimeout(update, 250);
-  }, null);
+  watchr.watch({
+    path: this.inDir,
+    listener: function(){
+      if(!uto) uto = setTimeout(update, 250);
+    }
+  });
 
   // Aaaaand, go!
   this.doc(files);
