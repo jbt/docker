@@ -862,7 +862,7 @@ Docker.prototype.languages = {
     type: 'markdown'
   },
   sass: {
-    extensions: [ 'sass' ],
+    extensions: [ 'sass' ], 
     comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
   },
   scss: {
@@ -881,9 +881,20 @@ Docker.prototype.languages = {
     extensions: ['jade'],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
-  stylus: {
-    extensions: ['styl'],
+  groovy: {
+    extensions: ['groovy', 'gsp'],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+  },
+  gsp: {
+    extensions: [ 'gsp' ], 
+    //comment: '//', gsp only supports multiline comments.
+u   multiLine: [ /<%--/, /--%>/ ]
+    pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
+  },
+  sass: {
+    extensions: [ 'styl' ], // .styl isn't supported by pygments, sass is close enough.
+    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    pygment: "styl"// .styl isn't supported by pygments, sass is close enough.
   }
 };
 
@@ -941,7 +952,7 @@ Docker.prototype.pygments = function(data, language, cb){
  * @param {function} cb Callback function to fire when we're done
  */
 Docker.prototype.highlight = function(sections, language, cb){
-  var params = this.languages[language], self = this;
+  var params = this.languages[language], self = this, pygment = language;
 
   var input = [];
   for(var i = 0; i < sections.length; i += 1){
@@ -949,8 +960,12 @@ Docker.prototype.highlight = function(sections, language, cb){
   }
   input = input.join('\n' + params.comment + '----{DIVIDER}----\n');
 
+  if(this.languages[language].pygment) {
+      pygment = this.laguages[language].pygment
+  }
+
   // Run our input through pygments, then split the output back up into its constituent sections
-  this.pygments(input, language, function(out){
+  this.pygments(input, pygment, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
     var bits = out.split(/\n*<span class="c1?">[^<]*----\{DIVIDER\}----<\/span>\n*/g);
     for(var i = 0; i < sections.length; i += 1){
