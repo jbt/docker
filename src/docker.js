@@ -876,6 +876,14 @@ Docker.prototype.languages = {
   apache: {
     names: [ '.htaccess', 'apache.conf', 'apache2.conf' ],
     comment: '#'
+  },
+  jade: {
+    extensions: ['jade'],
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+  },
+  stylus: {
+    extensions: ['styl'],
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   }
 };
 
