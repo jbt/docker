@@ -888,12 +888,12 @@ Docker.prototype.languages = {
   gsp: {
     extensions: [ 'gsp' ], 
     //comment: '//', gsp only supports multiline comments.
-    multiLine: [ /<%--/, /--%>/ ]
+    multiLine: [ /<%--/, /--%>/ ],
     pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
   },
   sass: {
     extensions: [ 'styl' ], // .styl isn't supported by pygments, sass is close enough.
-    comment: '//', multiLine: [ /\/\*/, /\*\// ]
+    comment: '//', multiLine: [ /\/\*/, /\*\// ],
     pygment: "styl"// .styl isn't supported by pygments, sass is close enough.
   }
 };
