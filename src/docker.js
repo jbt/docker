@@ -894,7 +894,7 @@ Docker.prototype.languages = {
   sass: {
     extensions: [ 'styl' ], // .styl isn't supported by pygments, sass is close enough.
     comment: '//', multiLine: [ /\/\*/, /\*\// ],
-    pygment: "styl"// .styl isn't supported by pygments, sass is close enough.
+    pygment: "sass"// .styl isn't supported by pygments, sass is close enough.
   }
 };
 
