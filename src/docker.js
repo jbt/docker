@@ -961,7 +961,7 @@ Docker.prototype.highlight = function(sections, language, cb){
   input = input.join('\n' + params.comment + '----{DIVIDER}----\n');
 
   if(this.languages[language].pygment) {
-      pygment = this.laguages[language].pygment
+      pygment = this.languages[language].pygment
   }
 
   // Run our input through pygments, then split the output back up into its constituent sections
