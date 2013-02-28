@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.2.6
+
+ * Fix a weird bug in SCSS parsing
+
 ## 0.2.5
 
  * Fix for file paths in windows (`\` as a path separator broke things)

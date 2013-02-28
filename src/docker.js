@@ -955,12 +955,12 @@ Docker.prototype.highlight = function(sections, language, cb){
   for(var i = 0; i < sections.length; i += 1){
     input.push(sections[i].code);
   }
-  input = input.join('\n' + params.comment + '----{DIVIDER}----\n');
+  input = input.join('\n' + params.comment + '----DIVIDER----\n');
 
   // Run our input through pygments, then split the output back up into its constituent sections
   this.pygments(input, language, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
-    var bits = out.split(/\n*<span class="c1?">[^<]*----\{DIVIDER\}----<\/span>\n*/g);
+    var bits = out.split(/^<span[^>]*>[^<]+(?:<\/span><span[^>]*>)?----DIVIDER----<\/span>$/gm);
     for(var i = 0; i < sections.length; i += 1){
       sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
