@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = '', thisFile = 'History.md', defaultSidebar = true;
+    var relativeDir = "", thisFile = "History.md", defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
   <script src="fileSearch.js"></script>
@@ -22,6 +22,9 @@
     <div id="headings">
       <div class="heading h1">
         <a href="#docker-version-history">Docker Version History</a>
+      </div>
+      <div class="heading h2">
+        <a href="#0.2.5">0.2.5</a>
       </div>
       <div class="heading h2">
         <a href="#0.2.4">0.2.4</a>
@@ -103,6 +106,20 @@
   </h1>
 </div>
 
+
+
+<div class="pilwrap" id="0.2.5">
+  <h2>
+    <a href="#0.2.5" class="pilcrow">&#182;</a>
+    0.2.5
+  </h2>
+</div>
+
+
+<ul>
+<li>Fix for file paths in windows (<code>\</code> as a path separator broke things)</li>
+<li>Throw errors on filesystem exceptions</li>
+</ul>
 
 
 <div class="pilwrap" id="0.2.4">
