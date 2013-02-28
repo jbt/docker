@@ -247,8 +247,19 @@ Docker.prototype.addNextFile = function(){
     }
     var currFile = path.resolve(this.inDir, filename);
     fs.lstat(currFile, function cb(err, stat){
+      if(err){
+        // Something unexpected happened on the filesystem.
+        // Nothing really that we can do about it, so throw it and be done with it
+        throw err;
+      }
+
       if(stat && stat.isSymbolicLink()){
         fs.readlink(currFile, function(err, link){
+          if(err){
+            // Something unexpected happened on the filesystem.
+            // Nothing really that we can do about it, so throw it and be done with it
+            throw err;
+          }
           currFile = path.resolve(path.dirname(currFile), link);
           fs.exists(currFile, function(exists){
             if(!exists){
@@ -262,6 +273,11 @@ Docker.prototype.addNextFile = function(){
       }else if(stat && stat.isDirectory()){
         // Find all children of the directory and queue those
         fs.readdir(path.resolve(self.inDir, filename), function(err, list){
+           if(err){
+            // Something unexpected happened on the filesystem.
+            // Nothing really that we can do about it, so throw it and be done with it
+            throw err;
+          }
           for(var i = 0; i < list.length; i += 1){
             if(self.ignoreHidden && list[i].charAt(0).match(/[\._]/)) continue;
             self.scanQueue.push(path.join(filename, list[i]));

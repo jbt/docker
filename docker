@@ -15,7 +15,7 @@ function list(val){ return val.split(','); }
 
 // All program arguments using commander
 program
-  .version('0.2.2')
+  .version('0.2.5')
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
   .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc') )
   .option('-u, --updated_files', 'Only process files that have been changed')

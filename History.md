@@ -1,5 +1,10 @@
 # Docker Version History
 
+## 0.2.5
+
+ * Fix for file paths in windows (`\` as a path separator broke things)
+ * Throw errors on filesystem exceptions
+
 ## 0.2.4
 
  * Update watchr dependency
