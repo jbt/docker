@@ -882,7 +882,7 @@ Docker.prototype.languages = {
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   groovy: {
-    extensions: ['groovy', 'gsp'],
+    extensions: ['groovy'],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   gsp: {
