@@ -907,7 +907,7 @@ Docker.prototype.languages = {
     multiLine: [ /<%--/, /--%>/ ],
     pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
   },
-  sass: {
+  styl: {
     extensions: [ 'styl' ], // .styl isn't supported by pygments, sass is close enough.
     comment: '//', multiLine: [ /\/\*/, /\*\// ],
     pygment: "sass"// .styl isn't supported by pygments, sass is close enough.
