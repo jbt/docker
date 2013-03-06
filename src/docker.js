@@ -247,8 +247,19 @@ Docker.prototype.addNextFile = function(){
     }
     var currFile = path.resolve(this.inDir, filename);
     fs.lstat(currFile, function cb(err, stat){
+      if(err){
+        // Something unexpected happened on the filesystem.
+        // Nothing really that we can do about it, so throw it and be done with it
+        throw err;
+      }
+
       if(stat && stat.isSymbolicLink()){
         fs.readlink(currFile, function(err, link){
+          if(err){
+            // Something unexpected happened on the filesystem.
+            // Nothing really that we can do about it, so throw it and be done with it
+            throw err;
+          }
           currFile = path.resolve(path.dirname(currFile), link);
           fs.exists(currFile, function(exists){
             if(!exists){
@@ -262,6 +273,11 @@ Docker.prototype.addNextFile = function(){
       }else if(stat && stat.isDirectory()){
         // Find all children of the directory and queue those
         fs.readdir(path.resolve(self.inDir, filename), function(err, list){
+           if(err){
+            // Something unexpected happened on the filesystem.
+            // Nothing really that we can do about it, so throw it and be done with it
+            throw err;
+          }
           for(var i = 0; i < list.length; i += 1){
             if(self.ignoreHidden && list[i].charAt(0).match(/[\._]/)) continue;
             self.scanQueue.push(path.join(filename, list[i]));
@@ -958,7 +974,7 @@ Docker.prototype.highlight = function(sections, language, cb){
   for(var i = 0; i < sections.length; i += 1){
     input.push(sections[i].code);
   }
-  input = input.join('\n' + params.comment + '----{DIVIDER}----\n');
+  input = input.join('\n' + params.comment + '----DIVIDER----\n');
 
   if(this.languages[language].pygment) {
       pygment = this.languages[language].pygment
@@ -967,7 +983,7 @@ Docker.prototype.highlight = function(sections, language, cb){
   // Run our input through pygments, then split the output back up into its constituent sections
   this.pygments(input, pygment, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
-    var bits = out.split(/\n*<span class="c1?">[^<]*----\{DIVIDER\}----<\/span>\n*/g);
+    var bits = out.split(/^<span[^>]*>[^<]+(?:<\/span><span[^>]*>)?----DIVIDER----<\/span>$/gm);
     for(var i = 0; i < sections.length; i += 1){
       sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
