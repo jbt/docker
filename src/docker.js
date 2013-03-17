@@ -554,7 +554,8 @@ Docker.prototype.parseSections = function(data, language){
         // ```
         matchable.match(params.multiLine[0]) &&
         !matchable.replace(params.multiLine[0],'').match(params.multiLine[1]) &&
-        !matchable.split(params.multiLine[0])[0].match(commentRegex)){
+        (!params.comment || !matchable.split(params.multiLine[0])[0].match(commentRegex))
+      ){
         // Here we start parsing a multiline comment. Store away the current section and start a new one
         if(section.code){
           if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
@@ -565,7 +566,12 @@ Docker.prototype.parseSections = function(data, language){
         continue;
       }
     }
-    if(matchable.match(commentRegex) && (!params.commentsIgnore || !matchable.match(params.commentsIgnore)) && !matchable.match(/#!/)){
+    if(
+      params.comment &&
+      matchable.match(commentRegex) &&
+      (!params.commentsIgnore || !matchable.match(params.commentsIgnore)) &&
+      !matchable.match(/#!/)
+    ){
       // This is for single-line comments. Again, store away the last section and start a new one
       if(section.code){
         if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
@@ -878,7 +884,7 @@ Docker.prototype.languages = {
     type: 'markdown'
   },
   sass: {
-    extensions: [ 'sass' ], 
+    extensions: [ 'sass' ],
     comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
   },
   scss: {
@@ -902,16 +908,21 @@ Docker.prototype.languages = {
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   gsp: {
-    extensions: [ 'gsp' ], 
+    extensions: [ 'gsp' ],
     //comment: '//', gsp only supports multiline comments.
     multiLine: [ /<%--/, /--%>/ ],
     pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
   },
   styl: {
-    extensions: [ 'styl' ], // .styl isn't supported by pygments, sass is close enough.
+    extensions: [ 'styl' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ],
     pygment: "sass"// .styl isn't supported by pygments, sass is close enough.
+  },
+  css: {
+    extensions: [ 'css' ],
+    multiLine: [ /\/\*/, /\*\// ],
   }
+
 };
 
 /**
