@@ -72,7 +72,11 @@ have been enabled in the output</p>
 <p>Wrap everything inside a closure so we don't get any collisions in
 the global scope</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -82,8 +86,12 @@ the global scope</p>
 </div>
 <p>Some useful variables</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">jumpTimeout</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">jumpTimeout</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -110,8 +118,12 @@ appropriate action depending on which key was pressed</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">jumpFormKeyDown</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">jumpFormKeyDown</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -121,9 +133,13 @@ appropriate action depending on which key was pressed</p>
 </div>
 <p>27 = esc, so hide the form</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">27</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">27</span><span class="p">){</span>
       <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpto&#39;</span><span class="p">));</span>
-      <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+      <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -135,11 +151,15 @@ appropriate action depending on which key was pressed</p>
 form, so queue a jump. Don't do it immediately do avoid
 disorientating jumps during quick typing</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
       <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">jumpTimeout</span><span class="p">);</span>
       <span class="nx">jumpTimeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">doJump</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -175,13 +195,17 @@ disorientating jumps during quick typing</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">a</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">a</span><span class="p">){</span>
     <span class="k">if</span><span class="p">((</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)){</span>
       <span class="nx">a</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
     <span class="p">}</span><span class="k">else</span><span class="p">{</span>
       <span class="nx">obj</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -208,11 +232,15 @@ so find the given line and jump to it</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">jumpFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">jumpFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
     <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
     <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
 
-    <span class="nx">doJump</span><span class="p">();</span></pre></div>
+    <span class="nx">doJump</span><span class="p">();</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -222,11 +250,15 @@ so find the given line and jump to it</p>
 </div>
 <p>Hide the jump box</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpto&#39;</span><span class="p">));</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpto&#39;</span><span class="p">));</span>
     <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -244,8 +276,12 @@ so find the given line and jump to it</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">doJump</span><span class="p">(){</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">jumpBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">doJump</span><span class="p">(){</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">jumpBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -255,7 +291,11 @@ so find the given line and jump to it</p>
 </div>
 <p>Figure out which line we need to jump to</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpbox&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpbox&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -265,7 +305,11 @@ so find the given line and jump to it</p>
 </div>
 <p>Grab the line anchor if it exists</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">theLine</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">theLine</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -275,7 +319,11 @@ so find the given line and jump to it</p>
 </div>
 <p>If it doesn't exist, there's not much we can do</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">theLine</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">theLine</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -285,8 +333,12 @@ so find the given line and jump to it</p>
 </div>
 <p>If it does exist, jump to it</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span> <span class="o">=</span> <span class="s1">&#39;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span> <span class="o">=</span> <span class="s1">&#39;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span><span class="p">;</span>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -304,7 +356,11 @@ so find the given line and jump to it</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">showJumpBox</span><span class="p">(){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">showJumpBox</span><span class="p">(){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -314,8 +370,12 @@ so find the given line and jump to it</p>
 </div>
 <p>If the box is already visible, do nothing</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">jumpBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-    <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">jumpBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -325,8 +385,12 @@ so find the given line and jump to it</p>
 </div>
 <p>Create the containing element</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-    <span class="nx">f</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&quot;jumpto&quot;</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+    <span class="nx">f</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&quot;jumpto&quot;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -336,14 +400,18 @@ so find the given line and jump to it</p>
 </div>
 <p>Construct some basic HTML</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">f</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">[</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">f</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">[</span>
       <span class="s1">&#39;&lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;&lt;div class=&quot;box&quot;&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;form id=&quot;jumpform&quot;&gt;&#39;</span><span class="p">,</span>
           <span class="s1">&#39;&lt;input id=&quot;jumpbox&quot; type=&quot;text&quot; name=&quot;line&quot; placeholder=&quot;Go to line...&quot; autocomplete=&quot;off&quot; /&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;&lt;/div&gt;&#39;</span>
-    <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+    <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -353,7 +421,11 @@ so find the given line and jump to it</p>
 </div>
 <p>Add the keydown event</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">addEvent</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">jumpFormKeyDown</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">addEvent</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">jumpFormKeyDown</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -363,7 +435,11 @@ so find the given line and jump to it</p>
 </div>
 <p>Add the container straight onto the body</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -373,9 +449,13 @@ so find the given line and jump to it</p>
 </div>
 <p>Focus the field, and bund the submit event</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpbox&#39;</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpbox&#39;</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
     <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpform&#39;</span><span class="p">),</span> <span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="nx">jumpFormSubmitted</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -402,8 +482,12 @@ if ctrl/cmd+G has been pressed and shows the jump form</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">goToLine_kd</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">goToLine_kd</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -413,12 +497,16 @@ if ctrl/cmd+G has been pressed and shows the jump form</p>
 </div>
 <p>71 = g, so listen for ctrl/cmd+P</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">71</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span><span class="p">)){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">71</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span><span class="p">)){</span>
       <span class="nx">showJumpBox</span><span class="p">();</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
       <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -428,7 +516,8 @@ if ctrl/cmd+G has been pressed and shows the jump form</p>
 </div>
 <p>Attach the global event to the document</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">goToLine_kd</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">goToLine_kd</span><span class="p">);</span>
 
 <span class="p">})();</span>
 </pre></div>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>fileSearch.css</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../", thisFile = "extras/fileSearch/fileSearch.css", defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+  <script src="../../fileSearch.js"></script>
+  <link rel="stylesheet" href="../../fileSearch.css" />
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>fileSearch.css</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nf">#search</span><span class="p">{</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">10000</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">bottom</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#searchbox</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">778px</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">32px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">4px</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#aaa</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#searchbox</span><span class="nd">:focus</span><span class="p">{</span>
+  <span class="k">outline</span><span class="o">:</span> <span class="k">none</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.overlay</span><span class="p">{</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">bottom</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
+  <span class="k">opacity</span><span class="o">:</span> <span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.box</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">2</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">10</span><span class="o">%</span><span class="p">;</span>
+  <span class="k">max-height</span><span class="o">:</span> <span class="m">80</span><span class="o">%</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">50</span><span class="o">%</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">-410px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">800px</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
+  <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
+  <span class="o">-</span><span class="err">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="nf">#searchresults</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">798px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#aaa</span><span class="p">;</span>
+  <span class="k">border-top</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">max-height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item</span><span class="p">{</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
+  <span class="k">border-bottom</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item</span><span class="nd">:last-child</span><span class="p">{</span>
+  <span class="k">border-bottom</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item</span> <span class="nc">.score</span><span class="p">{</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">8px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item.selected</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#eee</span><span class="p">;</span>
+  <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item</span><span class="nd">:hover</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#f2f2f2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item</span> <span class="nc">.filename</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">text</span><span class="o">-</span><span class="k">overflow</span><span class="o">:</span> <span class="n">ellipsis</span><span class="p">;</span>
+  <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#search</span> <span class="nc">.item</span> <span class="nc">.fullpath</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span><span class="k">block</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
+  <span class="k">bottom</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">text</span><span class="o">-</span><span class="k">overflow</span><span class="o">:</span> <span class="n">ellipsis</span><span class="p">;</span>
+  <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">13px</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

@@ -39,7 +39,10 @@
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="err">#</span><span class="o">!</span><span class="err">/usr/bin/env node</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre><span class="err">#</span><span class="o">!</span><span class="err">/usr/bin/env node</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -49,9 +52,13 @@
 </div>
 <p>Require all node modules</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">program</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;commander&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">watchr</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;watchr&#39;</span><span class="p">);</span></pre></div>
+<span class="kd">var</span> <span class="nx">watchr</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;watchr&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -61,7 +68,11 @@
 </div>
 <p>Require <a href="src/docker.js.html">Docker</a></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./src/docker.js&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./src/docker.js&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -71,9 +82,13 @@
 </div>
 <p>Figure out PWD because it doesn't exist in process.env on windows.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">pwd</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">pwd</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
 
-<span class="kd">function</span> <span class="nx">list</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span> <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span> <span class="p">}</span></pre></div>
+<span class="kd">function</span> <span class="nx">list</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span> <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span> <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -83,8 +98,9 @@
 </div>
 <p>All program arguments using commander</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nx">program</span>
-  <span class="p">.</span><span class="nx">version</span><span class="p">(</span><span class="s1">&#39;0.2.5&#39;</span><span class="p">)</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">program</span>
+  <span class="p">.</span><span class="nx">version</span><span class="p">(</span><span class="s1">&#39;0.2.7&#39;</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-i, --input_dir [dir]&#39;</span><span class="p">,</span> <span class="s1">&#39;Input directory (defaults to current dir)&#39;</span><span class="p">,</span> <span class="nx">pwd</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-o, --output_dir [dir]&#39;</span><span class="p">,</span> <span class="s1">&#39;Output directory (defaults to ./doc)&#39;</span><span class="p">,</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">pwd</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">)</span> <span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-u, --updated_files&#39;</span><span class="p">,</span> <span class="s1">&#39;Only process files that have been changed&#39;</span><span class="p">)</span>
@@ -97,7 +113,11 @@
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--js &lt;files&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Additional javascript files to include&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--css &lt;files&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Additional CSS files to include&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--extras &lt;extras&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Bundled extras to include, see extras dir&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">);</span></pre></div>
+  <span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">);</span>
+
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -108,13 +128,17 @@
 <p>Super-simple function to test if ann argument is vaguely trueish or falseish.
 Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</code>, <code>'0'</code>, <code>'1'</code>, <code>'y'</code>, <code>'n'</code>, <code>'yes'</code>, <code>'no'</code>, <code>'ok'</code>, <code>'true'</code>, <code>'false'</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">coerceSidebar</span><span class="p">(</span><span class="nx">input</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">coerceSidebar</span><span class="p">(</span><span class="nx">input</span><span class="p">){</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;disable&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">input</span><span class="p">;</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">||</span> <span class="nx">input</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="k">return</span> <span class="nx">input</span><span class="p">;</span>
   <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">||</span> <span class="p">(</span><span class="o">+</span><span class="nx">input</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span> <span class="o">===</span> <span class="nx">input</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="k">return</span> <span class="o">!!+</span><span class="nx">input</span><span class="p">;</span>
   <span class="nx">input</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
   <span class="k">return</span> <span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="sr">/(y(es)?|ok|t(rue)?)/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
-<span class="p">}</span></pre></div>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -124,7 +148,8 @@ Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</cod
 </div>
 <p>Put all the options into an object</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">inDir</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">input_dir</span><span class="p">,</span>
   <span class="nx">outDir</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">output_dir</span><span class="p">,</span>
   <span class="nx">onlyUpdated</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">updated_files</span><span class="p">,</span>
@@ -136,7 +161,10 @@ Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</cod
   <span class="nx">js</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span>
   <span class="nx">css</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">css</span><span class="p">,</span>
   <span class="nx">extras</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">extras</span>
-<span class="p">};</span></pre></div>
+<span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -146,7 +174,11 @@ Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</cod
 </div>
 <p>Create docker instance</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Docker</span><span class="p">(</span><span class="nx">opts</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Docker</span><span class="p">(</span><span class="nx">opts</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -156,7 +188,11 @@ Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</cod
 </div>
 <p>If no file list is specified, just run on whole directory</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="k">if</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">program</span><span class="p">.</span><span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;./&#39;</span><span class="p">];</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">if</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">program</span><span class="p">.</span><span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;./&#39;</span><span class="p">];</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -166,7 +202,8 @@ Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</cod
 </div>
 <p>Set it running.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="k">if</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">watch</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">if</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">watch</span><span class="p">){</span>
   <span class="nx">d</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
 <span class="p">}</span><span class="k">else</span><span class="p">{</span>
   <span class="nx">d</span><span class="p">.</span><span class="nx">doc</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>

@@ -78,9 +78,13 @@ that means no jQuery.</p>
 <p>Use localStorage to store data about the tree's state: whether or not
 the tree is visible and which directories are expanded. Unless the state</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">sidebarVisible</span> <span class="o">=</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span><span class="p">)</span> <span class="o">?</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">sidebarVisible</span> <span class="o">=</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span><span class="p">)</span> <span class="o">?</span>
                         <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span> <span class="o">:</span>
-                        <span class="nx">defaultSidebar</span><span class="p">;</span></pre></div>
+                        <span class="nx">defaultSidebar</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -116,10 +120,14 @@ the tree is visible and which directories are expanded. Unless the state</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">makeTree</span><span class="p">(</span><span class="nx">treeData</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">filename</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">makeTree</span><span class="p">(</span><span class="nx">treeData</span><span class="p">,</span> <span class="nx">root</span><span class="p">,</span> <span class="nx">filename</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">treeNode</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">treeHandle</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar-toggle&#39;</span><span class="p">);</span>
-  <span class="nx">treeHandle</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">toggleTree</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span></pre></div>
+  <span class="nx">treeHandle</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">toggleTree</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -129,7 +137,11 @@ the tree is visible and which directories are expanded. Unless the state</p>
 </div>
 <p>Build the html and add it to the container.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">nodeHtml</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">treeData</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">nodeHtml</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">treeData</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -139,7 +151,11 @@ the tree is visible and which directories are expanded. Unless the state</p>
 </div>
 <p>Root folder (whole tree) should always be open</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; open&#39;</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; open&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -149,9 +165,13 @@ the tree is visible and which directories are expanded. Unless the state</p>
 </div>
 <p>Attach click event handler</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">nodeClicked</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">nodeClicked</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 
-  <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; sidebar&#39;</span><span class="p">;</span></pre></div>
+  <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">)</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; sidebar&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -161,8 +181,12 @@ the tree is visible and which directories are expanded. Unless the state</p>
 </div>
 <p>Restore scroll position from localStorage if set. And attach scroll handler</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_treeScroll</span><span class="p">)</span> <span class="nx">treeNode</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_treeScroll</span><span class="p">;</span>
-  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">onscroll</span> <span class="o">=</span> <span class="nx">treeScrolled</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_treeScroll</span><span class="p">)</span> <span class="nx">treeNode</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_treeScroll</span><span class="p">;</span>
+  <span class="nx">treeNode</span><span class="p">.</span><span class="nx">onscroll</span> <span class="o">=</span> <span class="nx">treeScrolled</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -172,8 +196,12 @@ the tree is visible and which directories are expanded. Unless the state</p>
 </div>
 <p>Only set a class to allow CSS transitions after the tree state has been painted</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; slidey&#39;</span><span class="p">;</span> <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>
-<span class="p">}</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; slidey&#39;</span><span class="p">;</span> <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -192,10 +220,14 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">treeScrolled</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">treeScrolled</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">tree</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>
   <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_treeScroll</span> <span class="o">=</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
-<span class="p">}</span></pre></div>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -221,7 +253,11 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">nodeClicked</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">nodeClicked</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -231,7 +267,11 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Find the target</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -241,7 +281,11 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>If the click target is actually a file (rather than a directory), ignore it</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!==</span> <span class="s1">&#39;div&#39;</span> <span class="o">||</span> <span class="nx">t</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!==</span> <span class="s1">&#39;div&#39;</span> <span class="o">||</span> <span class="nx">t</span><span class="p">.</span><span class="nx">className</span> <span class="o">===</span> <span class="s1">&#39;children&#39;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -251,7 +295,11 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Recurse upwards until we find the actual directory node</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">while</span><span class="p">(</span><span class="nx">t</span> <span class="o">&amp;&amp;</span> <span class="nx">t</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;dir&#39;</span><span class="p">)</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">while</span><span class="p">(</span><span class="nx">t</span> <span class="o">&amp;&amp;</span> <span class="nx">t</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;dir&#39;</span><span class="p">)</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -261,7 +309,11 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>If we're at the root node, then do nothing (we don't allow collapsing of the whole tree)</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">t</span> <span class="o">||</span> <span class="nx">t</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="s1">&#39;tree&#39;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">t</span> <span class="o">||</span> <span class="nx">t</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="s1">&#39;tree&#39;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -271,7 +323,8 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Find the path and toggle the state, saving the state in the localStorage variable</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;rel&#39;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;rel&#39;</span><span class="p">);</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;open&#39;</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
     <span class="nx">t</span><span class="p">.</span><span class="nx">className</span><span class="o">=</span><span class="nx">t</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s*open/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s1">&#39;docker_openPath:&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">);</span>
@@ -279,7 +332,11 @@ so it can be restored on the next pageview.</p>
     <span class="nx">t</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; open&#39;</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">[</span><span class="s1">&#39;docker_openPath:&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span><span class="p">;</span>
   <span class="p">}</span>
-<span class="p">}</span></pre></div>
+<span class="p">}</span>
+
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -320,7 +377,10 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">nodeHtml</span><span class="p">(</span><span class="nx">nodename</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">root</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">nodeHtml</span><span class="p">(</span><span class="nx">nodename</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">root</span><span class="p">){</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -330,10 +390,14 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Firstly, figure out whether or not the directory is expanded from localStorage</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">isOpen</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">[</span><span class="s1">&#39;docker_openPath:&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">isOpen</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">[</span><span class="s1">&#39;docker_openPath:&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="s1">&#39;&lt;div class=&quot;dir&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">isOpen</span> <span class="o">?</span> <span class="s1">&#39; open&#39;</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&quot; rel=&quot;&#39;</span> <span class="o">+</span> <span class="nx">path</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span><span class="p">;</span>
   <span class="nx">out</span> <span class="o">+=</span> <span class="s1">&#39;&lt;div class=&quot;nodename&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">nodename</span> <span class="o">+</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
-  <span class="nx">out</span> <span class="o">+=</span> <span class="s1">&#39;&lt;div class=&quot;children&quot;&gt;&#39;</span><span class="p">;</span></pre></div>
+  <span class="nx">out</span> <span class="o">+=</span> <span class="s1">&#39;&lt;div class=&quot;children&quot;&gt;&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -343,11 +407,14 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Loop through all child directories first</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">dirs</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">dirs</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">dirs</span> <span class="o">=</span> <span class="p">[];</span>
     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">node</span><span class="p">.</span><span class="nx">dirs</span><span class="p">){</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">dirs</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="nx">dirs</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">html</span><span class="o">:</span> <span class="nx">nodeHtml</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">dirs</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">path</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">root</span><span class="p">)</span> <span class="p">});</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">}</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -357,10 +424,14 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Have to store them in an array first and then sort them alphabetically here</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">dirs</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span> <span class="k">return</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="nx">b</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">});</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">dirs</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span> <span class="k">return</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">name</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="nx">b</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">});</span>
 
     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">k</span> <span class="o">&lt;</span> <span class="nx">dirs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">k</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="nx">out</span> <span class="o">+=</span> <span class="nx">dirs</span><span class="p">[</span><span class="nx">k</span><span class="p">].</span><span class="nx">html</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -370,12 +441,16 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Now loop through all the child files alphabetically</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">files</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">files</span><span class="p">){</span>
     <span class="nx">node</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">sort</span><span class="p">();</span>
     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">node</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
       <span class="nx">out</span> <span class="o">+=</span> <span class="s1">&#39;&lt;a class=&quot;file&quot; href=&quot;&#39;</span> <span class="o">+</span> <span class="nx">root</span> <span class="o">+</span> <span class="nx">path</span> <span class="o">+</span> <span class="nx">node</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.html&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">node</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -385,10 +460,14 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Close things off</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">out</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/div&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">out</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/div&gt;&lt;/div&gt;&#39;</span><span class="p">;</span>
 
   <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
-<span class="p">}</span></pre></div>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -406,7 +485,10 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">toggleTree</span><span class="p">(){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">toggleTree</span><span class="p">(){</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -416,7 +498,8 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Do the actual toggling by modifying the class on the body element. That way we can get some nice CSS transitions going.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nx">sidebarVisible</span><span class="p">){</span>
     <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s*sidebar/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
     <span class="nx">sidebarVisible</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
@@ -430,7 +513,10 @@ so it can be restored on the next pageview.</p>
       <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_showSidebar</span> <span class="o">=</span> <span class="s1">&#39;no&#39;</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">}</span></pre></div>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -448,9 +534,13 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">wireUpTabs</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">wireUpTabs</span><span class="p">(){</span>
   <span class="kd">var</span> <span class="nx">tabEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar_switch&#39;</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span></pre></div>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -460,7 +550,10 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Each tab has a class corresponding of the id of its tab pane</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -470,12 +563,16 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Ignore text nodes</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
     <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span>
       <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span> <span class="p">};</span>
     <span class="p">}(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">));</span>
   <span class="p">}</span>
-<span class="p">}</span></pre></div>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -501,9 +598,13 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">tab</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">switchTab</span><span class="p">(</span><span class="nx">tab</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">tabEl</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;sidebar_switch&#39;</span><span class="p">);</span>
-  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span></pre></div>
+  <span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">tabEl</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -513,7 +614,10 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Easiest way to go through tabs without any kind of selector is just to look at the tab bar</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span>  <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -523,7 +627,11 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Ignore text nodes</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">nodeType</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -533,8 +641,11 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Figure out what tab pane this tab button corresponts to</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s.*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="nx">tab</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s.*$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="nx">tab</span><span class="p">){</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -544,9 +655,12 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Show the tab pane, select the tab button</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;block&#39;</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;block&#39;</span><span class="p">;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; selected&#39;</span><span class="p">;</span>
-    <span class="p">}</span><span class="k">else</span><span class="p">{</span></pre></div>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -556,10 +670,14 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Hide the tab pane, deselect the tab button</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">t</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">;</span>
       <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\sselected/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -569,8 +687,12 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Store the last open tab in localStorage</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
-<span class="p">}</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">)</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span> <span class="o">=</span> <span class="nx">tab</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -588,9 +710,13 @@ so it can be restored on the next pageview.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="nx">makeTree</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="nx">relativeDir</span><span class="p">,</span> <span class="nx">thisFile</span><span class="p">);</span>
-  <span class="nx">wireUpTabs</span><span class="p">();</span></pre></div>
+  <span class="nx">wireUpTabs</span><span class="p">();</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -600,7 +726,8 @@ so it can be restored on the next pageview.</p>
 </div>
 <p>Switch to the last viewed sidebar tab if stored, otherwise default to folder tree</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span><span class="p">){</span>
     <span class="nx">switchTab</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">docker_sidebarTab</span><span class="p">);</span>
   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
     <span class="nx">switchTab</span><span class="p">(</span><span class="s1">&#39;tree&#39;</span><span class="p">);</span>

@@ -119,7 +119,11 @@ let me know.</p>
 <p>Wrap everything inside a closure so we don't get any collisions in
 the global scope</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -151,11 +155,15 @@ the global scope</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">){</span>
     <span class="k">return</span> <span class="nx">term</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\[\]\{\}\(\)\^\$\.\*\+\|]/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
       <span class="k">return</span> <span class="s1">&#39;\\&#39;</span> <span class="o">+</span> <span class="nx">a</span><span class="p">;</span>
     <span class="p">});</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -166,7 +174,11 @@ the global scope</p>
 <p>A few heper constants; they don't really do much, but they
 indicate the corresponding rows and columns in the matrix below.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">UPPER</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">LOWER</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">NUMBER</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">COMMON_DELIMS</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">OTHER</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">UPPER</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">LOWER</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">NUMBER</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">COMMON_DELIMS</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">OTHER</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -180,13 +192,17 @@ col = character to compare to. E.g. uppercase letter
 stands out with a factor of 240 compared to lowercase letter.
 These numbers are pretty much plucked out of thin air.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">relevanceMatrix</span> <span class="o">=</span> <span class="p">[</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">relevanceMatrix</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span>  <span class="mi">0</span><span class="p">,</span>   <span class="mi">240</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">240</span><span class="p">,</span>   <span class="mi">220</span><span class="p">],</span>
     <span class="p">[</span> <span class="mi">20</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="mi">20</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">],</span>
     <span class="p">[</span><span class="mi">140</span><span class="p">,</span>   <span class="mi">140</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">140</span><span class="p">,</span>   <span class="mi">140</span><span class="p">],</span>
     <span class="p">[</span><span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>   <span class="mi">120</span><span class="p">],</span>
     <span class="p">[</span><span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">120</span><span class="p">,</span>   <span class="mi">160</span><span class="p">,</span>     <span class="mi">0</span><span class="p">]</span>
-  <span class="p">];</span></pre></div>
+  <span class="p">];</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -219,13 +235,17 @@ digit, strong delimiter, or other.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span>
     <span class="k">if</span><span class="p">(</span><span class="sr">/[a-z]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">LOWER</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="sr">/[A-Z]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">UPPER</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="sr">/[0-9]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">NUMBER</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="sr">/[\/\-_\.]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span> <span class="k">return</span> <span class="nx">COMMON_DELIMS</span><span class="p">;</span>
     <span class="k">return</span> <span class="nx">OTHER</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -269,7 +289,11 @@ The letter B would stand out strongly in aBc</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">compareCharacters</span><span class="p">(</span><span class="nx">theChar</span><span class="p">,</span> <span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">compareCharacters</span><span class="p">(</span><span class="nx">theChar</span><span class="p">,</span> <span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -279,9 +303,13 @@ The letter B would stand out strongly in aBc</p>
 </div>
 <p>Grab the character types of all three characters</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">theType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">theChar</span><span class="p">),</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">theType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">theChar</span><span class="p">),</span>
         <span class="nx">beforeType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">before</span><span class="p">),</span>
-        <span class="nx">afterType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">after</span><span class="p">);</span></pre></div>
+        <span class="nx">afterType</span> <span class="o">=</span> <span class="nx">charType</span><span class="p">(</span><span class="nx">after</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -291,9 +319,13 @@ The letter B would stand out strongly in aBc</p>
 </div>
 <p><strong>MAGIC NUMBER ALERT</strong> 0.4 is a number that makes it work best in my tests</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">beforeType</span><span class="p">]</span> <span class="o">+</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">return</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">beforeType</span><span class="p">]</span> <span class="o">+</span>
      <span class="mf">0.4</span> <span class="o">*</span> <span class="nx">relevanceMatrix</span><span class="p">[</span><span class="nx">theType</span><span class="p">][</span><span class="nx">afterType</span><span class="p">];</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -326,7 +358,8 @@ unaccented equivalent.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">stripAccents</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">accented</span><span class="p">,</span> <span class="nx">unaccented</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">stripAccents</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">accented</span><span class="p">,</span> <span class="nx">unaccented</span><span class="p">){</span>
     <span class="kd">var</span> <span class="nx">matchRegex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="nx">accented</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>
         <span class="nx">translationTable</span> <span class="o">=</span> <span class="p">{},</span> <span class="nx">i</span><span class="p">;</span>
         <span class="nx">lookup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">chr</span><span class="p">){</span>
@@ -341,7 +374,10 @@ unaccented equivalent.</p>
       <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">matchRegex</span><span class="p">,</span> <span class="nx">lookup</span><span class="p">);</span>
     <span class="p">};</span>
   <span class="p">})(</span><span class="s1">&#39;àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ&#39;</span><span class="p">,</span>
-     <span class="s1">&#39;aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY&#39;</span><span class="p">);</span></pre></div>
+     <span class="s1">&#39;aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -388,7 +424,11 @@ context.</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="nx">startingFrom</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="nx">startingFrom</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -398,7 +438,11 @@ context.</p>
 </div>
 <p>If we've reached the end of our search term, add some extra points for being short</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">startingFrom</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nx">startingFrom</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -408,7 +452,11 @@ context.</p>
 </div>
 <p>If we've reached the end of the item but not the term, then fail.</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -418,11 +466,15 @@ context.</p>
 </div>
 <p>Quick sanity check to make sure the remaining item has all the characters we need in order</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startingFrom</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startingFrom</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span>
       <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;^.*&#39;</span> <span class="o">+</span> <span class="nx">escapeRegex</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;~~K~~&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;.*$&#39;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;~~K~~&#39;</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.*&#39;</span><span class="p">),</span> <span class="s1">&#39;i&#39;</span> <span class="p">)</span>
     <span class="p">)){</span>
       <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -432,7 +484,11 @@ context.</p>
 </div>
 <p>Grab the first character that we're going to look at</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">firstSearchChar</span> <span class="o">=</span> <span class="nx">term</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">firstSearchChar</span> <span class="o">=</span> <span class="nx">term</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -443,8 +499,12 @@ context.</p>
 <p>These variables store our best guess so far, and the character
 indices to which it applies</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">bestRankSoFar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">highlights</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">bestRankSoFar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">highlights</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -454,8 +514,12 @@ indices to which it applies</p>
 </div>
 <p>Now loop over the item, and test all instances of <code>firstSearchChar</code> (case-insensitive)</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">startingFrom</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!==</span> <span class="nx">firstSearchChar</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">startingFrom</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!==</span> <span class="nx">firstSearchChar</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="k">continue</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -465,8 +529,12 @@ indices to which it applies</p>
 </div>
 <p>Find out what the rest of the string scores against the rest of the term</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">subsequentRank</span> <span class="o">=</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span> <span class="nx">term</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">subsequentRank</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">subsequentRank</span> <span class="o">=</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span> <span class="nx">term</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">subsequentRank</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -476,7 +544,11 @@ indices to which it applies</p>
 </div>
 <p>Inverse linear score for the character. Earlier in string = much better</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">characterScore</span> <span class="o">=</span> <span class="mi">400</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">characterScore</span> <span class="o">=</span> <span class="mi">400</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -487,7 +559,11 @@ indices to which it applies</p>
 <p>If, starting at this character, we have the whole of the search term in order, that's really
 good. And if the term is really long, make it cubically good (quadratic scores added up)</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">characterScore</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="nx">term</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="nx">term</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">term</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">characterScore</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="nx">term</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="nx">term</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -497,11 +573,15 @@ good. And if the term is really long, make it cubically good (quadratic scores a
 </div>
 <p>Add on score for how much this character stands out</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">characterScore</span> <span class="o">+=</span> <span class="nx">compareCharacters</span><span class="p">(</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">characterScore</span> <span class="o">+=</span> <span class="nx">compareCharacters</span><span class="p">(</span>
         <span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span>
         <span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="s1">&#39;/&#39;</span> <span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
         <span class="nx">i</span> <span class="o">===</span> <span class="nx">item</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">?</span> <span class="s1">&#39;/&#39;</span> <span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-      <span class="p">);</span></pre></div>
+      <span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -511,7 +591,11 @@ good. And if the term is really long, make it cubically good (quadratic scores a
 </div>
 <p>Add on score from the rest of the string</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">characterScore</span> <span class="o">+=</span> <span class="nx">subsequentRank</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">characterScore</span> <span class="o">+=</span> <span class="nx">subsequentRank</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -521,8 +605,12 @@ good. And if the term is really long, make it cubically good (quadratic scores a
 </div>
 <p>If we've managed to better what we have so far, store it away</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">characterScore</span> <span class="o">&gt;</span> <span class="nx">bestRankSoFar</span><span class="p">){</span>
-        <span class="nx">bestRankSoFar</span> <span class="o">=</span> <span class="nx">characterScore</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span><span class="nx">characterScore</span> <span class="o">&gt;</span> <span class="nx">bestRankSoFar</span><span class="p">){</span>
+        <span class="nx">bestRankSoFar</span> <span class="o">=</span> <span class="nx">characterScore</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -532,13 +620,17 @@ good. And if the term is really long, make it cubically good (quadratic scores a
 </div>
 <p>Save highlighted characters as well</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">highlights</span> <span class="o">=</span> <span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">highlights</span> <span class="o">=</span> <span class="p">[</span><span class="nx">i</span><span class="p">];</span>
         <span class="kd">var</span> <span class="nx">subsequentHighlights</span> <span class="o">=</span> <span class="nx">subsequentRank</span><span class="p">.</span><span class="nx">highlights</span> <span class="o">||</span> <span class="p">[];</span>
         <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">subsequentHighlights</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
           <span class="nx">highlights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">subsequentHighlights</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">+</span> <span class="nx">i</span><span class="p">);</span>
         <span class="p">}</span>
       <span class="p">}</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -549,12 +641,16 @@ good. And if the term is really long, make it cubically good (quadratic scores a
 <p>Return an object with valueOf so it can be directly compared using &lt; and >
 but also stores the highlight indices</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">return</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">return</span> <span class="p">{</span>
       <span class="nx">__score</span><span class="o">:</span> <span class="nx">bestRankSoFar</span><span class="p">,</span>
       <span class="nx">valueOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">__score</span><span class="p">;</span> <span class="p">},</span>
       <span class="nx">highlights</span><span class="o">:</span> <span class="nx">highlights</span>
     <span class="p">};</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -592,9 +688,13 @@ but also stores the highlight indices</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">){</span>
     <span class="k">return</span> <span class="nx">bestRank</span><span class="p">(</span><span class="nx">stripAccents</span><span class="p">(</span><span class="nx">item</span><span class="p">),</span> <span class="nx">stripAccents</span><span class="p">(</span><span class="nx">term</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -646,7 +746,11 @@ to highlight in the term, indexed by the same property names</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fuzzyScore</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="nx">relevances</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">fuzzyScore</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="nx">relevances</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -656,7 +760,11 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>If we have a string, just match it directly</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">item</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">item</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">term</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -666,11 +774,15 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Initialize the return object</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
       <span class="nx">__score</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">valueOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">__score</span><span class="p">;</span> <span class="p">},</span>
       <span class="nx">highlights</span><span class="o">:</span> <span class="p">{}</span>
-    <span class="p">};</span></pre></div>
+    <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -680,8 +792,12 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Loop through all the specified properties</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">relevances</span><span class="p">){</span>
-      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">relevances</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">relevances</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">relevances</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -691,7 +807,11 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Grab the score for that particular property</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">thatScore</span> <span class="o">=</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">term</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">thatScore</span> <span class="o">=</span> <span class="nx">fuzzyScoreStr</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">term</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -701,12 +821,16 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Add the rank on to the return object</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="nx">result</span><span class="p">.</span><span class="nx">__score</span> <span class="o">+=</span> <span class="nx">relevances</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="nx">thatScore</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">result</span><span class="p">.</span><span class="nx">__score</span> <span class="o">+=</span> <span class="nx">relevances</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*</span> <span class="nx">thatScore</span><span class="p">;</span>
       <span class="nx">result</span><span class="p">.</span><span class="nx">highlights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">thatScore</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">thatScore</span><span class="p">.</span><span class="nx">highlights</span> <span class="o">:</span> <span class="p">[];</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -721,7 +845,11 @@ to highlight in the term, indexed by the same property names</p>
 
 <p>Now onwards to building it into our page!</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -731,7 +859,8 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Loop through the tree and parse it all into a big array</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">fileList</span> <span class="o">=</span> <span class="p">[];</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">fileList</span> <span class="o">=</span> <span class="p">[];</span>
 
   <span class="kd">function</span> <span class="nx">addDirToList</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">path</span><span class="p">){</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">dir</span><span class="p">.</span><span class="nx">dirs</span><span class="p">){</span>
@@ -743,7 +872,10 @@ to highlight in the term, indexed by the same property names</p>
     <span class="p">}</span>
   <span class="p">}</span>
 
-  <span class="nx">addDirToList</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+  <span class="nx">addDirToList</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -753,8 +885,12 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Some variables to store the state of the search box</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">var</span> <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">searchingTimeout</span><span class="p">,</span> <span class="nx">selectedSearchIndex</span><span class="p">,</span> <span class="nx">selectedItem</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">searchingTimeout</span><span class="p">,</span> <span class="nx">selectedSearchIndex</span><span class="p">,</span> <span class="nx">selectedItem</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -772,7 +908,11 @@ to highlight in the term, indexed by the same property names</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">doSearch</span><span class="p">(){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">doSearch</span><span class="p">(){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -782,9 +922,13 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Grab the search term from the input</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">term</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchbox&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">term</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchbox&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
 
-    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -794,8 +938,12 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Loop through all the files and rank them all</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">fileList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
-      <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">fileList</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">fileList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">fileList</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -805,7 +953,11 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>Split up the file name so we can grab the base name</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -815,10 +967,14 @@ to highlight in the term, indexed by the same property names</p>
 </div>
 <p>This is the object that'll get passed to fuzzyScore</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">file</span> <span class="o">=</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">file</span> <span class="o">=</span> <span class="p">{</span>
         <span class="nx">fullPath</span><span class="o">:</span> <span class="nx">f</span><span class="p">,</span>
         <span class="nx">fileName</span><span class="o">:</span> <span class="nx">parts</span><span class="p">[</span><span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-      <span class="p">};</span></pre></div>
+      <span class="p">};</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -830,10 +986,14 @@ to highlight in the term, indexed by the same property names</p>
 but if the file base name also matches, give it a
 boost. 0.6 is a number that produces nice results</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="kd">var</span> <span class="nx">rank</span> <span class="o">=</span> <span class="nx">fuzzyScore</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="kd">var</span> <span class="nx">rank</span> <span class="o">=</span> <span class="nx">fuzzyScore</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">term</span><span class="p">,</span> <span class="p">{</span>
         <span class="nx">fullPath</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
         <span class="nx">fileName</span><span class="o">:</span> <span class="mf">0.6</span>
-      <span class="p">});</span></pre></div>
+      <span class="p">});</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -843,12 +1003,16 @@ boost. 0.6 is a number that produces nice results</p>
 </div>
 <p>If the file scores positively against the search, add it in</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">rank</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span><span class="p">(</span><span class="nx">rank</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
         <span class="nx">file</span><span class="p">.</span><span class="nx">highlight</span> <span class="o">=</span> <span class="nx">rank</span><span class="p">.</span><span class="nx">highlights</span><span class="p">;</span>
         <span class="nx">file</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="o">+</span><span class="nx">rank</span><span class="p">;</span>
         <span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
       <span class="p">}</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -858,11 +1022,15 @@ boost. 0.6 is a number that produces nice results</p>
 </div>
 <p>Sort the items order of decreasing relevance</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">items</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">items</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">score</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">score</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
       <span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">score</span> <span class="o">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">score</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
       <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">});</span></pre></div>
+    <span class="p">});</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -872,8 +1040,12 @@ boost. 0.6 is a number that produces nice results</p>
 </div>
 <p>And render them all</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">renderSearchResults</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">renderSearchResults</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -910,7 +1082,11 @@ boost. 0.6 is a number that produces nice results</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">highlightString</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">indexes</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">highlightString</span><span class="p">(</span><span class="nx">str</span><span class="p">,</span> <span class="nx">indexes</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -920,9 +1096,13 @@ boost. 0.6 is a number that produces nice results</p>
 </div>
 <p>If there's nothing to do, return immediately</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">indexes</span> <span class="o">||</span> <span class="o">!</span><span class="nx">indexes</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">str</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">indexes</span> <span class="o">||</span> <span class="o">!</span><span class="nx">indexes</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">str</span><span class="p">;</span>
 
-    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>
+    <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -932,11 +1112,15 @@ boost. 0.6 is a number that produces nice results</p>
 </div>
 <p>Loop through string one character at a time, highlighting as necessary</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
       <span class="nx">out</span> <span class="o">+=</span> <span class="nx">indexes</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">?</span> <span class="nx">str</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">bold</span><span class="p">()</span> <span class="o">:</span> <span class="nx">str</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -963,8 +1147,12 @@ in the results list</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">renderSearchResults</span><span class="p">(</span><span class="nx">items</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">renderSearchResults</span><span class="p">(</span><span class="nx">items</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -974,7 +1162,8 @@ in the results list</p>
 </div>
 <p>Loop through items, building up an HTML string</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">){</span>
       <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">items</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
       <span class="nx">html</span> <span class="o">+=</span> <span class="p">[</span>
         <span class="s1">&#39;&lt;a class=&quot;item&quot; data-value=&quot;&#39;</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">fullPath</span><span class="p">,</span> <span class="s1">&#39;.html&quot;&gt;&#39;</span><span class="p">,</span>
@@ -983,7 +1172,10 @@ in the results list</p>
           <span class="s1">&#39;&lt;span class=&quot;fullpath&quot;&gt;&#39;</span><span class="p">,</span> <span class="nx">highlightString</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">fullPath</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">highlight</span><span class="p">.</span><span class="nx">fullPath</span><span class="p">),</span> <span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;/a&gt;&#39;</span>
       <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -993,7 +1185,11 @@ in the results list</p>
 </div>
 <p>Dump all the html into the results list</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1003,8 +1199,12 @@ in the results list</p>
 </div>
 <p>Select the first item</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">selectIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">selectIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1031,7 +1231,11 @@ and deselcts any currently-selected item</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">selectIndex</span><span class="p">(</span><span class="nx">idx</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">selectIndex</span><span class="p">(</span><span class="nx">idx</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1041,7 +1245,11 @@ and deselcts any currently-selected item</p>
 </div>
 <p>If another item is currently selected, deselect it</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">selectedItem</span><span class="p">)</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s?selected/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">selectedItem</span><span class="p">)</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s?selected/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1051,8 +1259,12 @@ and deselcts any currently-selected item</p>
 </div>
 <p>Grab the search results straight from the DOM</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1062,11 +1274,15 @@ and deselcts any currently-selected item</p>
 </div>
 <p>If we actually have no items, there's not much we can do</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">){</span>
       <span class="nx">selectedSearchIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
       <span class="nx">selectedItem</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
       <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1076,8 +1292,12 @@ and deselcts any currently-selected item</p>
 </div>
 <p>Store the item and its index in helper variables</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">selectedSearchIndex</span> <span class="o">=</span> <span class="nx">idx</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">selectedItem</span> <span class="o">=</span> <span class="nx">items</span><span class="p">[</span><span class="nx">idx</span><span class="p">];</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">selectedSearchIndex</span> <span class="o">=</span> <span class="nx">idx</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">selectedItem</span> <span class="o">=</span> <span class="nx">items</span><span class="p">[</span><span class="nx">idx</span><span class="p">];</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1087,7 +1307,11 @@ and deselcts any currently-selected item</p>
 </div>
 <p>Select the item</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">s</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; selected&#39;</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">s</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s1">&#39; selected&#39;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1098,13 +1322,17 @@ and deselcts any currently-selected item</p>
 <p>Figure out whether or not the item is fully visible inside
 the scrollable view, and if not, then scroll appropriately</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">o</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
       <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetTop</span><span class="p">;</span>
     <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">o</span> <span class="o">&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">-</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">){</span>
       <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nx">o</span> <span class="o">+</span> <span class="nx">r</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">+</span> <span class="nx">s</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1123,10 +1351,14 @@ or the first item if the currently selected one is last in the list</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">selectNextItem</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">selectNextItem</span><span class="p">(){</span>
     <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">childNodes</span><span class="p">;</span>
     <span class="nx">selectIndex</span><span class="p">((</span><span class="nx">selectedSearchIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1145,11 +1377,15 @@ or the last item if the currently selected one is first in the list</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">selectPreviousItem</span><span class="p">(){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">selectPreviousItem</span><span class="p">(){</span>
     <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">).</span><span class="nx">childNodes</span><span class="p">;</span>
     <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
     <span class="nx">selectIndex</span><span class="p">((</span><span class="nx">selectedSearchIndex</span> <span class="o">+</span> <span class="nx">l</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">l</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1176,8 +1412,12 @@ the necessary events</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">searchFormKeyDown</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">searchFormKeyDown</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1187,9 +1427,13 @@ the necessary events</p>
 </div>
 <p>27 = escape, so hide the form</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">27</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">27</span><span class="p">){</span>
       <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">));</span>
-      <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+      <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1199,11 +1443,15 @@ the necessary events</p>
 </div>
 <p>40 = down arrow, select the next item</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">40</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">40</span><span class="p">){</span>
       <span class="nx">selectNextItem</span><span class="p">();</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
-      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1213,11 +1461,15 @@ the necessary events</p>
 </div>
 <p>38 = up arrow, select the previous item</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">38</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">38</span><span class="p">){</span>
       <span class="nx">selectPreviousItem</span><span class="p">();</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
-      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1228,11 +1480,15 @@ the necessary events</p>
 <p>Most likely a letter typed or deleted in the search box.
 So queue another search</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
       <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">searchingTimeout</span><span class="p">);</span>
       <span class="nx">searchingTimeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">doSearch</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1268,8 +1524,12 @@ So queue another search</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">a</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1279,8 +1539,12 @@ So queue another search</p>
 </div>
 <p>Sensible browsers use <code>addEventListener</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">((</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)){</span>
-      <span class="nx">a</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">((</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)){</span>
+      <span class="nx">a</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1290,10 +1554,14 @@ So queue another search</p>
 </div>
 <p>IE uses <code>attachEvent</code></p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
       <span class="nx">obj</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1320,9 +1588,13 @@ so find the selected item and jump to that page</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">searchFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">searchFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
     <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
-    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span></pre></div>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1332,7 +1604,11 @@ so find the selected item and jump to that page</p>
 </div>
 <p>If there's no selected item, do nothing</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">selectedItem</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">selectedItem</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1342,10 +1618,14 @@ so find the selected item and jump to that page</p>
 </div>
 <p>Otherwise, jump to the page</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">relativeDir</span> <span class="o">+</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">relativeDir</span> <span class="o">+</span> <span class="nx">selectedItem</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1372,7 +1652,11 @@ to the relecant page using <a href="#searchformsubmitted">searchFormSubmitted</a
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">itemClicked</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">itemClicked</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1382,8 +1666,12 @@ to the relecant page using <a href="#searchformsubmitted">searchFormSubmitted</a
 </div>
 <p>Maximum number of levels to jump up the DOM tree</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">levels</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">).</span><span class="nx">target</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">levels</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">).</span><span class="nx">target</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1394,7 +1682,11 @@ to the relecant page using <a href="#searchformsubmitted">searchFormSubmitted</a
 <p>The click event may have propagated from a child node,
 so loop upwards until we actually find the result item</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">while</span><span class="p">(</span><span class="nx">levels</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="nx">target</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">!==</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">while</span><span class="p">(</span><span class="nx">levels</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="nx">target</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">!==</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1404,9 +1696,13 @@ so loop upwards until we actually find the result item</p>
 </div>
 <p>Set the selected item, then fire off the submit event on the form</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">selectedItem</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">selectedItem</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
     <span class="nx">searchFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1434,7 +1730,11 @@ with a value for the search field</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">showSearchBox</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">showSearchBox</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1444,8 +1744,12 @@ with a value for the search field</p>
 </div>
 <p>If the box is already visible, do nothing</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">searchBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-    <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">searchBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="nx">searchBoxShown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1455,8 +1759,12 @@ with a value for the search field</p>
 </div>
 <p>Create the containing element</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-    <span class="nx">f</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&quot;search&quot;</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+    <span class="nx">f</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&quot;search&quot;</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1466,7 +1774,8 @@ with a value for the search field</p>
 </div>
 <p>Construct some basic HTML</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">f</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">[</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">f</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">[</span>
       <span class="s1">&#39;&lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;&lt;div class=&quot;box&quot;&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;form id=&quot;searchform&quot;&gt;&#39;</span><span class="p">,</span>
@@ -1474,7 +1783,10 @@ with a value for the search field</p>
         <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;&lt;div id=&quot;searchresults&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
       <span class="s1">&#39;&lt;/div&gt;&#39;</span>
-    <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span></pre></div>
+    <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1484,7 +1796,11 @@ with a value for the search field</p>
 </div>
 <p>Add the keydown event</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nx">addEvent</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">searchFormKeyDown</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">addEvent</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">searchFormKeyDown</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1494,7 +1810,11 @@ with a value for the search field</p>
 </div>
 <p>Add the container straight onto the body</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1504,9 +1824,13 @@ with a value for the search field</p>
 </div>
 <p>Focus the search field, and bind the necessary events</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchbox&#39;</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchbox&#39;</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
     <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchform&#39;</span><span class="p">),</span> <span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="nx">searchFormSubmitted</span><span class="p">);</span>
-    <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">),</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">itemClicked</span><span class="p">);</span></pre></div>
+    <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;searchresults&#39;</span><span class="p">),</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">itemClicked</span><span class="p">);</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1516,8 +1840,12 @@ with a value for the search field</p>
 </div>
 <p>If we have a pre-populated value, also fire off a search immediately</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="nx">doSearch</span><span class="p">();</span>
-  <span class="p">}</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="nx">doSearch</span><span class="p">();</span>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1544,8 +1872,12 @@ if ctrl/cmd+P has been pressed and shows the search form</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fileSearch_kd</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">fileSearch_kd</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1555,12 +1887,16 @@ if ctrl/cmd+P has been pressed and shows the search form</p>
 </div>
 <p>80 = p, so listen for ctrl/cmd+P</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">80</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span><span class="p">)){</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">80</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span><span class="p">)){</span>
       <span class="nx">showSearchBox</span><span class="p">();</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
       <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1580,8 +1916,12 @@ fires off the first search</p>
   </div>
 </div>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">fileSearch_kp</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">fileSearch_kp</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1592,7 +1932,11 @@ fires off the first search</p>
 <p>If there are any modifiers or if we're already entering text into
 another input field elsewhere, then do nothing</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">altKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="s1">&#39;INPUT&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span></pre></div>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">altKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="s1">&#39;INPUT&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1602,9 +1946,13 @@ another input field elsewhere, then do nothing</p>
 </div>
 <p>Grab the typed character, test it, and show the box if appropriate</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">theChar</span> <span class="o">=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">theChar</span> <span class="o">=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">which</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="sr">/[a-zA-Z0-9\.\/\_\-]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">theChar</span><span class="p">))</span> <span class="nx">showSearchBox</span><span class="p">(</span><span class="nx">theChar</span><span class="p">);</span>
-  <span class="p">}</span></pre></div>
+  <span class="p">}</span>
+
+
+</pre></div>
         </td>
       </tr>
       <tr>
@@ -1614,7 +1962,8 @@ another input field elsewhere, then do nothing</p>
 </div>
 <p>Attach the global events to the document</p>
         </td>
-        <td class="code highlight"><div class="highlight"><pre>  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">fileSearch_kd</span><span class="p">);</span>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">fileSearch_kd</span><span class="p">);</span>
   <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keypress&#39;</span><span class="p">,</span> <span class="nx">fileSearch_kp</span><span class="p">);</span>
 
 <span class="p">})();</span>
