@@ -1,5 +1,11 @@
 # Docker Version History
 
+## 0.2.7
+
+ * Add support for styl, jade, groove and gsp (thanks to [mikkel](//github.com/mikkel))
+ * Add support for languages without single-line comments (currently CSS and HTML)
+ * Change white-space to pre-wrap
+
 ## 0.2.6
 
  * Fix a weird bug in SCSS parsing
