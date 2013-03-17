@@ -60,8 +60,8 @@ if(typeof fs.exists != 'function') fs.exists = path.exists;
  *
  * Input arguments are either
  *
- *  * Object containing any of the keys `inDir`, `outDir`, `onlyUpdated`, `colourScheme`, `ignoreHidden`, `sidebarState`, `exclude`
- *  * Or `indir`, `outDir`, `onlyUpdated`, `colourScheme` and `ignoreHidden` in order
+ * * Object containing any of the keys `inDir`, `outDir`, `onlyUpdated`, `colourScheme`, `ignoreHidden`, `sidebarState`, `exclude`
+ * * Or `indir`, `outDir`, `onlyUpdated`, `colourScheme` and `ignoreHidden` in order
  */
 var Docker = module.exports = function( /* inDir, outDir, onlyUpdated, colourScheme, ignoreHidden */ ){
   if(typeof arguments[0] === 'object'){
@@ -921,8 +921,11 @@ Docker.prototype.languages = {
   css: {
     extensions: [ 'css' ],
     multiLine: [ /\/\*/, /\*\// ],
+  },
+  html: {
+    extensions: [ 'html', 'htm' ],
+    multiLine: [ /<!--/, /-->/ ]
   }
-
 };
 
 /**
