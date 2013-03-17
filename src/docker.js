@@ -45,13 +45,19 @@
 var mkdirp = require('mkdirp'),
   fs = require('fs'),
   path = require('path'),
-  exec = require('child_process').exec,
-  spawn = require('child_process').spawn,
   watchr = require('watchr'),
-  showdown = require('../lib/showdown').Showdown;
+  marked = require('marked'),
+  highlight = require('highlight.js');
 
 // Polyfill `fs.exists` for node <= 0.6
 if(typeof fs.exists != 'function') fs.exists = path.exists;
+
+marked.setOptions({
+  highlight: function(code, lang){
+    return highlight.LANGUAGES[lang] ? highlight.highlight(lang, code).value : code;
+  }
+});
+
 
 /**
  * ## Docker Constructor
@@ -486,7 +492,7 @@ Docker.prototype.parseSections = function(data, language){
   var jsDocData;
 
   function md(a, stripParas){
-    var h = showdown.makeHtml(a.replace(/(^\s*|\s*$)/,''));
+    var h = marked(a.replace(/(^\s*|\s*$)/,''));
     return stripParas ? h.replace(/<\/?p>/g,'') : h;
   }
 
@@ -883,14 +889,14 @@ Docker.prototype.languages = {
     extensions: [ 'md', 'mkd', 'markdown' ],
     type: 'markdown'
   },
-  sass: {
-    extensions: [ 'sass' ],
-    comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
-  },
-  scss: {
-    extensions: [ 'scss' ],
-    comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
-  },
+  // sass: {
+  //   extensions: [ 'sass' ],
+  //   comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
+  // },
+  // scss: {
+  //   extensions: [ 'scss' ],
+  //   comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
+  // },
   make: {
     names: [ 'makefile' ],
     comment: '#'
@@ -929,47 +935,6 @@ Docker.prototype.languages = {
 };
 
 /**
- * ## Docker.prototype.pygments
- *
- * Runs a given block of code through pygments
- *
- * @param {string} data The code to give to Pygments
- * @param {string} language The name of the Pygments lexer to use
- * @param {function} cb Callback to fire with Pygments output
- */
-Docker.prototype.pygments = function(data, language, cb){
-  // By default tell Pygments to guess the language, and if
-  // we have a language specified then tell pygments to use that lexer
-  var pygArgs = ['-g'];
-  if(language) pygArgs = ['-l', language];
-
-  // Spawn a new **pygments** process
-  var pyg = spawn('pygmentize', pygArgs.concat(['-f', 'html', '-O', 'encoding=utf-8,tabsize=2']));
-
-  // Hook up errors, for either when pygments itself throws an error,
-  // or for when we're unable to send the code to pygments for some reason
-  pyg.stderr.on('data', function(err){ console.error(err.toString()); });
-  pyg.stdin.on('error', function(err){
-    console.error('Unable to write to Pygments stdin: ' , err);
-    process.exit(1);
-  });
-
-  var out = '';
-  pyg.stdout.on('data', function(data){ out += data.toString(); });
-
-  // When pygments is done, fire the callback with our output
-  pyg.on('exit', function(){
-    cb(out);
-  });
-
-  // Feed pygments with the code
-  if(pyg.stdin.writable){
-    pyg.stdin.write(data);
-    pyg.stdin.end();
-  }
-};
-
-/**
  * ## Docker.prototype.highlight
  *
  * Highlights all the sections of a file using **pygments**
@@ -984,123 +949,12 @@ Docker.prototype.pygments = function(data, language, cb){
 Docker.prototype.highlight = function(sections, language, cb){
   var params = this.languages[language], self = this, pygment = language;
 
-  var input = [];
   for(var i = 0; i < sections.length; i += 1){
-    input.push(sections[i].code);
-  }
-  input = input.join('\n' + params.comment + '----DIVIDER----\n');
-
-  if(this.languages[language].pygment) {
-      pygment = this.languages[language].pygment
+    sections[i].codeHtml = '<div class="highlight"><pre>' + highlight.highlight(language, sections[i].code).value + '</pre></div>';
+    sections[i].docHtml = marked(sections[i].docs);
   }
 
-  // Run our input through pygments, then split the output back up into its constituent sections
-  this.pygments(input, pygment, function(out){
-    out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
-    var bits = out.split(/^<span[^>]*>[^<]+(?:<\/span><span[^>]*>)?----DIVIDER----<\/span>$/gm);
-    for(var i = 0; i < sections.length; i += 1){
-      sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
-      sections[i].docHtml = showdown.makeHtml(sections[i].docs);
-    }
-    self.processDocCodeBlocks(sections, cb);
-  });
-};
-
-/**
- * ## Docker.prototype.processDocCodeBlocks
- *
- * Goes through all the HTML generated from comments, finds any code blocks
- * and highlights them
- *
- * @param {Array} sections Sections array as above
- * @param {function} cb Callback to fire when done
- */
-Docker.prototype.processDocCodeBlocks = function(sections, cb){
-  var i = 0, self = this;
-
-  function next(){
-    // If we've reached the end of the sections array, we've highlighted everything,
-    // so we can stop and fire the callback
-    if(i == sections.length) return cb();
-
-    // Process the code blocks on this section, each time returning the html
-    // and moving onto the next section when we're done
-    self.extractDocCode(sections[i].docHtml, function(html){
-      sections[i].docHtml = html;
-      i = i + 1;
-      next();
-    });
-  }
-
-  // Start off with the first section
-  next();
-};
-
-/**
- * ## Docker.prototype.extractDocCode
- *
- * Extract and highlight code blocks in formatted HTML output from showdown
- *
- * @param {string} html The HTML to process
- * @param {function} cb Callback function to fire when done
- */
-Docker.prototype.extractDocCode = function(html, cb){
-
-  // We'll store all extracted code blocks, along with information, in this array
-  var codeBlocks = [];
-
-  // Search in the HTML for any code tag with a language set (in the format that showdown returns)
-  html = html.replace(/<pre><code(\slanguage='([a-z]*)')?>([^<]*)<\/code><\/pre>/g, function(wholeMatch, langBlock, language, block){
-    if(langBlock === '' || language === '') return "<div class='highlight'>" + wholeMatch + '</div>';
-    // Unescape these HTML entities because they'll be re-escaped by pygments
-    block = block.replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&amp;/g,'&');
-
-    // Store the code block away in `codeBlocks` and leave a flag in the original text.
-    return "\n\n~C" + codeBlocks.push({
-      language: language,
-      code: block,
-      i: codeBlocks.length + 1
-    }) + "C\n\n";
-  });
-
-  // Once we're done with that, now we can move on to highlighting the code we've extracted
-  this.highlighExtractedCode(html, codeBlocks, cb);
-};
-
-/**
- * ## Docker.prototype.highlightExtractedCode
- *
- * Loops through all extracted code blocks and feeds them through pygments
- * for code highlighting. Unfortunately the only way to do this that's able
- * to cater for all situations is to spawn a new pygments process for each
- * code block (as different blocks might be in different languages). If anyone
- * knows of a more efficient way of doing this, please let me know.
- *
- * @param {string} html The HTML the code has been extracted from
- * @param {Array} codeBlocks Array of extracted code blocks as above
- * @param {function} cb Callback to fire when we're done with processed HTML
- */
-Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
-
-  var self = this;
-
-  function next(){
-    // If we're done, then stop and fire the callback
-    if(codeBlocks.length === 0)return cb(html);
-
-    // Pull the next code block off the beginning of the array
-    var nextBlock = codeBlocks.shift();
-
-    // Run the code through pygments
-    self.pygments(nextBlock.code, nextBlock.language, function(out){
-      out = out.replace(/<pre>/,'<pre><code>').replace(/<\/pre>/,'</code></pre>');
-      html = html.replace('\n~C' + nextBlock.i + 'C\n', out);
-      next();
-    });
-  }
-
-  // Fire off on first block
-  next();
+  cb();
 };
 
 /**
@@ -1227,50 +1081,47 @@ Docker.prototype.renderCodeHtml = function(sections, filename, cb){
  * @param {function} cb Callback function to fire when we're done
  */
 Docker.prototype.renderMarkdownHtml = function(content, filename, cb){
-  // Run the markdown through *showdown*
-  content = showdown.makeHtml(content);
+  // Run the markdown through *marked*
+  content = marked(content);
 
-  this.extractDocCode(content, function(content){
+  var headings = [];
 
-    var headings = [];
+  // Add anchors to all headings
+  content = this.addAnchors(content,0, headings);
 
-    // Add anchors to all headings
-    content = this.addAnchors(content,0, headings);
+  // Wrap up with necessary classes
+  content = '<div class="docs markdown">' + content + '</div>';
 
-    // Wrap up with necessary classes
-    content = '<div class="docs markdown">' + content + '</div>';
+  // Decide which path to store the output on.
+  var outFile = this.outFile(filename);
 
-    // Decide which path to store the output on.
-    var outFile = this.outFile(filename);
+  // Calculate the location of the input root relative to the output file.
+  // This is necessary so we can link to the stylesheet in the output HTML using
+  // a relative href rather than an absolute one
+  var outDir = path.dirname(outFile);
+  var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
+  var relativeOut = path.resolve(outDir)
+                    .replace(path.resolve(this.outDir),'')
+                    .replace(/^[\/\\]/,'');
+  var levels = relativeOut == '' ? 0 : relativeOut.split(pathSeparator).length;
+  var relDir = Array(levels + 1).join('../');
 
-    // Calculate the location of the input root relative to the output file.
-    // This is necessary so we can link to the stylesheet in the output HTML using
-    // a relative href rather than an absolute one
-    var outDir = path.dirname(outFile);
-    var pathSeparator = path.join('a', 'b').replace(/(^.*a|b.*$)/g, '');
-    var relativeOut = path.resolve(outDir)
-                      .replace(path.resolve(this.outDir),'')
-                      .replace(/^[\/\\]/,'');
-    var levels = relativeOut == '' ? 0 : relativeOut.split(pathSeparator).length;
-    var relDir = Array(levels + 1).join('../');
+  // Render the html file using our template
+  var html = this.renderTemplate({
+    title: path.basename(filename),
+    relativeDir: relDir,
+    content: content,
+    headings: headings,
+    colourScheme: this.colourScheme,
+    sidebar: this.sidebarState,
+    filename: filename.replace(this.inDir,'').replace(/^[\\\/]/,''),
+    js: this.extraJS.map(path.basename),
+    css: this.extraCSS.map(path.basename)
+  });
 
-    // Render the html file using our template
-    var html = this.renderTemplate({
-      title: path.basename(filename),
-      relativeDir: relDir,
-      content: content,
-      headings: headings,
-      colourScheme: this.colourScheme,
-      sidebar: this.sidebarState,
-      filename: filename.replace(this.inDir,'').replace(/^[\\\/]/,''),
-      js: this.extraJS.map(path.basename),
-      css: this.extraCSS.map(path.basename)
-    });
-
-    // Recursively create the output directory, clean out any old version of the
-    // output file, then save our new file.
-    this.writeFile(outFile, html, 'Generated: ' + outFile.replace(this.outDir,''), cb);
-  }.bind(this));
+  // Recursively create the output directory, clean out any old version of the
+  // output file, then save our new file.
+  this.writeFile(outFile, html, 'Generated: ' + outFile.replace(this.outDir,''), cb);
 };
 
 /**
@@ -1297,19 +1148,19 @@ Docker.prototype.copySharedResources = function(){
     );
   });
 
-  fs.readFile(path.join(path.dirname(__filename),'..','res','css', self.colourScheme + '.css'), function(err, file){
-    exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
-      if(code || stderr !== ''){
-        console.error('Error generating CSS: \n' + stderr);
-        process.exit();
-      }
+  fs.readFile(path.join(path.dirname(__filename),'..','res','css', 'default.css'), function(err, file){
+    // exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
+    //   if(code || stderr !== ''){
+    //     console.error('Error generating CSS: \n' + stderr);
+    //     process.exit();
+    //   }
       self.writeFileIfDifferent(
         path.join(self.outDir, 'doc-style.css'),
-        file.toString() + stdout,
+        file.toString(),
         'Copied ' + self.colourScheme + '.css to doc-style.css',
         done
       );
-    });
+    // });
   });
 
   self.writeFileIfDifferent(
