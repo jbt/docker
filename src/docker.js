@@ -1152,15 +1152,25 @@ Docker.prototype.highlighExtractedCode = function(html, codeBlocks, cb){
  * @param {number} idx The index of the section in the whole array.
  */
 Docker.prototype.addAnchors = function(docHtml, idx, headings){
+  var ids = {};
   if(docHtml.match(/<h[0-9]>/)){
     // If there is a heading tag, pick out the first one (likely the most important), sanitize
     // the name a bit to make it more friendly for IDs, then use that
     docHtml = docHtml.replace(/(<h([0-9])>)(.*)(<\/h\2>)/g, function(a, start, level, middle, end){
-      var id = middle.replace(/<[^>]*>/g,'').toLowerCase().replace(/[^a-zA-Z0-9\_\.]/g,'-');
-      headings.push({ id: id, text: middle.replace(/<[^>]*>/g,''), level: level });
-      return '\n<div class="pilwrap" id="' + id + '">\n  '+
+      var id = encodeURIComponent(middle.replace(/<[^>]*>/g,'').toLowerCase());
+      var headingId = id;
+      
+      if(typeof ids[id] === 'undefined'){
+        ids[id] = 0;
+      }else{
+        ids[id]++;
+        headingId = id + '_' + ids[id];
+      }
+      
+      headings.push({ id: id, headingId: headingId, text: middle.replace(/<[^>]*>/g,''), level: level });
+      return '\n<div class="pilwrap" id="' + headingId + '">\n  '+
                 start +
-                '\n    <a href="#' + id + '" class="pilcrow">&#182;</a>\n    ' +
+                '\n    <a href="#' + headingId + '" name="' + headingId + '" class="pilcrow">&#182;</a>\n    ' +
                 middle + '\n  ' +
                 end +
               '\n</div>\n';
