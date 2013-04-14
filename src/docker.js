@@ -44,6 +44,7 @@
 // Include all the necessay node modules.
 var mkdirp = require('mkdirp'),
   fs = require('fs'),
+  os = require('os'),
   path = require('path'),
   exec = require('child_process').exec,
   spawn = require('child_process').spawn,
@@ -64,6 +65,10 @@ if(typeof fs.exists != 'function') fs.exists = path.exists;
  * * Or `indir`, `outDir`, `onlyUpdated`, `colourScheme` and `ignoreHidden` in order
  */
 var Docker = module.exports = function( /* inDir, outDir, onlyUpdated, colourScheme, ignoreHidden */ ){
+  if(!this.checkForPygments()){
+    throw new Error("Pygments doesn't appear to be installed. Docker can't work.");
+  }
+
   if(typeof arguments[0] === 'object'){
     this.parseOpts(arguments[0]);
   }else{
@@ -142,6 +147,41 @@ Docker.prototype.parseOpts = function(opts){
     this.extraJS.push(path.join(extrasRoot, extraName, extraName + '.js'));
     this.extraCSS.push(path.join(extrasRoot, extraName, extraName + '.css'));
   }
+};
+
+/**
+ * ## Docker.prototype.checkForPygments
+ *
+ * Checks to see whether Pygments is installed
+ *
+ * @return {boolean} True or false, whether Pygments is present
+ */
+Docker.prototype.checkForPygments = function(){
+
+  // Grab the platform type; it'll tell us how $PATH is delimited
+  var platformType = os.type();
+
+  var Path = process.env.path || process.env.Path || process.env.PATH;
+
+  Path = Path.split(/^Win/.test(platformType) ? ';' : ':');
+
+  // We care about whether the pygmentize command exists on at least
+  // one of the given paths. We can use Array.some for this
+  return Path.some(function(dir){
+
+    // Resolve where the command would be for this path
+    var guess = path.resolve(dir, 'pygmentize');
+
+    return fs.existsSync(guess) || (
+
+        // for Windows, there are a few more options
+        /^Win/.test(platformType) && (
+          fs.existsSync(guess + '.exe') ||
+          fs.existsSync(guess + '.cmd') ||
+          fs.existsSync(guess + '.bat')
+        ));
+
+  });
 };
 
 /**
