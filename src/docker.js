@@ -839,28 +839,30 @@ Docker.prototype.languages = {
   c: {
     extensions: [ 'c', 'h' ],
     executables: [ 'gcc' ],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true,
+    lang: 'cpp'
   },
   cpp: {
     extensions: [ 'cc', 'cpp' ],
     executables: [ 'g++' ],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
-  vbnet: {
-    extensions: [ 'vb', 'vbs', 'bas' ],
-    comment: "'" // No multiline
-  },
-  'aspx-vb': {
-    extensions: [ 'asp', 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
-    comment: "'" // No multiline
-  },
-  csharp: {
+  // vbnet: {
+  //   extensions: [ 'vb', 'vbs', 'bas' ],
+  //   comment: "'" // No multiline
+  // },
+  // 'aspx-vb': {
+  //   extensions: [ 'asp', 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
+  //   comment: "'" // No multiline
+  // },
+  cs: {
     extensions: [ 'cs' ],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   'aspx-cs': {
     extensions: [ 'aspx', 'asax', 'ascx', 'ashx', 'asmx', 'axd' ],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true,
+    lang: 'cs'
   },
   java: {
     extensions: [ 'java' ],
@@ -875,16 +877,16 @@ Docker.prototype.languages = {
     extensions: [ 'as' ],
     comment: '//', multiLine: [ /\/\*/, /\*\// ]
   },
-  sh: {
+  bash: {
     extensions: [ 'sh', 'kst', 'bash' ],
     names: [ '.bashrc', 'bashrc' ],
     executables: [ 'bash', 'sh', 'zsh' ],
     comment: '#'
   },
-  yaml: {
-    extensions: [ 'yaml', 'yml' ],
-    comment: '#'
-  },
+  // yaml: {
+  //   extensions: [ 'yaml', 'yml' ],
+  //   comment: '#'
+  // },
   markdown: {
     extensions: [ 'md', 'mkd', 'markdown' ],
     type: 'markdown'
@@ -897,40 +899,41 @@ Docker.prototype.languages = {
   //   extensions: [ 'scss' ],
   //   comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
   // },
-  make: {
-    names: [ 'makefile' ],
-    comment: '#'
-  },
+  // make: {
+  //   names: [ 'makefile' ],
+  //   comment: '#'
+  // },
   apache: {
     names: [ '.htaccess', 'apache.conf', 'apache2.conf' ],
     comment: '#'
   },
-  jade: {
-    extensions: ['jade'],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
-  },
-  groovy: {
-    extensions: ['groovy'],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
-  },
-  gsp: {
-    extensions: [ 'gsp' ],
-    //comment: '//', gsp only supports multiline comments.
-    multiLine: [ /<%--/, /--%>/ ],
-    pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
-  },
-  styl: {
-    extensions: [ 'styl' ],
-    comment: '//', multiLine: [ /\/\*/, /\*\// ],
-    pygment: "sass"// .styl isn't supported by pygments, sass is close enough.
-  },
+  // jade: {
+  //   extensions: ['jade'],
+  //   comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+  // },
+  // groovy: {
+  //   extensions: ['groovy'],
+  //   comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+  // },
+  // gsp: {
+  //   extensions: [ 'gsp' ],
+  //   //comment: '//', gsp only supports multiline comments.
+  //   multiLine: [ /<%--/, /--%>/ ],
+  //   pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
+  // },
+  // styl: {
+  //   extensions: [ 'styl' ],
+  //   comment: '//', multiLine: [ /\/\*/, /\*\// ],
+  //   pygment: "sass"// .styl isn't supported by pygments, sass is close enough.
+  // },
   css: {
     extensions: [ 'css' ],
     multiLine: [ /\/\*/, /\*\// ],
   },
   html: {
     extensions: [ 'html', 'htm' ],
-    multiLine: [ /<!--/, /-->/ ]
+    multiLine: [ /<!--/, /-->/ ],
+    lang: 'xml'
   }
 };
 
@@ -948,6 +951,8 @@ Docker.prototype.languages = {
  */
 Docker.prototype.highlight = function(sections, language, cb){
   var params = this.languages[language], self = this, pygment = language;
+
+  if(params.lang) language = params.lang;
 
   for(var i = 0; i < sections.length; i += 1){
     sections[i].codeHtml = '<div class="highlight"><pre>' + highlight.highlight(language, sections[i].code).value + '</pre></div>';
