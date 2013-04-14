@@ -1,5 +1,10 @@
 # Docker Version History
 
+## 0.2.8
+
+ * Warn if Pygments isn't installed
+ * Changes to ID generation for headings to support extra characters and ensure IDs are unique (thanks to [justan](//github.com/justan))
+
 ## 0.2.7
 
  * Add support for styl, jade, groove and gsp (thanks to [mikkel](//github.com/mikkel))
