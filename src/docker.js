@@ -851,6 +851,7 @@ Docker.prototype.languages = {
   },
   coffeescript: {
     extensions: [ 'coffee' ],
+    names: [ 'cakefile' ],
     executables: [ 'coffee' ],
     comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true
   },
