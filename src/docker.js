@@ -942,7 +942,7 @@ Docker.prototype.languages = {
   },
   jade: {
     extensions: ['jade'],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+    comment: '//-?', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   groovy: {
     extensions: ['groovy'],
