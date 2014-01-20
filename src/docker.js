@@ -49,7 +49,9 @@ var mkdirp = require('mkdirp'),
   exec = require('child_process').exec,
   spawn = require('child_process').spawn,
   watchr = require('watchr'),
+  pygmentize = require('pygmentize-bundled'),
   showdown = require('../lib/showdown').Showdown;
+
 
 // Polyfill `fs.exists` for node <= 0.6
 if(typeof fs.exists != 'function') fs.exists = path.exists;
@@ -65,9 +67,6 @@ if(typeof fs.exists != 'function') fs.exists = path.exists;
  * * Or `indir`, `outDir`, `onlyUpdated`, `colourScheme` and `ignoreHidden` in order
  */
 var Docker = module.exports = function( /* inDir, outDir, onlyUpdated, colourScheme, ignoreHidden */ ){
-  if(!this.checkForPygments()){
-    throw new Error("Pygments doesn't appear to be installed. Docker can't work.");
-  }
 
   if(typeof arguments[0] === 'object'){
     this.parseOpts(arguments[0]);
@@ -147,41 +146,6 @@ Docker.prototype.parseOpts = function(opts){
     this.extraJS.push(path.join(extrasRoot, extraName, extraName + '.js'));
     this.extraCSS.push(path.join(extrasRoot, extraName, extraName + '.css'));
   }
-};
-
-/**
- * ## Docker.prototype.checkForPygments
- *
- * Checks to see whether Pygments is installed
- *
- * @return {boolean} True or false, whether Pygments is present
- */
-Docker.prototype.checkForPygments = function(){
-
-  // Grab the platform type; it'll tell us how $PATH is delimited
-  var platformType = os.type();
-
-  var Path = process.env.path || process.env.Path || process.env.PATH;
-
-  Path = Path.split(/^Win/.test(platformType) ? ';' : ':');
-
-  // We care about whether the pygmentize command exists on at least
-  // one of the given paths. We can use Array.some for this
-  return Path.some(function(dir){
-
-    // Resolve where the command would be for this path
-    var guess = path.resolve(dir, 'pygmentize');
-
-    return fs.existsSync(guess) || (
-
-        // for Windows, there are a few more options
-        /^Win/.test(platformType) && (
-          fs.existsSync(guess + '.exe') ||
-          fs.existsSync(guess + '.cmd') ||
-          fs.existsSync(guess + '.bat')
-        ));
-
-  });
 };
 
 /**
@@ -980,33 +944,26 @@ Docker.prototype.languages = {
 Docker.prototype.pygments = function(data, language, cb){
   // By default tell Pygments to guess the language, and if
   // we have a language specified then tell pygments to use that lexer
-  var pygArgs = ['-g'];
-  if(language) pygArgs = ['-l', language];
+  var pygOpts = {
+    format: 'html',
+    options: {
+      encoding: 'utf-8',
+      tabsize: 2,
+      style: this.colourScheme
+    }
+  };
 
-  // Spawn a new **pygments** process
-  var pyg = spawn('pygmentize', pygArgs.concat(['-f', 'html', '-O', 'encoding=utf-8,tabsize=2']));
+  if(language) pygOpts['lang'] = language;
 
-  // Hook up errors, for either when pygments itself throws an error,
-  // or for when we're unable to send the code to pygments for some reason
-  pyg.stderr.on('data', function(err){ console.error(err.toString()); });
-  pyg.stdin.on('error', function(err){
-    console.error('Unable to write to Pygments stdin: ' , err);
-    process.exit(1);
+  // run pygmentize
+  pygmentize(pygOpts, data, function(err, result) {
+    if (err) {
+      console.error(err.toString());
+      return;
+    }
+
+    cb(result.toString());
   });
-
-  var out = '';
-  pyg.stdout.on('data', function(data){ out += data.toString(); });
-
-  // When pygments is done, fire the callback with our output
-  pyg.on('exit', function(){
-    cb(out);
-  });
-
-  // Feed pygments with the code
-  if(pyg.stdin.writable){
-    pyg.stdin.write(data);
-    pyg.stdin.end();
-  }
 };
 
 /**
@@ -1159,14 +1116,14 @@ Docker.prototype.addAnchors = function(docHtml, idx, headings){
     docHtml = docHtml.replace(/(<h([0-9])>)(.*)(<\/h\2>)/g, function(a, start, level, middle, end){
       var id = encodeURIComponent(middle.replace(/<[^>]*>/g,'').toLowerCase());
       var headingId = id;
-      
+
       if(typeof ids[id] === 'undefined'){
         ids[id] = 0;
       }else{
         ids[id]++;
         headingId = id + '_' + ids[id];
       }
-      
+
       headings.push({ id: id, headingId: headingId, text: middle.replace(/<[^>]*>/g,''), level: level });
       return '\n<div class="pilwrap" id="' + headingId + '">\n  '+
                 start +
@@ -1347,20 +1304,43 @@ Docker.prototype.copySharedResources = function(){
     );
   });
 
+  // {{{ create css file with pygmentize
+  var pygOpts = {
+    format: 'html',
+    options: {
+      full: true,
+      style: this.colourScheme
+    }
+  };
+
   fs.readFile(path.join(path.dirname(__filename),'..','res','css', self.colourScheme + '.css'), function(err, file){
-    exec('pygmentize -S ' + self.colourScheme + ' -f html -a "body .highlight"', function(code, stdout, stderr){
-      if(code || stderr !== ''){
-        console.error('Error generating CSS: \n' + stderr);
+    if (err) {
+      console.error('Error reading base CSS:\n', err);
+      process.exit();
+    }
+    pygmentize(pygOpts, '', function(err, result) {
+      if (err) {
+        console.error('Error generating CSS:\n', err);
         process.exit();
       }
+
+      // extract css
+      result = result.toString().match(/<style type="text\/css">([\S\s]*)<\/style>/)[1];
+      // add selector prefix
+      result = result.replace(/\nbody /g, '\nbody .highlight ');
+
+      // save combined file
       self.writeFileIfDifferent(
         path.join(self.outDir, 'doc-style.css'),
-        file.toString() + stdout,
+        file.toString() + result,
         'Copied ' + self.colourScheme + '.css to doc-style.css',
         done
       );
     });
+
   });
+  // }}}
+
 
   self.writeFileIfDifferent(
     path.join(self.outDir, 'doc-filelist.js'),

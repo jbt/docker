@@ -5,7 +5,8 @@
   "dependencies": {
     "mkdirp": "0.3.2",
     "commander": "0.5.2",
-    "watchr": "~2.3.3"
+    "watchr": "~2.3.3",
+    "pygmentize-bundled": "~2.1.0"
   },
   "bin": {
     "docker": "./docker"
@@ -18,9 +19,6 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/jbt/docker.git"
-  },
-  "scripts": {
-    "install": "node scripts/install.js"
   },
   "main": "./src/docker.js"
 }
