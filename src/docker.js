@@ -960,11 +960,13 @@ Docker.prototype.languages = {
   },
   css: {
     extensions: [ 'css' ],
-    multiLine: [ /\/\*/, /\*\// ],
+    multiLine: [ /\/\*/, /\*\// ],       // for when we detect multi-line comments
+    commentStart: '/*', commentEnd: '*/' // for when we add multi-line comments
   },
   html: {
     extensions: [ 'html', 'htm' ],
-    multiLine: [ /<!--/, /-->/ ]
+    multiLine: [ /<!--/, /-->/ ],
+    commentStart: '<!--', commentEnd: '-->'
   }
 };
 
@@ -1028,7 +1030,13 @@ Docker.prototype.highlight = function(sections, language, cb){
   for(var i = 0; i < sections.length; i += 1){
     input.push(sections[i].code);
   }
-  input = input.join('\n' + params.comment + '----DIVIDER----\n');
+  // If the language we are parsing doesn't have single line comments
+  // (like HTML and CSS) we use a multi-line comment.
+  if (params.comment) {
+    input = input.join('\n' + params.comment + '----DIVIDER----\n');
+  } else {
+    input = input.join('\n' + params.commentStart + '----DIVIDER----' + params.commentEnd + '\n');
+  }
 
   if(this.languages[language].pygment) {
       pygment = this.languages[language].pygment
@@ -1037,7 +1045,7 @@ Docker.prototype.highlight = function(sections, language, cb){
   // Run our input through pygments, then split the output back up into its constituent sections
   this.pygments(input, pygment, function(out){
     out = out.replace(/^\s*<div class="highlight"><pre>/,'').replace(/<\/pre><\/div>\s*$/,'');
-    var bits = out.split(/^<span[^>]*>[^<]+(?:<\/span><span[^>]*>)?----DIVIDER----<\/span>$/gm);
+    var bits = out.split(/^<span[^>]*>[^<]+(?:<\/span><span[^>]*>)?----DIVIDER----[^<]*<\/span>$/gm);
     for(var i = 0; i < sections.length; i += 1){
       sections[i].codeHtml = '<div class="highlight"><pre>' + bits[i] + '</pre></div>';
       sections[i].docHtml = showdown.makeHtml(sections[i].docs);
