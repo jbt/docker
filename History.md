@@ -1,5 +1,11 @@
 # Docker Version History
 
+## 0.2.9
+
+ * Use bundled version of Pygments (via [pygmentize-bundled](https://github.com/rvagg/node-pygmentize-bundled)) and remove the setup scripts (thanks [alexindigo](//github.com/alexindigo))
+ * Add `cakefile` filename parsed as CoffeeScript, and tweak Jade comments (thanks [alinex](//github.com/alinex))
+ * Fix up section separators in languages without multiline comments (thanks [tjbaron](//github.com/tjbaron))
+
 ## 0.2.8
 
  * Warn if Pygments isn't installed
