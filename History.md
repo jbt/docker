@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.2.10
+
+ * Purely a version bump because npm was having issues publishing 0.2.9
+
 ## 0.2.9
 
  * Use bundled version of Pygments (via [pygmentize-bundled](https://github.com/rvagg/node-pygmentize-bundled)) and remove the setup scripts (thanks [alexindigo](//github.com/alexindigo))
