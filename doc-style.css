@@ -306,6 +306,10 @@ a {
 
 td.code, .background {
   border-left-color: #dadddd; }
+
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+pre { line-height: 125%; }
 body .highlight .hll { background-color: #ffffcc }
 body .highlight  { background: #f0f3f3; }
 body .highlight .c { color: #0099FF; font-style: italic } /* Comment */
@@ -368,3 +372,5 @@ body .highlight .vc { color: #003333 } /* Name.Variable.Class */
 body .highlight .vg { color: #003333 } /* Name.Variable.Global */
 body .highlight .vi { color: #003333 } /* Name.Variable.Instance */
 body .highlight .il { color: #FF6600 } /* Literal.Number.Integer.Long */
+
+  
