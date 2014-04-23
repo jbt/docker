@@ -25,6 +25,7 @@ program
   .option('-s, --sidebar [state]', 'Whether the sidebar should be open or not by default', 'yes')
   .option('-x, --exclude [pattern]', 'Paths to exclude', false)
   .option('-n, --line-numbers', 'Whether to include line numbers in output', false)
+  .option('-m, --multi_line_only', 'Whether to process only multi-line comments', false)
   .option('--js <files>', 'Additional javascript files to include', list)
   .option('--css <files>', 'Additional CSS files to include', list)
   .option('--extras <extras>', 'Bundled extras to include, see extras dir', list)
@@ -51,6 +52,7 @@ var opts = {
   sidebarState: coerceSidebar(program.sidebar),
   exclude: program.exclude,
   lineNums: program.lineNumbers,
+  multiLineOnly: program.multi_line_only,
   js: program.js,
   css: program.css,
   extras: program.extras
