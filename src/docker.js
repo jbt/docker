@@ -556,7 +556,7 @@ Docker.prototype.parseSections = function(data, language){
         // ```js
         //  alert('foo'); // Alert some foo /* Random open comment thing
         // ```
-        matchable.match(params.multiLine[0]) &&
+        false && matchable.match(params.multiLine[0]) &&
         !matchable.replace(params.multiLine[0],'').match(params.multiLine[1]) &&
         (!params.comment || !matchable.split(params.multiLine[0])[0].match(commentRegex))
       ){
