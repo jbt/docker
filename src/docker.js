@@ -573,7 +573,8 @@ Docker.prototype.parseSections = function(data, language){
       }
     }
     if(
-      !this.multiLineOnly && params.comment &&
+      !this.multiLineOnly &&
+      params.comment &&
       matchable.match(commentRegex) &&
       (!params.commentsIgnore || !matchable.match(params.commentsIgnore)) &&
       !matchable.match(/#!/)
