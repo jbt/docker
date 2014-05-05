@@ -657,17 +657,22 @@ Docker.prototype.parseMultiline = function(comment){
       var tagType = tag.type = bits.shift();
 
       switch(tagType){
+        case 'arg':
+        case 'argument':
         case 'param':
           // `@param {typename} paramname Parameter description`
           if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.name = bits.shift() || '';
           tag.description = bits.join(' ');
+          tag.type = 'param';
           break;
 
+        case 'returns':
         case 'return':
           // `@return {typename} Return description`
           if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.description = bits.join(' ');
+          tag.type = 'return';
           break;
 
         case 'type':
@@ -675,9 +680,19 @@ Docker.prototype.parseMultiline = function(comment){
           tag.types = grabType(bits).split(/ *[|,\/] */);
           break;
 
+        case 'access':
         case 'api':
           // `@api public` or `@api private` etc.
           tag.visibility = bits.shift();
+          tag.type = 'api';
+          break;
+
+        case 'private':
+        case 'protected':
+        case 'public':
+          // `@public` or `@private` etc.
+          tag.visibility = tagType;
+          tag.type = 'api';
           break;
 
         case 'see':
