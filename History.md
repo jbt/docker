@@ -1,5 +1,12 @@
 # Docker Version History
 
+## 0.2.11
+
+ * Change sidebar loading in produced output to fire on DOMContentLoaded - thanks [hhelwich](//github.com/hhelwich)
+ * LiveScript syntax support, thanks to [qgustavor](//github.com/qgustavor).
+ * Add option to ignore inline comments and only process multiline comments - thanks to [jasonseney](//github.com/jasonseney)
+ * Big pile of updates to jsDoc tag handling: alias some types, add default handler for unknown types, and escape HTML properly. Thanks [ErisDS](//github.com/ErisDS)!
+
 ## 0.2.10
 
  * Purely a version bump because npm was having issues publishing 0.2.9
