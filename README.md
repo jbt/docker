@@ -29,6 +29,7 @@ Available options are:
  * `-s` or `--sidebar`: Whether or not the sidebar should be opened by default in the output (defaults to yes, can be yes, no, true, false). Value `disable` will disable the sidebar entirely in the output.
  * `-x` or `--exclude`: Comma-separated list of paths to exclude. Supports basic `*` wildcards too.
  * `-n` or `--line-number`: Include line numbers in the output (default is off)
+ * `-m` or `--multi_line_only`: Whether to process _only_ multi-line comments. (Defaults to false)
  * `--js`: Specify a comma-separated list of extra javascript files (relative to the current dir) to include
  * `--css`: Same as for `--js` but for CSS files
  * `--extras`: Comma-separated list of optional extras to activate (see below)

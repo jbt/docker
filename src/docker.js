@@ -102,6 +102,7 @@ Docker.prototype.parseOpts = function(opts){
     sidebarState: true,
     exclude: false,
     lineNums: false,
+    multiLineOnly: false,
     js: [],
     css: [],
     extras: []
@@ -123,6 +124,7 @@ Docker.prototype.parseOpts = function(opts){
   this.lineNums = !!opts.lineNums;
   this.extraJS = opts.js || [];
   this.extraCSS = opts.css || [];
+  this.multiLineOnly = !!opts.multiLineOnly;
 
   // Generate an exclude regex for the given pattern
   if(typeof opts.exclude === 'string'){
@@ -571,6 +573,7 @@ Docker.prototype.parseSections = function(data, language){
       }
     }
     if(
+      !this.multiLineOnly &&
       params.comment &&
       matchable.match(commentRegex) &&
       (!params.commentsIgnore || !matchable.match(params.commentsIgnore)) &&
