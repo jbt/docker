@@ -857,6 +857,11 @@ Docker.prototype.languages = {
     executables: [ 'coffee' ],
     comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true
   },
+  livescript: {
+    extensions: [ 'ls' ],
+    executables: [ 'lsc' ],
+    comment: '#',  multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+  },
   ruby: {
     extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ],
     executables: [ 'ruby' ],
