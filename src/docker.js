@@ -629,6 +629,15 @@ Docker.prototype.parseMultiline = function(comment){
   // to remove the type from it.
   function grabType(bits){
     var type = bits.shift();
+    var badChars = /[&<>"'`]/g;
+    var escape = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#x27;",
+      "`": "&#x60;"
+    };
 
     // Carry on adding bits until we reach a closing brace
     while(bits.length && type.indexOf('}') === -1) type += bits.shift();
@@ -640,6 +649,12 @@ Docker.prototype.parseMultiline = function(comment){
       bits.unshift(type.replace(/^.*\}(.*)$/, '$1'));
       type = type.replace(/\}.*$/,'}');
     }
+
+    function escapeChar(chr) {
+      return escape[chr] || "&amp;";
+    }
+
+    type = type.replace(badChars, escapeChar);
 
     return type.replace(/[{}]/g,'');
   }
