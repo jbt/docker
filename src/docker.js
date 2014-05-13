@@ -632,6 +632,15 @@ Docker.prototype.parseMultiline = function(comment){
   // to remove the type from it.
   function grabType(bits){
     var type = bits.shift();
+    var badChars = /[&<>"'`]/g;
+    var escape = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#x27;",
+      "`": "&#x60;"
+    };
 
     // Carry on adding bits until we reach a closing brace
     while(bits.length && type.indexOf('}') === -1) type += bits.shift();
@@ -643,6 +652,12 @@ Docker.prototype.parseMultiline = function(comment){
       bits.unshift(type.replace(/^.*\}(.*)$/, '$1'));
       type = type.replace(/\}.*$/,'}');
     }
+
+    function escapeChar(chr) {
+      return escape[chr] || "&amp;";
+    }
+
+    type = type.replace(badChars, escapeChar);
 
     return type.replace(/[{}]/g,'');
   }
@@ -660,17 +675,22 @@ Docker.prototype.parseMultiline = function(comment){
       var tagType = tag.type = bits.shift();
 
       switch(tagType){
+        case 'arg':
+        case 'argument':
         case 'param':
           // `@param {typename} paramname Parameter description`
           if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.name = bits.shift() || '';
           tag.description = bits.join(' ');
+          tag.type = 'param';
           break;
 
+        case 'returns':
         case 'return':
           // `@return {typename} Return description`
           if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.description = bits.join(' ');
+          tag.type = 'return';
           break;
 
         case 'type':
@@ -678,9 +698,19 @@ Docker.prototype.parseMultiline = function(comment){
           tag.types = grabType(bits).split(/ *[|,\/] */);
           break;
 
+        case 'access':
         case 'api':
           // `@api public` or `@api private` etc.
           tag.visibility = bits.shift();
+          tag.type = 'api';
+          break;
+
+        case 'private':
+        case 'protected':
+        case 'public':
+          // `@public` or `@private` etc.
+          tag.visibility = tagType;
+          tag.type = 'api';
           break;
 
         case 'see':
@@ -692,6 +722,11 @@ Docker.prototype.parseMultiline = function(comment){
             tag.local = bits.join(' ');
           }
           break;
+        default:
+          if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
+          tag.description = bits.join(' ');
+          tag.name = tagType;
+          tag.type = 'unknown';
       }
 
       return tag;
@@ -821,6 +856,11 @@ Docker.prototype.languages = {
     names: [ 'cakefile' ],
     executables: [ 'coffee' ],
     comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true
+  },
+  livescript: {
+    extensions: [ 'ls' ],
+    executables: [ 'lsc' ],
+    comment: '#',  multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   ruby: {
     extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ],

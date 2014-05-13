@@ -71,6 +71,21 @@ if(tags.length){
     </span>
 <%  }
 
+    if(tag.type == 'unknown'){                                      %>
+    <div class="dox_tag_title"><%= tag.name %></div>
+    <div class="dox_tag_detail">
+<%    if(tag.types){
+        for(var j = 0; j < tag.types.length; j += 1){           %>
+      <span class="dox_type"><%= tag.types[j] %></span>
+<%      }
+      }
+
+      if(tag.description){                                      %>
+      <span><%= md(tag.description, true) %></span>
+<%    }                                                         %>
+    </div>
+<%  }
+
     if(tag.type == 'see'){                                      %>
     <div class="dox_tag_title">See</div>
     <div class="dox_tag_detail">
