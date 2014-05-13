@@ -723,7 +723,7 @@ Docker.prototype.parseMultiline = function(comment){
           }
           break;
         default:
-          if(bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
+          if(bits.length > 0 && bits[0].charAt(0) == '{') tag.types = grabType(bits).split(/ *[|,\/] */);
           tag.description = bits.join(' ');
           tag.name = tagType;
           tag.type = 'unknown';
