@@ -1,5 +1,9 @@
 # Docker Version History
 
+## 0.2.12
+
+ * Minor bugfix for jsDoc handling
+
 ## 0.2.11
 
  * Change sidebar loading in produced output to fire on DOMContentLoaded - thanks [hhelwich](//github.com/hhelwich)
