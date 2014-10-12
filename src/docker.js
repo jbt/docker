@@ -503,7 +503,12 @@ Docker.prototype.parseSections = function(data, language){
     var line = codeLines[i];
 
     // Only match against parts of the line that don't appear in strings
-    var matchable = line.replace(/(["'])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g,'');
+    var matchable = line.replace(/(["'])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g,'$1$1');
+    if(params.literals) {
+      params.literals.forEach(function(replace){
+        matchable = matchable.replace(replace[0], replace[1]);
+      });
+    }
 
     if(params.multiLine){
       // If we are currently in a multiline comment, behave differently
@@ -839,6 +844,7 @@ Docker.prototype.languageParams = function(filename, filedata){
 //  * `commentsIgnore`: Regex of comments to strip completely (don't even doc)
 //  * `jsDoc`: Whether to parse multiline comments as jsDoc
 //  * `type`: Either `'code'` (default) or `'markdown'` - format of page to render
+//  * `literals`: Array of match/replace pairs for literals to ignore for comment matching
 //
 // I'm not even going to pretend that this is an exhaustive list of
 // languages that Pygments can understand. This is just a list of the most
@@ -849,13 +855,19 @@ Docker.prototype.languages = {
   javascript: {
     extensions: [ 'js' ],
     executables: [ 'node' ],
-    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, jsDoc: true
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], commentsIgnore: /^\s*\/\/=/, jsDoc: true,
+    literals: [
+      [ /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g, '/./' ]
+    ]
   },
   coffeescript: {
     extensions: [ 'coffee' ],
     names: [ 'cakefile' ],
     executables: [ 'coffee' ],
-    comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true
+    comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true,
+    literals: [
+      [ /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g, '/./' ]
+    ]
   },
   livescript: {
     extensions: [ 'ls' ],
