@@ -949,7 +949,7 @@ Docker.prototype.languages = {
   },
   scss: {
     extensions: [ 'scss' ],
-    comment: '//' //, multiLine: [ /\/\*/, /\*\// ]
+    comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   make: {
     names: [ 'makefile' ],
