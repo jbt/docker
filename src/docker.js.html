@@ -1283,7 +1283,12 @@ A section is defined to be one block of code with an accompanying comment</p>
 <p>Only match against parts of the line that don't appear in strings</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-    <span class="kd">var</span> <span class="nx">matchable</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&quot;&#39;])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">matchable</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/([&quot;&#39;])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g</span><span class="p">,</span><span class="s1">&#39;$1$1&#39;</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">literals</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">params</span><span class="p">.</span><span class="nx">literals</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">replace</span><span class="p">){</span>
+        <span class="nx">matchable</span> <span class="o">=</span> <span class="nx">matchable</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">replace</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">replace</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
 
     <span class="k">if</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">multiLine</span><span class="p">){</span>
 
@@ -2079,6 +2084,7 @@ it was entirely whitespace anyway, so we're safe to do this.</p>
 <li><code>commentsIgnore</code>: Regex of comments to strip completely (don't even doc)</li>
 <li><code>jsDoc</code>: Whether to parse multiline comments as jsDoc</li>
 <li><code>type</code>: Either <code>'code'</code> (default) or <code>'markdown'</code> - format of page to render</li>
+<li><code>literals</code>: Array of match/replace pairs for literals to ignore for comment matching</li>
 </ul>
 
 <p>I'm not even going to pretend that this is an exhaustive list of
@@ -2092,13 +2098,19 @@ then let me know and I'll add it in</p>
   <span class="nx">javascript</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;js&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;node&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">commentsIgnore</span><span class="o">:</span> <span class="sr">/^\s*\/\/=/</span><span class="p">,</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">commentsIgnore</span><span class="o">:</span> <span class="sr">/^\s*\/\/=/</span><span class="p">,</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">literals</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">[</span> <span class="sr">/\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g</span><span class="p">,</span> <span class="s1">&#39;/./&#39;</span> <span class="p">]</span>
+    <span class="p">]</span>
   <span class="p">},</span>
   <span class="nx">coffeescript</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;coffee&#39;</span> <span class="p">],</span>
     <span class="nx">names</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;cakefile&#39;</span> <span class="p">],</span>
     <span class="nx">executables</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;coffee&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/^\s*#{3}\s*$/m</span><span class="p">,</span> <span class="sr">/^\s*#{3}\s*$/m</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/^\s*#{3}\s*$/m</span><span class="p">,</span> <span class="sr">/^\s*#{3}\s*$/m</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">literals</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">[</span> <span class="sr">/\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g</span><span class="p">,</span> <span class="s1">&#39;/./&#39;</span> <span class="p">]</span>
+    <span class="p">]</span>
   <span class="p">},</span>
   <span class="nx">livescript</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;ls&#39;</span> <span class="p">],</span>
@@ -2180,7 +2192,7 @@ then let me know and I'll add it in</p>
   <span class="p">},</span>
   <span class="nx">scss</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;scss&#39;</span> <span class="p">],</span>
-    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span> <span class="c1">//, multiLine: [ /\/\*/, /\*\// ]</span>
+    <span class="nx">comment</span><span class="o">:</span> <span class="s1">&#39;//&#39;</span><span class="p">,</span> <span class="nx">multiLine</span><span class="o">:</span> <span class="p">[</span> <span class="sr">/\/\*\*?/</span><span class="p">,</span> <span class="sr">/\*\//</span> <span class="p">],</span> <span class="nx">jsDoc</span><span class="o">:</span> <span class="kc">true</span>
   <span class="p">},</span>
   <span class="nx">make</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">names</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;makefile&#39;</span> <span class="p">],</span>
