@@ -1,5 +1,14 @@
 # Docker Version History
 
+## 0.2.14
+
+ * Improvements to handling of literals that shouldn't be matched for comments
+ * Enable SCSS multiline comments (thanks again [jasonseney](//github.com/jasonseney))
+
+## 0.2.13
+
+ * Minor markup tweaks
+
 ## 0.2.12
 
  * Minor bugfix for jsDoc handling
