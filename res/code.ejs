@@ -9,16 +9,15 @@
         <td class="code highlight"></td>
       </tr>
     <% } %>
-    <% for (var i=0, l=sections.length; i<l; i++) { %>
-      <% var section = sections[i]; %>
+    <% sections.forEach(function(section){ %>
       <tr>
         <td class="docs">
-          <%= section.docHtml %>
+          <%- section.docHtml %>
         </td>
         <td class="code highlight">
-          <%= section.codeHtml %>
+          <pre class="<%- language %>"><%- section.codeHtml %></pre>
         </td>
       </tr>
-    <% } %>
+    <% }); %>
   </tbody>
 </table>
