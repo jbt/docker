@@ -24,11 +24,11 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
-<%    for(var i = 0; i < headings.length; i += 1){ %>
-      <div class="heading h<%= headings[i].level %>">
-        <a href="#<%= headings[i].id %>"><%= headings[i].text %></a>
+<%    headings.list.forEach(function(h){ %>
+      <div class="heading h<%= h.level %>">
+        <a href="#<%= h.id %>"><%= h.text %></a>
       </div>
-<%    } %>
+<%    }); %>
     </div>
   </div>
   <div id="sidebar-toggle"></div>

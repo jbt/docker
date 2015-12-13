@@ -10,6 +10,7 @@ var path = require('path');
 var less = require('less');
 var dox = require('dox');
 var ejs = require('ejs');
+var toc = require('toc');
 var fs = require('fs');
 
 var languages = require('./languages');
@@ -312,7 +313,7 @@ Docker.prototype.detectLanguage = function(filename, contents){
 Docker.prototype.renderMarkdownFile = function(data, filename, cb){
   var content = md.render(data);
 
-  var headings = [];
+  var headings = { ids: {}, list: [] };
 
   // Add anchors to all headings
   content = this.addAnchors(content,0, headings);
@@ -462,7 +463,7 @@ Docker.prototype.highlight = function(sections, lang){
 Docker.prototype.renderCodeFile = function(sections, language, filename, cb){
   var self = this;
 
-  var headings = [];
+  var headings = { ids: {}, list: [] };
 
   sections.forEach(function(section, i){
     section.docHtml = self.addAnchors(section.docHtml, i, headings);
@@ -576,34 +577,32 @@ Docker.prototype.copySharedResources = function(){
 };
 
 Docker.prototype.addAnchors = function(docHtml, idx, headings){
-  var ids = {};
-  if(docHtml.match(/<h[0-9]>/)){
+  var headingRegex = /<h(\d)(\s*[^>]*)>([\s\S]+?)<\/h\1>/gi; // toc.defaults.headers
+
+  if(docHtml.match(headingRegex)){
     // If there is a heading tag, pick out the first one (likely the most important), sanitize
     // the name a bit to make it more friendly for IDs, then use that
-    docHtml = docHtml.replace(/(<h([0-9])>)(.*)(<\/h\2>)/g, function(a, start, level, middle, end){
-      var id = encodeURIComponent(middle.replace(/<[^>]*>/g, '').toLowerCase());
-      var headingId = id;
+    docHtml = docHtml.replace(headingRegex, function(a, level, attrs, content){
+      var id = toc.unique(headings.ids, toc.anchor(content));
 
-      if(typeof ids[id] === 'undefined'){
-        ids[id] = 0;
-      }else{
-        ids[id]++;
-        headingId = id + '_' + ids[id];
-      }
-
-      headings.push({ id: id, headingId: headingId, text: middle.replace(/<[^>]*>/g, ''), level: level });
-      return '\n<div class="pilwrap" id="' + headingId + '">\n  ' +
-                start +
-                '\n    <a href="#' + headingId + '" name="' + headingId + '" class="pilcrow"></a>\n    ' +
-                middle + '\n  ' +
-                end +
-              '\n</div>\n';
+      headings.list.push({ id: id, text: toc.untag(content), level: level });
+      return [
+        '<div class="pilwrap" id="' + id + '">',
+        '  <h' + level + attrs + '>',
+        '    <a href="#' + id + '" name="' + id + '" class="pilcrow"></a>',
+             content,
+        '  </h' + level + '>',
+        '</div>'
+      ].join('\n');
     });
   }else{
     // If however we can't find a heading, then just use the section index instead.
-    docHtml = '\n<div class="pilwrap">' +
-              '\n  <a class="pilcrow" href="#section-' + (idx + 1) + '" id="section-' + (idx + 1) + '"></a>' +
-              '\n</div>\n' + docHtml;
+    docHtml = [
+      '<div class="pilwrap">',
+      '  <a class="pilcrow" href="#section-' + (idx + 1) + '" id="section-' + (idx + 1) + '"></a>',
+      '</div>',
+      docHtml
+    ].join('\n');
   }
   return docHtml;
 };
