@@ -6,15 +6,18 @@
   <link rel="stylesheet" media="all" href="<%= relativeDir %>doc-style.css" />
   <script src="<%= relativeDir %>doc-filelist.js"></script>
   <script>
-    var relativeDir = <%- JSON.stringify(relativeDir) %>, thisFile = <%- JSON.stringify(filename) %>, defaultSidebar = <%= sidebar === 'disable' ? 'false' : sidebar %>;
+    var relativeDir = <%- JSON.stringify(relativeDir) %>;
+    var thisFile = <%- JSON.stringify(filename) %>;
+    var defaultSidebar = <%= sidebar === 'disable' ? 'false' : sidebar %>;
   </script>
   <script src="<%= relativeDir %>doc-script.js"></script>
-<% for(var i = 0; i < js.length; i += 1){ %>
-  <script src="<%= relativeDir + js[i] %>"></script>
-<% }
-   for(var i = 0; i < css.length; i += 1){ %>
-  <link rel="stylesheet" href="<%= relativeDir + css[i] %>" />
-<% } %>
+<% js.forEach(function(j){ %>
+  <script src="<%= relativeDir + j %>"></script>
+<% });
+
+   css.forEach(function(c){ %>
+  <link rel="stylesheet" href="<%= relativeDir + c %>" />
+<% }); %>
 </head>
 <body<%= sidebar === 'disable' ? ' class="no-sidebar"' : '' %>>
   <div id="sidebar_wrapper">

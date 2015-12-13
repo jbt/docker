@@ -2,6 +2,7 @@ var stripIndent = require('strip-indent');
 var MarkdownIt = require('markdown-it');
 var highlight = require('highlight.js');
 var repeating = require('repeating');
+var debounce = require('debounce');
 var mkdirp = require('mkdirp');
 var extend = require('extend');
 var watchr = require('watchr');
@@ -58,12 +59,11 @@ var Docker = module.exports = function(opts){
   this.tree = {};
 
   var extrasRoot = path.resolve(__dirname, '..', 'extras');
-  for(var i = 0; i < opts.extras.length; i += 1){
-    var extraName = opts.extras[i];
 
-    opts.js.push(path.join(extrasRoot, extraName, extraName + '.js'));
-    opts.css.push(path.join(extrasRoot, extraName, extraName + '.css'));
-  }
+  opts.extras.forEach(function(e){
+    opts.js.push(path.join(extrasRoot, e, e + '.js'));
+    opts.css.push(path.join(extrasRoot, e, e + '.css'));
+  });
 };
 
 Docker.prototype.doc = function(files){
@@ -260,12 +260,14 @@ Docker.prototype.addFileToTree = function(filename){
   //    ]
   //  }
   // ```
-  var currDir  = this.tree;
-  for(var i = 0; i < bits.length - 1; i += 1){
+  var currDir = this.tree;
+  var lastBit = bits.pop();
+
+  bits.forEach(function(bit){
     if(!currDir.dirs) currDir.dirs = {};
-    if(!currDir.dirs[bits[i]]) currDir.dirs[bits[i]] = {};
-    currDir = currDir.dirs[bits[i]];
-  }
+    if(!currDir.dirs[bit]) currDir.dirs[bit] = {};
+    currDir = currDir.dirs[bit];
+  });
   if(!currDir.files) currDir.files = [];
 
   var lastBit = bits[bits.length - 1];
@@ -389,7 +391,7 @@ Docker.prototype.parseSections = function(data, lang){
           if(lang.jsDoc){
 
             // Strip off leading * characters.
-            multiLine = multiLine.replace(/^[ \t]*\*? ?/gm, "");
+            multiLine = multiLine.replace(/^[ \t]*\*? ?/gm, '');
 
             jsDocData = dox.parseComment(multiLine, { raw: true });
 
@@ -421,7 +423,7 @@ Docker.prototype.parseSections = function(data, lang){
           section = { docs: '', code: '' };
         }
         inMultiLineComment = true;
-        multiLine = line + "\n";
+        multiLine = line + '\n';
         return;
       }
     }
@@ -492,8 +494,8 @@ Docker.prototype.makeOutputFile = function(filename, content, headings, cb){
   // a relative href rather than an absolute one
   var outDir = path.dirname(outFile);
   var relativeOut = path.resolve(outDir)
-                    .replace(path.resolve(this.options.outDir),'')
-                    .replace(/^[\/\\]/,'');
+                      .replace(path.resolve(this.options.outDir),'')
+                      .replace(/^[\/\\]/,'');
   var levels = relativeOut == '' ? 0 : relativeOut.split(path.sep).length;
   var relDir = repeating('../', levels);
 
