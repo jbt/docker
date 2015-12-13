@@ -2,6 +2,7 @@
   "author": "JT <jt@gosquared.com>",
   "name": "docker",
   "version": "0.2.14",
+  "license": "MIT",
   "dependencies": {
     "async": "^1.4.0",
     "commander": "0.5.2",
