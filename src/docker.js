@@ -320,34 +320,7 @@ Docker.prototype.renderMarkdownFile = function(data, filename, cb){
   // Wrap up with necessary classes
   content = '<div class="docs markdown">' + content + '</div>';
 
-  // Decide which path to store the output on.
-  var outFile = this.outFile(filename);
-
-  // Calculate the location of the input root relative to the output file.
-  // This is necessary so we can link to the stylesheet in the output HTML using
-  // a relative href rather than an absolute one
-  var outDir = path.dirname(outFile);
-  var relativeOut = path.resolve(outDir)
-                    .replace(path.resolve(this.options.outDir),'')
-                    .replace(/^[\/\\]/,'');
-  var levels = relativeOut == '' ? 0 : relativeOut.split(path.sep).length;
-  var relDir = Array(levels + 1).join('../');
-
-  // Render the html file using our template
-  var html = this.renderTemplate('tmpl', {
-    title: path.basename(filename),
-    relativeDir: relDir,
-    content: content,
-    headings: headings,
-    sidebar: this.options.sidebarState,
-    filename: filename.replace(this.options.inDir,'').replace(/^[\\\/]/,''),
-    js: this.options.js.map(function(f){ return path.basename(f); }),
-    css: this.options.css.map(function(f){ return path.basename(f); })
-  });
-
-  // Recursively create the output directory, clean out any old version of the
-  // output file, then save our new file.
-  this.writeFile(outFile, html, 'Generated: ' + outFile.replace(this.options.outDir, ''), cb);
+  this.makeOutputFile(filename, content, headings, cb);
 };
 
 Docker.prototype.parseSections = function(data, lang){
@@ -487,19 +460,6 @@ Docker.prototype.highlight = function(sections, lang){
 };
 
 Docker.prototype.renderCodeFile = function(sections, language, filename, cb){
-  // Decide which path to store the output on.
-  var outFile = this.outFile(filename);
-
-  // Calculate the location of the input root relative to the output file.
-  // This is necessary so we can link to the stylesheet in the output HTML using
-  // a relative href rather than an absolute one
-  var outDir = path.dirname(outFile);
-  var relativeOut = path.resolve(outDir)
-                    .replace(path.resolve(this.options.outDir),'')
-                    .replace(/^[\/\\]/,'');
-  var levels = relativeOut === '' ? 0 : relativeOut.split(path.sep).length;
-  var relDir = repeating('../', levels);
-
   var self = this;
 
   var headings = [];
@@ -518,18 +478,38 @@ Docker.prototype.renderCodeFile = function(sections, language, filename, cb){
     language: language.language
   });
 
+  this.makeOutputFile(filename, content, headings, cb);
+};
+
+Docker.prototype.makeOutputFile = function(filename, content, headings, cb){
+
+  // Decide which path to store the output on.
+  var outFile = this.outFile(filename);
+
+  // Calculate the location of the input root relative to the output file.
+  // This is necessary so we can link to the stylesheet in the output HTML using
+  // a relative href rather than an absolute one
+  var outDir = path.dirname(outFile);
+  var relativeOut = path.resolve(outDir)
+                    .replace(path.resolve(this.options.outDir),'')
+                    .replace(/^[\/\\]/,'');
+  var levels = relativeOut == '' ? 0 : relativeOut.split(path.sep).length;
+  var relDir = repeating('../', levels);
+
+  // Render the html file using our template
   var html = this.renderTemplate('tmpl', {
     title: path.basename(filename),
     relativeDir: relDir,
     content: content,
     headings: headings,
     sidebar: this.options.sidebarState,
-    filename: filename.replace(this.options.inDir, '').replace(/^[\/\\]/, ''),
+    filename: filename.replace(this.options.inDir,'').replace(/^[\\\/]/,''),
     js: this.options.js.map(function(f){ return path.basename(f); }),
     css: this.options.css.map(function(f){ return path.basename(f); })
   });
 
-
+  // Recursively create the output directory, clean out any old version of the
+  // output file, then save our new file.
   this.writeFile(outFile, html, 'Generated: ' + outFile.replace(this.options.outDir, ''), cb);
 };
 
