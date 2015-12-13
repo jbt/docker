@@ -8,11 +8,11 @@ var watchr = require('watchr');
 var async = require('async');
 var path = require('path');
 var less = require('less');
+var dox = require('dox');
 var ejs = require('ejs');
 var fs = require('fs');
 
 var languages = require('./languages');
-var parseMultiline = require('./parseMultiLine');
 
 var md = new MarkdownIt({
   html: true,
@@ -417,7 +417,7 @@ Docker.prototype.parseSections = function(data, lang){
             // Strip off leading * characters.
             multiLine = multiLine.replace(/^[ \t]*\*? ?/gm, "");
 
-            jsDocData = parseMultiline(multiLine);
+            jsDocData = dox.parseComment(multiLine, { raw: true });
 
             // Put markdown parser on the data so it can be accessed in the template
             jsDocData.md = mark;
@@ -435,7 +435,7 @@ Docker.prototype.parseSections = function(data, lang){
         // end of the same comment, or if a single-line comment is started before the multiline
         // So for example the following would not be treated as a multiline starter:
         // ```js
-        //  alert('foo'); // Alert some foo /* Random open comment thing
+        // alert('foo'); // Alert some foo /* Random open comment thing
         // ```
         matchable.match(lang.multiLine[0]) &&
         !matchable.replace(lang.multiLine[0],'').match(lang.multiLine[1]) &&
@@ -525,8 +525,8 @@ Docker.prototype.renderCodeFile = function(sections, language, filename, cb){
     headings: headings,
     sidebar: this.options.sidebarState,
     filename: filename.replace(this.options.inDir, '').replace(/^[\/\\]/, ''),
-    js: this.options.js.map(path.basename),
-    css: this.options.css.map(path.basename)
+    js: this.options.js.map(function(f){ return path.basename(f); }),
+    css: this.options.css.map(function(f){ return path.basename(f); })
   });
 
 

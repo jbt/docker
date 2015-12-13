@@ -557,7 +557,7 @@
    * Constructs and shows the search box, optionally pre-populated
    * with a value for the search field
    *
-   * @param {string,optional} val Pre-populated value for the search field
+   * @param {string=} val Pre-populated value for the search field
    */
   function showSearchBox(val){
 
@@ -567,7 +567,7 @@
 
     // Create the containing element
     var f = document.createElement('div');
-    f.id = "search";
+    f.id = 'search';
 
     // Construct some basic HTML
     f.innerHTML = [
