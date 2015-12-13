@@ -341,8 +341,8 @@ Docker.prototype.renderMarkdownFile = function(data, filename, cb){
     headings: headings,
     sidebar: this.options.sidebarState,
     filename: filename.replace(this.options.inDir,'').replace(/^[\\\/]/,''),
-    js: this.options.js.map(path.basename),
-    css: this.options.css.map(path.basename)
+    js: this.options.js.map(function(f){ return path.basename(f); }),
+    css: this.options.css.map(function(f){ return path.basename(f); })
   });
 
   // Recursively create the output directory, clean out any old version of the
