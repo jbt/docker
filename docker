@@ -4,7 +4,7 @@
 var path = require('path');
 var program = require('commander');
 
-// Require [Docker](src/docker.js.html)
+// Require [Docker](src/docker.js)
 var Docker = require('./src/docker.js');
 
 // Figure out PWD because it doesn't exist in process.env on windows.

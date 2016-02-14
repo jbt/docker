@@ -20,7 +20,7 @@
 // and directories you specify) and document-ize all the files it can.
 // The folder structure will be preserved in the document root.
 //
-// More detailed usage instructions and examples can be found in the [README](../README.md.html)
+// More detailed usage instructions and examples can be found in the [README](../README.md)
 //
 // ## Differences from docco
 // The main differences from docco are:
@@ -31,7 +31,7 @@
 //  - **Folder Tree** and **Heading Navigation**: collapsible sidebar with folder tree and jump-to
 // heading links for easy navigation between many files and within long files.
 //
-//  - **Markdown File Support**: support for plain markdown files, like the [README](../README.md.html) for this project.
+//  - **Markdown File Support**: support for plain markdown files, like the [README](../README.md) for this project.
 //
 //  - **Colour Schemes**: support for multiple output colour schemes
 //
@@ -74,6 +74,22 @@ var md = new MarkdownIt({
     return '';
   }
 });
+
+
+// ## Markdown Link Overriding
+//
+// Relative links to files need to be remapped to their rendered file name,
+// so that they can be written without `.html` everywhere else without breaking
+md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+  var hrefIndex = tokens[idx].attrIndex('href');
+
+  // If the link a relative link, then put '.html' on the end.
+  if (hrefIndex >= 0 && !/\/\//.test(tokens[idx].attrs[hrefIndex][1])) {
+    tokens[idx].attrs[hrefIndex][1] += '.html';
+  }
+
+  return self.renderToken.apply(self, arguments);
+};
 
 
 /**

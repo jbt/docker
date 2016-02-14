@@ -89,7 +89,7 @@ minimum to power the basic features. Optional extras like file searching and lin
 contained in there own files and can be turned on by a specific flag.
 
 If you're viewing this on GitHub, take a look [here](/jbt/docker/tree/master/extras); if you're looking
-at the Docker output, look [here](extras/README.md.html), for further explanation.
+at the Docker output, look [here](extras/README.md), for further explanation.
 
 
 
