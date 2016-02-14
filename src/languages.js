@@ -1,3 +1,17 @@
+// # Languages
+//
+// All the languages Docker can parse are in here.
+// A language can have the following properties:
+//
+// * `extensions`: All possible file extensions for the language
+// * `executables`: Executables for the language that might be in a shebang
+// * `comment`: Delimiter for single-line comments
+// * `multiLine`: Start and end delimiters for multi-line comments
+// * `commentsIgnore`: Regex for comments that shouldn't be interpreted as descriptive
+// * `jsDoc`: whether to try and extract jsDoc-style comment data
+// * `literals`: Quoted strings are ignored when looking for comment delimiters. Any extra literals go here
+// * `highlightLanguage`: override for language to use with highlight.js
+
 var langs = module.exports = {
   javascript: {
     extensions: [ 'js' ],
@@ -119,7 +133,7 @@ var langs = module.exports = {
     extensions: [ 'gsp' ],
     //comment: '//', gsp only supports multiline comments.
     multiLine: [ /<%--/, /--%>/ ],
-    pygment: "html"// .gsp is grails server pages in pygments, html is close enough.
+    highlightLanguage: 'html'
   },
   stylus: {
     extensions: [ 'styl' ],
