@@ -10,8 +10,6 @@ Take a look at this project's [public page](http://jbt.github.com/docker) for an
 
 Simple: `npm install -g docker`
 
-**Requires [Pygments](http://pygments.org/)**
-
 ## Usage
 
 ```sh
@@ -81,7 +79,7 @@ This is the command I use to generate [this project's documentation](http://jbt.
  * Include the File Search extra
 
 ```sh
-$ docker -o ../docker_gh-pages -c manni -s yes -I -u -x node_modules -w --extras fileSearch
+$ docker -o ../docker_gh-pages -c atelier-cave.light -s yes -I -u -x node_modules -w --extras fileSearch
 ```
 
 ## Extras
@@ -97,28 +95,7 @@ at the Docker output, look [here](extras/README.md.html), for further explanatio
 
 ## Colour Schemes
 
-These are exactly as in `pygmentize -L styles`:
-
- * monokai
- * manni
- * rrt
- * perldoc
- * borland
- * colorful
- * default
- * murphy
- * vs
- * trac
- * tango
- * fruity
- * autumn
- * bw
- * emacs
- * vim
- * pastie
- * friendly
- * native
-
+These are the styles available in `highlight.js`. See the [highight.js demo](https://highlightjs.org/static/demo/) for all available options. You should use the name of the CSS file for this option.
 
 ## Important note
 
