@@ -1,12 +1,13 @@
 {
   "author": "JT <jt@gosquared.com>",
   "name": "docker",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "license": "MIT",
   "dependencies": {
     "async": "^1.4.0",
     "commander": "0.5.2",
     "css": "^2.2.1",
+    "debounce": "^1.0.0",
     "dox": "^0.8.0",
     "ejs": "^2.3.3",
     "extend": "^3.0.0",
