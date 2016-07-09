@@ -6,11 +6,16 @@
   <link rel="stylesheet" media="all" href="../../doc-style.css" />
   <script src="../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../", thisFile = "extras/fileSearch/fileSearch.css", defaultSidebar = true;
+    var relativeDir = "../../";
+    var thisFile = "extras/fileSearch/fileSearch.css";
+    var defaultSidebar = true;
   </script>
   <script src="../../doc-script.js"></script>
+
   <script src="../../fileSearch.js"></script>
+
   <link rel="stylesheet" href="../../fileSearch.css" />
+
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -20,140 +25,149 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container"><div class="background highlight"></div>
+  <div id="container">
+    <div class="background highlight"></div>
 <table cellpadding="0" cellspacing="0">
   <tbody>
+    
       <tr>
         <td class="docs">
           <h1>fileSearch.css</h1>
         </td>
         <td class="code highlight"></td>
       </tr>
+    
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="nf">#search</span><span class="p">{</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">10000</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
+        <td class="code highlight">
+          <pre class="css"><span class="hljs-id">#search</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> fixed</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">10000</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+}</span>
 
-<span class="nf">#searchbox</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">778px</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">32px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">4px</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#aaa</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#searchbox</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">778px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">32px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">40px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">4px</span> <span class="hljs-number">10px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#aaa</span></span></span>;
+}</span>
 
-<span class="nf">#searchbox</span><span class="nd">:focus</span><span class="p">{</span>
-  <span class="k">outline</span><span class="o">:</span> <span class="k">none</span>
-<span class="p">}</span>
+<span class="hljs-id">#searchbox</span><span class="hljs-pseudo">:focus</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">outline</span>:<span class="hljs-value"> none
+}
 
-<span class="nf">#search</span> <span class="nc">.overlay</span><span class="p">{</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
-  <span class="k">opacity</span><span class="o">:</span> <span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-<span class="p">}</span>
+#search .overlay{
+  position: absolute</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> white</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">opacity</span>:<span class="hljs-value"> <span class="hljs-number">0.6</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">1</span></span></span>;
+}</span>
 
-<span class="nf">#search</span> <span class="nc">.box</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">2</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">10</span><span class="o">%</span><span class="p">;</span>
-  <span class="k">max-height</span><span class="o">:</span> <span class="m">80</span><span class="o">%</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">50</span><span class="o">%</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="m">-410px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">800px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-class">.box</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> white</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">z-index</span>:<span class="hljs-value"> <span class="hljs-number">2</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">10%</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">max-height</span>:<span class="hljs-value"> <span class="hljs-number">80%</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">50%</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">margin-left</span>:<span class="hljs-value"> -<span class="hljs-number">410px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">800px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">padding</span>:<span class="hljs-value"> <span class="hljs-number">10px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">-webkit-box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">4px</span> <span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>)</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">-moz-box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">4px</span> <span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>)</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">-ms-box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">4px</span> <span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>)</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">-o-box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">4px</span> <span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>)</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">box-shadow</span>:<span class="hljs-value"> <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">4px</span> <span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>)</span></span>;
+}</span>
 
 
-<span class="nf">#searchresults</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">798px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#aaa</span><span class="p">;</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">max-height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#searchresults</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">798px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">border</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#aaa</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">border-top</span>:<span class="hljs-value"> none</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">max-height</span>:<span class="hljs-value"> <span class="hljs-number">500px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> auto</span></span>;
+}</span>
 
-<span class="nf">#search</span> <span class="nc">.item</span><span class="p">{</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
-  <span class="k">border-bottom</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ccc</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-class">.item</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">50px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">border-bottom</span>:<span class="hljs-value"> <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#ccc</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> relative</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">text-decoration</span>:<span class="hljs-value"> none</span></span>;
+}</span>
 
-<span class="nf">#search</span> <span class="nc">.item</span><span class="nd">:last-child</span><span class="p">{</span>
-  <span class="k">border-bottom</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-rule"><span class="hljs-attribute">.item</span>:<span class="hljs-value">last-child{
+  border-bottom: none</span></span>;
+}
 
-<span class="nf">#search</span> <span class="nc">.item</span> <span class="nc">.score</span><span class="p">{</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">8px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-class">.item</span> <span class="hljs-class">.score</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">8px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">10px</span></span></span>;
+}</span>
 
-<span class="nf">#search</span> <span class="nc">.item.selected</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#eee</span><span class="p">;</span>
-  <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-class">.item</span><span class="hljs-class">.selected</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">background</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#eee</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">outline</span>:<span class="hljs-value"> none</span></span>;
+}</span>
 
-<span class="nf">#search</span> <span class="nc">.item</span><span class="nd">:hover</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#f2f2f2</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-rule"><span class="hljs-attribute">.item</span>:<span class="hljs-value">hover{
+  background: <span class="hljs-hexcolor">#f2f2f2</span></span></span>;
+}
 
-<span class="nf">#search</span> <span class="nc">.item</span> <span class="nc">.filename</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">text</span><span class="o">-</span><span class="k">overflow</span><span class="o">:</span> <span class="n">ellipsis</span><span class="p">;</span>
-  <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="hljs-id">#search</span> <span class="hljs-class">.item</span> <span class="hljs-class">.filename</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">70px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">top</span>:<span class="hljs-value"> <span class="hljs-number">6px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">6px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">text-overflow</span>:<span class="hljs-value"> ellipsis</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">white-space</span>:<span class="hljs-value"> nowrap</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">16px</span></span></span>;
+}</span>
 
-<span class="nf">#search</span> <span class="nc">.item</span> <span class="nc">.fullpath</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span><span class="k">block</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">6px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">text</span><span class="o">-</span><span class="k">overflow</span><span class="o">:</span> <span class="n">ellipsis</span><span class="p">;</span>
-  <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">13px</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
+<span class="hljs-id">#search</span> <span class="hljs-class">.item</span> <span class="hljs-class">.fullpath</span><span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value">block</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">position</span>:<span class="hljs-value"> absolute</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">left</span>:<span class="hljs-value"> <span class="hljs-number">70px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">bottom</span>:<span class="hljs-value"> <span class="hljs-number">6px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">right</span>:<span class="hljs-value"> <span class="hljs-number">6px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">overflow</span>:<span class="hljs-value"> hidden</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">text-overflow</span>:<span class="hljs-value"> ellipsis</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">white-space</span>:<span class="hljs-value"> nowrap</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">color</span>:<span class="hljs-value"> <span class="hljs-hexcolor">#333</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">font-size</span>:<span class="hljs-value"> <span class="hljs-number">13px</span></span></span>;
+}</span>
+
+</pre>
         </td>
       </tr>
+    
   </tbody>
 </table>
+
   </div>
 </body>
 </html>

@@ -6,11 +6,16 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = "", thisFile = "docker", defaultSidebar = true;
+    var relativeDir = "";
+    var thisFile = "docker";
+    var defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
+
   <script src="fileSearch.js"></script>
+
   <link rel="stylesheet" href="fileSearch.css" />
+
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -20,201 +25,222 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container"><div class="background highlight"></div>
+  <div id="container">
+    <div class="background highlight"></div>
 <table cellpadding="0" cellspacing="0">
   <tbody>
+    
       <tr>
         <td class="docs">
           <h1>docker</h1>
         </td>
         <td class="code highlight"></td>
       </tr>
+    
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1"></a>
 </div>
 
         </td>
-        <td class="code highlight"><div class="highlight"><pre><span class="err">#</span><span class="o">!</span><span class="err">/usr/bin/env node</span>
+        <td class="code highlight">
+          <pre class="javascript">#!/usr/bin/env node
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
 </div>
 <p>Require all node modules</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">program</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;commander&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">watchr</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;watchr&#39;</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">var</span> program = <span class="hljs-built_in">require</span>(<span class="hljs-string">'commander'</span>);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
 </div>
 <p>Require <a href="src/docker.js.html">Docker</a></p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">Docker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./src/docker.js&#39;</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> Docker = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./src/docker.js'</span>);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4"></a>
 </div>
 <p>Figure out PWD because it doesn't exist in process.env on windows.</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">pwd</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> pwd = path.resolve(<span class="hljs-string">'.'</span>);
 
-<span class="kd">function</span> <span class="nx">list</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span> <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">);</span> <span class="p">}</span>
+<span class="hljs-keyword">var</span> pkg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./package.json'</span>);
 
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">list</span>(<span class="hljs-params">val</span>) </span>{
+  <span class="hljs-keyword">return</span> val.split(<span class="hljs-string">','</span>);
+}
 
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
 </div>
 <p>All program arguments using commander</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="nx">program</span>
-  <span class="p">.</span><span class="nx">version</span><span class="p">(</span><span class="s1">&#39;0.2.8&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-i, --input_dir [dir]&#39;</span><span class="p">,</span> <span class="s1">&#39;Input directory (defaults to current dir)&#39;</span><span class="p">,</span> <span class="nx">pwd</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-o, --output_dir [dir]&#39;</span><span class="p">,</span> <span class="s1">&#39;Output directory (defaults to ./doc)&#39;</span><span class="p">,</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">pwd</span><span class="p">,</span> <span class="s1">&#39;doc&#39;</span><span class="p">)</span> <span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-u, --updated_files&#39;</span><span class="p">,</span> <span class="s1">&#39;Only process files that have been changed&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-c, --colour_scheme [style]&#39;</span><span class="p">,</span> <span class="s1">&#39;Colour scheme to use (as in pygmentize -L styles)&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-I, --ignore_hidden&#39;</span><span class="p">,</span> <span class="s1">&#39;Ignore hidden files and directories (those starting with . or _)&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-w, --watch&#39;</span><span class="p">,</span> <span class="s1">&#39;Watch on the input directory for file changes (experimental)&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-s, --sidebar [state]&#39;</span><span class="p">,</span> <span class="s1">&#39;Whether the sidebar should be open or not by default&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-x, --exclude [pattern]&#39;</span><span class="p">,</span> <span class="s1">&#39;Paths to exclude&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-n, --line-numbers&#39;</span><span class="p">,</span> <span class="s1">&#39;Whether to include line numbers in output&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;-m, --multi_line_only&#39;</span><span class="p">,</span> <span class="s1">&#39;Whether to process only multi-line comments&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--js &lt;files&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Additional javascript files to include&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--css &lt;files&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Additional CSS files to include&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">option</span><span class="p">(</span><span class="s1">&#39;--extras &lt;extras&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Bundled extras to include, see extras dir&#39;</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript">program
+  .version(pkg.version)
+  .option(<span class="hljs-string">'-i, --input_dir [dir]'</span>, <span class="hljs-string">'Input directory (defaults to current dir)'</span>, pwd)
+  .option(<span class="hljs-string">'-o, --output_dir [dir]'</span>, <span class="hljs-string">'Output directory (defaults to ./doc)'</span>, path.join(pwd, <span class="hljs-string">'doc'</span>))
+  .option(<span class="hljs-string">'-u, --updated_files'</span>, <span class="hljs-string">'Only process files that have been changed'</span>)
+  .option(<span class="hljs-string">'-c, --colour_scheme [style]'</span>, <span class="hljs-string">'Colour scheme to use (see https://github.com/isagalaev/highlight.js/tree/master/src/styles)'</span>)
+  .option(<span class="hljs-string">'-I, --ignore_hidden'</span>, <span class="hljs-string">'Ignore hidden files and directories (those starting with . or _)'</span>)
+  .option(<span class="hljs-string">'-w, --watch'</span>, <span class="hljs-string">'Watch on the input directory for file changes (experimental)'</span>)
+  .option(<span class="hljs-string">'-s, --sidebar [state]'</span>, <span class="hljs-string">'Whether the sidebar should be open or not by default'</span>, <span class="hljs-string">'yes'</span>)
+  .option(<span class="hljs-string">'-x, --exclude [pattern]'</span>, <span class="hljs-string">'Paths to exclude'</span>, <span class="hljs-literal">false</span>)
+  .option(<span class="hljs-string">'-n, --line-numbers'</span>, <span class="hljs-string">'Whether to include line numbers in output'</span>, <span class="hljs-literal">false</span>)
+  .option(<span class="hljs-string">'-m, --multi_line_only'</span>, <span class="hljs-string">'Whether to process only multi-line comments'</span>, <span class="hljs-literal">false</span>)
+  .option(<span class="hljs-string">'--js &lt;files&gt;'</span>, <span class="hljs-string">'Additional javascript files to include'</span>, list)
+  .option(<span class="hljs-string">'--css &lt;files&gt;'</span>, <span class="hljs-string">'Additional CSS files to include'</span>, list)
+  .option(<span class="hljs-string">'--extras &lt;extras&gt;'</span>, <span class="hljs-string">'Bundled extras to include, see extras dir'</span>, list)
+  .parse(process.argv);
 
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
 </div>
 <p>Super-simple function to test if ann argument is vaguely trueish or falseish.
 Should match <code>true</code>, <code>false</code>, <code>0</code>, <code>1</code>, <code>'0'</code>, <code>'1'</code>, <code>'y'</code>, <code>'n'</code>, <code>'yes'</code>, <code>'no'</code>, <code>'ok'</code>, <code>'true'</code>, <code>'false'</code></p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">function</span> <span class="nx">coerceSidebar</span><span class="p">(</span><span class="nx">input</span><span class="p">){</span>
-  <span class="k">if</span><span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;disable&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">input</span><span class="p">;</span>
-  <span class="k">if</span><span class="p">(</span><span class="nx">input</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">||</span> <span class="nx">input</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="k">return</span> <span class="nx">input</span><span class="p">;</span>
-  <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">||</span> <span class="p">(</span><span class="o">+</span><span class="nx">input</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span> <span class="o">===</span> <span class="nx">input</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="k">return</span> <span class="o">!!+</span><span class="nx">input</span><span class="p">;</span>
-  <span class="nx">input</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-  <span class="k">return</span> <span class="nx">input</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="sr">/(y(es)?|ok|t(rue)?)/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
-<span class="p">}</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">coerceSidebar</span>(<span class="hljs-params">input</span>) </span>{
+  <span class="hljs-keyword">if</span> (input === <span class="hljs-string">'disable'</span>) <span class="hljs-keyword">return</span> input;
+  <span class="hljs-keyword">if</span> (input === <span class="hljs-literal">true</span> || input === <span class="hljs-literal">false</span>) <span class="hljs-keyword">return</span> input;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> input === <span class="hljs-string">'number'</span> || (+input + <span class="hljs-string">''</span> === input + <span class="hljs-string">''</span>)) <span class="hljs-keyword">return</span> !!+input;
+  input = input.toString();
+  <span class="hljs-keyword">return</span> input === <span class="hljs-string">''</span> ? <span class="hljs-literal">true</span> : <span class="hljs-regexp">/(y(es)?|ok|t(rue)?)/i</span>.test(input);
+}
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
 </div>
 <p>Put all the options into an object</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">inDir</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">input_dir</span><span class="p">,</span>
-  <span class="nx">outDir</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">output_dir</span><span class="p">,</span>
-  <span class="nx">onlyUpdated</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">updated_files</span><span class="p">,</span>
-  <span class="nx">colourScheme</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">colour_scheme</span><span class="p">,</span>
-  <span class="nx">ignoreHidden</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">ignore_hidden</span><span class="p">,</span>
-  <span class="nx">sidebarState</span><span class="o">:</span> <span class="nx">coerceSidebar</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">sidebar</span><span class="p">),</span>
-  <span class="nx">exclude</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">exclude</span><span class="p">,</span>
-  <span class="nx">lineNums</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">lineNumbers</span><span class="p">,</span>
-  <span class="nx">multiLineOnly</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">multi_line_only</span><span class="p">,</span>
-  <span class="nx">js</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span>
-  <span class="nx">css</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">css</span><span class="p">,</span>
-  <span class="nx">extras</span><span class="o">:</span> <span class="nx">program</span><span class="p">.</span><span class="nx">extras</span>
-<span class="p">};</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> opts = {
+  inDir: program.input_dir,
+  outDir: program.output_dir,
+  onlyUpdated: program.updated_files,
+  colourScheme: program.colour_scheme,
+  ignoreHidden: program.ignore_hidden,
+  sidebarState: coerceSidebar(program.sidebar),
+  exclude: program.exclude,
+  lineNums: program.lineNumbers,
+  multiLineOnly: program.multi_line_only,
+  js: program.js,
+  css: program.css,
+  extras: program.extras
+};
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8"></a>
 </div>
 <p>Create docker instance</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Docker</span><span class="p">(</span><span class="nx">opts</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> d = <span class="hljs-keyword">new</span> Docker(opts);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9"></a>
 </div>
 <p>If no file list is specified, just run on whole directory</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="k">if</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">program</span><span class="p">.</span><span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;./&#39;</span><span class="p">];</span>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">if</span> (program.args.length === <span class="hljs-number">0</span>) program.args = [ <span class="hljs-string">'./'</span> ];
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10"></a>
 </div>
 <p>Set it running.</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="k">if</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">watch</span><span class="p">){</span>
-  <span class="nx">d</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
-<span class="p">}</span><span class="k">else</span><span class="p">{</span>
-  <span class="nx">d</span><span class="p">.</span><span class="nx">doc</span><span class="p">(</span><span class="nx">program</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">if</span> (program.watch) {
+  d.watch(program.args);
+} <span class="hljs-keyword">else</span> {
+  d.doc(program.args);
+}
+
+</pre>
         </td>
       </tr>
+    
   </tbody>
 </table>
+
   </div>
 </body>
 </html>

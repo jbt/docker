@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>getColourScheme.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "src/getColourScheme.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+  <script src="../fileSearch.js"></script>
+
+  <link rel="stylesheet" href="../fileSearch.css" />
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#getcolourscheme.js">getColourScheme.js</a>
+      </div>
+
+      <div class="heading h2">
+        <a href="#flattenrules">flattenRules</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="getcolourscheme.js">
+  <h1>
+    <a href="#getcolourscheme.js" name="getcolourscheme.js" class="pilcrow"></a>
+getColourScheme.js
+  </h1>
+</div>
+<p>This is a helper to grab the colours out of a given highlight.js theme.
+It's a bit messy, but oh well.</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>Require all node modules</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">var</span> css = <span class="hljs-built_in">require</span>(<span class="hljs-string">'css'</span>);
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>Figure out where the colour schemes are stored</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-keyword">var</span> hlpath = <span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'highlight.js'</span>);
+<span class="hljs-keyword">var</span> cspath = path.resolve(path.dirname(hlpath), <span class="hljs-string">'..'</span>, <span class="hljs-string">'styles'</span>);
+
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
+<div class="pilwrap" id="flattenrules">
+  <h2>
+    <a href="#flattenrules" name="flattenrules" class="pilcrow"></a>
+flattenRules
+  </h2>
+</div>
+</div>
+<div class="body">
+<p>Flattens out all the rules in a CSS file so we can easily grab
+rules for a particular selector.</p>
+</div>
+<div class="details">
+<div class="dox_tag_title">Params</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">rules</span>
+<span class="dox_type">Array</span>
+<span>Array of rules parsed by <strong>css</strong>
+</span>
+</div>
+<div class="dox_tag_title">Returns</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name"></span>
+<span class="dox_type">Object</span>
+<span>Selctor -&gt; property/value list
+</span>
+</div>
+</div>
+</div>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flattenRules</span>(<span class="hljs-params">rules</span>) </span>{
+  <span class="hljs-keyword">var</span> out = {};
+
+  rules.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">rule</span>) </span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
+</div>
+<p>Ignore anything that doesn't look like a CSS rule</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">if</span> (rule.type !== <span class="hljs-string">'rule'</span>) <span class="hljs-keyword">return</span>;
+    rule.selectors.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">sel</span>) </span>{
+      <span class="hljs-keyword">if</span> (!out[sel]) out[sel] = {};
+
+      rule.declarations.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">decl</span>) </span>{
+        out[sel][decl.property] = decl.value;
+      });
+    });
+  });
+
+  <span class="hljs-keyword">return</span> out;
+}
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cs</span>) </span>{
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
+</div>
+<p>Load and parse the colour scheme file</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">var</span> file = path.join(cspath, cs + <span class="hljs-string">'.css'</span>);
+  <span class="hljs-keyword">var</span> ast = css.parse(fs.readFileSync(file).toString());
+
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7"></a>
+</div>
+<p>Flatten out all the rules so we can grab individual properties by selector</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">var</span> rules = flattenRules(ast.stylesheet.rules);
+
+  <span class="hljs-keyword">var</span> base = rules[<span class="hljs-string">'.hljs'</span>];
+
+  <span class="hljs-keyword">var</span> fg = base.color || <span class="hljs-string">'black'</span>;
+  <span class="hljs-keyword">var</span> bg = base.background || <span class="hljs-string">'#fff'</span>;
+
+  <span class="hljs-keyword">var</span> comment = rules[<span class="hljs-string">'.hljs-comment'</span>] || {};
+  <span class="hljs-keyword">var</span> commentColour = comment.color || <span class="hljs-string">'#888'</span>;
+
+  <span class="hljs-keyword">var</span> number = rules[<span class="hljs-string">'.hljs-number'</span>] || rules[<span class="hljs-string">'.javascript .hljs-number'</span>] || {};
+  <span class="hljs-keyword">var</span> numberCol = number.color || <span class="hljs-string">'#261a3b'</span>;
+
+  <span class="hljs-keyword">return</span> { fg: fg, bg: bg, comment: commentColour, link: numberCol };
+};
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

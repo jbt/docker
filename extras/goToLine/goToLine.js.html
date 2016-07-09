@@ -6,11 +6,16 @@
   <link rel="stylesheet" media="all" href="../../doc-style.css" />
   <script src="../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../", thisFile = "extras/goToLine/goToLine.js", defaultSidebar = true;
+    var relativeDir = "../../";
+    var thisFile = "extras/goToLine/goToLine.js";
+    var defaultSidebar = true;
   </script>
   <script src="../../doc-script.js"></script>
+
   <script src="../../fileSearch.js"></script>
+
   <link rel="stylesheet" href="../../fileSearch.css" />
+
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -20,511 +25,559 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
       <div class="heading h1">
         <a href="#gotoline.js">goToLine.js</a>
       </div>
+
       <div class="heading h2">
         <a href="#jumpformkeydown">jumpFormKeyDown</a>
       </div>
+
       <div class="heading h2">
         <a href="#addevent">addEvent</a>
       </div>
+
       <div class="heading h2">
         <a href="#jumpformsubmitted">jumpFormSubmitted</a>
       </div>
+
       <div class="heading h2">
         <a href="#dojump">doJump</a>
       </div>
+
       <div class="heading h2">
         <a href="#showjumpbox">showJumpBox</a>
       </div>
+
       <div class="heading h2">
         <a href="#gotoline_kd">goToLine_kd</a>
       </div>
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container"><div class="background highlight"></div>
+  <div id="container">
+    <div class="background highlight"></div>
 <table cellpadding="0" cellspacing="0">
   <tbody>
+    
+    
       <tr>
         <td class="docs">
-<div class="pilwrap" id="gotoline.js">
+          <div class="pilwrap" id="gotoline.js">
   <h1>
-    <a href="#gotoline.js" name="gotoline.js" class="pilcrow">&#182;</a>
-    goToLine.js
+    <a href="#gotoline.js" name="gotoline.js" class="pilcrow"></a>
+goToLine.js
   </h1>
 </div>
-
-
 <p>Contains methods for showing a form allowing instant jumping
 to any line in a file. Currently only works if line numbers
 have been enabled in the output</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        <td class="code highlight">
+          <pre class="javascript">
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
 </div>
 <p>Wrap everything inside a closure so we don't get any collisions in
 the global scope</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-<span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-
-
-</pre></div>
+        <td class="code highlight">
+          <pre class="javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
 </div>
 <p>Some useful variables</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">var</span> <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">jumpTimeout</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-keyword">var</span> jumpBoxShown = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">var</span> jumpTimeout;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
 <div class="pilwrap" id="jumpformkeydown">
   <h2>
-    <a href="#jumpformkeydown" name="jumpformkeydown" class="pilcrow">&#182;</a>
-    jumpFormKeyDown
+    <a href="#jumpformkeydown" name="jumpformkeydown" class="pilcrow"></a>
+jumpFormKeyDown
   </h2>
 </div>
-
-  </div>
-  <div class="body"><p>Fired when a key is pressed on the jump form. Performs the
-appropriate action depending on which key was pressed</p>
-  </div>
-  <div class="details">
-    <div class="dox_tag_title">Params</div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">e</span>
-      <span class="dox_type">KeyDownEvent</span>
-      <span>The key event</span>
-    </div>
-  </div>
 </div>
+<div class="body">
+<p>Fired when a key is pressed on the jump form. Performs the
+appropriate action depending on which key was pressed</p>
+</div>
+<div class="details">
+<div class="dox_tag_title">Params</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">e</span>
+<span class="dox_type">KeyDownEvent</span>
+<span>The key event
+</span>
+</div>
+</div>
+</div>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">function</span> <span class="nx">jumpFormKeyDown</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">jumpFormKeyDown</span>(<span class="hljs-params">e</span>) </span>{
+    e = e || <span class="hljs-built_in">window</span>.event;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5"></a>
 </div>
 <p>27 = esc, so hide the form</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">27</span><span class="p">){</span>
-      <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpto&#39;</span><span class="p">));</span>
-      <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">if</span> (e.keyCode == <span class="hljs-number">27</span>) {
+      <span class="hljs-built_in">document</span>.body.removeChild(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'jumpto'</span>));
+      jumpBoxShown = <span class="hljs-literal">false</span>;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6"></a>
 </div>
 <p>Otherwise, most likely the user has typed or deleted on the
 form, so queue a jump. Don't do it immediately do avoid
 disorientating jumps during quick typing</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">jumpTimeout</span><span class="p">);</span>
-      <span class="nx">jumpTimeout</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">doJump</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
+        <td class="code highlight">
+          <pre class="javascript">    } <span class="hljs-keyword">else</span> {
+      clearTimeout(jumpTimeout);
+      jumpTimeout = setTimeout(doJump, <span class="hljs-number">150</span>);
+    }
+  }
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
 <div class="pilwrap" id="addevent">
   <h2>
-    <a href="#addevent" name="addevent" class="pilcrow">&#182;</a>
-    addEvent
+    <a href="#addevent" name="addevent" class="pilcrow"></a>
+addEvent
   </h2>
 </div>
-
-  </div>
-  <div class="body"><p>Helper function for binding DOM events</p>
-  </div>
-  <div class="details">
-    <div class="dox_tag_title">Params</div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">obj</span>
-      <span class="dox_type">Element</span>
-      <span>The DOM element to bind to</span>
-    </div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">evt</span>
-      <span class="dox_type">string</span>
-      <span>The name of the event to bind to</span>
-    </div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">func</span>
-      <span class="dox_type">function</span>
-      <span>Listener to attach to the event</span>
-    </div>
-  </div>
 </div>
+<div class="body">
+<p>Helper function for binding DOM events</p>
+</div>
+<div class="details">
+<div class="dox_tag_title">Params</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">obj</span>
+<span class="dox_type">Element</span>
+<span>The DOM element to bind to
+</span>
+</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">evt</span>
+<span class="dox_type">string</span>
+<span>The name of the event to bind to
+</span>
+</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">func</span>
+<span class="dox_type">function</span>
+<span>Listener to attach to the event
+</span>
+</div>
+</div>
+</div>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">function</span> <span class="nx">addEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="nx">a</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">((</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)){</span>
-      <span class="nx">a</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-      <span class="nx">obj</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">evt</span><span class="p">,</span> <span class="nx">func</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addEvent</span>(<span class="hljs-params">obj, evt, func, a</span>) </span>{
+    <span class="hljs-keyword">if</span> ((a = obj.addEventListener)) {
+      a.call(obj, evt, func, <span class="hljs-literal">false</span>);
+    } <span class="hljs-keyword">else</span> {
+      obj.attachEvent(<span class="hljs-string">'on'</span> + evt, func);
+    }
+  }
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
 <div class="pilwrap" id="jumpformsubmitted">
   <h2>
-    <a href="#jumpformsubmitted" name="jumpformsubmitted" class="pilcrow">&#182;</a>
-    jumpFormSubmitted
+    <a href="#jumpformsubmitted" name="jumpformsubmitted" class="pilcrow"></a>
+jumpFormSubmitted
   </h2>
 </div>
-
-  </div>
-  <div class="body"><p>Called when the user hits enter on the jump form
-so find the given line and jump to it</p>
-  </div>
-  <div class="details">
-    <div class="dox_tag_title">Params</div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">e</span>
-      <span class="dox_type">FormSubmitEvent</span>
-      <span>The submit event</span>
-    </div>
-  </div>
 </div>
+<div class="body">
+<p>Called when the user hits enter on the jump form
+so find the given line and jump to it</p>
+</div>
+<div class="details">
+<div class="dox_tag_title">Params</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">e</span>
+<span class="dox_type">FormSubmitEvent</span>
+<span>The submit event
+</span>
+</div>
+</div>
+</div>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">function</span> <span class="nx">jumpFormSubmitted</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
-    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">jumpFormSubmitted</span>(<span class="hljs-params">e</span>) </span>{
+    e = e || <span class="hljs-built_in">window</span>.event;
+    e.preventDefault();
 
-    <span class="nx">doJump</span><span class="p">();</span>
+    doJump();
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9"></a>
 </div>
 <p>Hide the jump box</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpto&#39;</span><span class="p">));</span>
-    <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-built_in">document</span>.body.removeChild(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'jumpto'</span>));
+    jumpBoxShown = <span class="hljs-literal">false</span>;
 
-    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="p">}</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
 <div class="pilwrap" id="dojump">
   <h2>
-    <a href="#dojump" name="dojump" class="pilcrow">&#182;</a>
-    doJump
+    <a href="#dojump" name="dojump" class="pilcrow"></a>
+doJump
   </h2>
 </div>
-
-  </div>
-  <div class="body"><p>Performs the line jump by manipulating the location hash</p>
-  </div>
 </div>
+<div class="body">
+<p>Performs the line jump by manipulating the location hash</p>
+</div>
+</div>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">function</span> <span class="nx">doJump</span><span class="p">(){</span>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">jumpBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doJump</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (!jumpBoxShown) <span class="hljs-keyword">return</span>;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11"></a>
 </div>
 <p>Figure out which line we need to jump to</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpbox&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">var</span> line = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'jumpbox'</span>).value;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12"></a>
 </div>
 <p>Grab the line anchor if it exists</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="kd">var</span> <span class="nx">theLine</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">var</span> theLine = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'line-'</span> + line);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13"></a>
 </div>
 <p>If it doesn't exist, there's not much we can do</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">theLine</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">if</span> (!theLine) <span class="hljs-keyword">return</span>;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14"></a>
 </div>
 <p>If it does exist, jump to it</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span> <span class="o">=</span> <span class="s1">&#39;line-&#39;</span> <span class="o">+</span> <span class="nx">line</span><span class="p">;</span>
-  <span class="p">}</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-built_in">window</span>.location.hash = <span class="hljs-string">'line-'</span> + line;
+  }
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
 <div class="pilwrap" id="showjumpbox">
   <h2>
-    <a href="#showjumpbox" name="showjumpbox" class="pilcrow">&#182;</a>
-    showJumpBox
+    <a href="#showjumpbox" name="showjumpbox" class="pilcrow"></a>
+showJumpBox
   </h2>
 </div>
-
-  </div>
-  <div class="body"><p>Constructs and shows the jump box</p>
-  </div>
 </div>
+<div class="body">
+<p>Constructs and shows the jump box</p>
+</div>
+</div>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">function</span> <span class="nx">showJumpBox</span><span class="p">(){</span>
-
-
-</pre></div>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showJumpBox</span>(<span class="hljs-params"></span>) </span>{
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16"></a>
 </div>
 <p>If the box is already visible, do nothing</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="k">if</span><span class="p">(</span><span class="nx">jumpBoxShown</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-    <span class="nx">jumpBoxShown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">if</span> (jumpBoxShown) <span class="hljs-keyword">return</span>;
+    jumpBoxShown = <span class="hljs-literal">true</span>;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17"></a>
 </div>
 <p>Create the containing element</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-    <span class="nx">f</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">&quot;jumpto&quot;</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">var</span> f = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+    f.id = <span class="hljs-string">'jumpto'</span>;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18"></a>
 </div>
 <p>Construct some basic HTML</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="nx">f</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="p">[</span>
-      <span class="s1">&#39;&lt;div class=&quot;overlay&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;&lt;div class=&quot;box&quot;&gt;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;&lt;form id=&quot;jumpform&quot;&gt;&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;&lt;input id=&quot;jumpbox&quot; type=&quot;text&quot; name=&quot;line&quot; placeholder=&quot;Go to line...&quot; autocomplete=&quot;off&quot; /&gt;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;&lt;/div&gt;&#39;</span>
-    <span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript">    f.innerHTML = [
+      <span class="hljs-string">'&lt;div class="overlay"&gt;&lt;/div&gt;'</span>,
+      <span class="hljs-string">'&lt;div class="box"&gt;'</span>,
+      <span class="hljs-string">'&lt;form id="jumpform"&gt;'</span>,
+      <span class="hljs-string">'&lt;input id="jumpbox" type="text" name="line" placeholder="Go to line..." autocomplete="off" /&gt;'</span>,
+      <span class="hljs-string">'&lt;/form&gt;'</span>,
+      <span class="hljs-string">'&lt;/div&gt;'</span>
+    ].join(<span class="hljs-string">''</span>);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19"></a>
 </div>
 <p>Add the keydown event</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="nx">addEvent</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">jumpFormKeyDown</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript">    addEvent(f, <span class="hljs-string">'keydown'</span>, jumpFormKeyDown);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20"></a>
 </div>
 <p>Add the container straight onto the body</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-built_in">document</span>.body.appendChild(f);
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21"></a>
 </div>
 <p>Focus the field, and bund the submit event</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpbox&#39;</span><span class="p">).</span><span class="nx">focus</span><span class="p">();</span>
-    <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;jumpform&#39;</span><span class="p">),</span> <span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="nx">jumpFormSubmitted</span><span class="p">);</span>
-  <span class="p">}</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'jumpbox'</span>).focus();
+    addEvent(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'jumpform'</span>), <span class="hljs-string">'submit'</span>, jumpFormSubmitted);
+  }
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
-        <td class="docs"><div class="dox">
-  <div class="summary">
+        <td class="docs">
+          <div class="dox">
+<div class="summary">
 <div class="pilwrap" id="gotoline_kd">
   <h2>
-    <a href="#gotoline_kd" name="gotoline_kd" class="pilcrow">&#182;</a>
-    goToLine_kd
+    <a href="#gotoline_kd" name="gotoline_kd" class="pilcrow"></a>
+goToLine_kd
   </h2>
 </div>
-
-  </div>
-  <div class="body"><p>Fired as a global keyDown event on the document. Checks
-if ctrl/cmd+G has been pressed and shows the jump form</p>
-  </div>
-  <div class="details">
-    <div class="dox_tag_title">Params</div>
-    <div class="dox_tag_detail">
-      <span class="dox_tag_name">e</span>
-      <span class="dox_type">KeyDownEvent</span>
-      <span>The key event</span>
-    </div>
-  </div>
 </div>
+<div class="body">
+<p>Fired as a global keyDown event on the document. Checks
+if ctrl/cmd+G has been pressed and shows the jump form</p>
+</div>
+<div class="details">
+<div class="dox_tag_title">Params</div>
+<div class="dox_tag_detail">
+<span class="dox_tag_name">e</span>
+<span class="dox_type">KeyDownEvent</span>
+<span>The key event
+</span>
+</div>
+</div>
+</div>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="kd">function</span> <span class="nx">goToLine_kd</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+        <td class="code highlight">
+          <pre class="javascript">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goToLine_kd</span>(<span class="hljs-params">e</span>) </span>{
+    e = e || <span class="hljs-built_in">window</span>.event;
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23"></a>
 </div>
 <p>71 = g, so listen for ctrl/cmd+P</p>
+
         </td>
-        <td class="code highlight"><div class="highlight"><pre>
-    <span class="k">if</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">===</span> <span class="mi">71</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">ctrlKey</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">metaKey</span><span class="p">)){</span>
-      <span class="nx">showJumpBox</span><span class="p">();</span>
-      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
+        <td class="code highlight">
+          <pre class="javascript">    <span class="hljs-keyword">if</span> (e.keyCode === <span class="hljs-number">71</span> &amp;&amp; (e.ctrlKey || e.metaKey)) {
+      showJumpBox();
+      e.preventDefault();
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+  }
 
-
-</pre></div>
+</pre>
         </td>
       </tr>
+    
       <tr>
         <td class="docs">
-<div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24"></a>
 </div>
 <p>Attach the global event to the document</p>
-        </td>
-        <td class="code highlight"><div class="highlight"><pre>
-  <span class="nx">addEvent</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">goToLine_kd</span><span class="p">);</span>
 
-<span class="p">})();</span>
-</pre></div>
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  addEvent(<span class="hljs-built_in">document</span>, <span class="hljs-string">'keydown'</span>, goToLine_kd);
+})();
+
+</pre>
         </td>
       </tr>
+    
   </tbody>
 </table>
+
   </div>
 </body>
 </html>

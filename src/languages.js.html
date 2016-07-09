@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>languages.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../";
+    var thisFile = "src/languages.js";
+    var defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+
+  <script src="../fileSearch.js"></script>
+
+  <link rel="stylesheet" href="../fileSearch.css" />
+
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+
+      <div class="heading h1">
+        <a href="#languages">Languages</a>
+      </div>
+
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container">
+    <div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap" id="languages">
+  <h1>
+    <a href="#languages" name="languages" class="pilcrow"></a>
+Languages
+  </h1>
+</div>
+<p>All the languages Docker can parse are in here.
+A language can have the following properties:</p>
+<ul>
+<li><code>extensions</code>: All possible file extensions for the language</li>
+<li><code>executables</code>: Executables for the language that might be in a shebang</li>
+<li><code>comment</code>: Delimiter for single-line comments</li>
+<li><code>multiLine</code>: Start and end delimiters for multi-line comments</li>
+<li><code>commentsIgnore</code>: Regex for comments that shouldn't be interpreted as descriptive</li>
+<li><code>jsDoc</code>: whether to try and extract jsDoc-style comment data</li>
+<li><code>literals</code>: Quoted strings are ignored when looking for comment delimiters. Any extra literals go here</li>
+<li><code>highlightLanguage</code>: override for language to use with highlight.js</li>
+</ul>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">
+<span class="hljs-keyword">var</span> langs = <span class="hljs-built_in">module</span>.exports = {
+  javascript: {
+    extensions: [ <span class="hljs-string">'js'</span> ],
+    executables: [ <span class="hljs-string">'node'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], commentsIgnore: <span class="hljs-regexp">/^\s*\/\/=/</span>, jsDoc: <span class="hljs-literal">true</span>,
+    literals: [
+      [ <span class="hljs-regexp">/\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g</span>, <span class="hljs-string">'/./'</span> ]
+    ]
+  },
+  coffeescript: {
+    extensions: [ <span class="hljs-string">'coffee'</span> ],
+    names: [ <span class="hljs-string">'cakefile'</span> ],
+    executables: [ <span class="hljs-string">'coffee'</span> ],
+    comment: <span class="hljs-string">'#'</span>, multiLine: [ <span class="hljs-regexp">/^\s*#{3}\s*$/m</span>, <span class="hljs-regexp">/^\s*#{3}\s*$/m</span> ], jsDoc: <span class="hljs-literal">true</span>,
+    literals: [
+      [ <span class="hljs-regexp">/\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g</span>, <span class="hljs-string">'/./'</span> ]
+    ]
+  },
+  livescript: {
+    extensions: [ <span class="hljs-string">'ls'</span> ],
+    executables: [ <span class="hljs-string">'lsc'</span> ],
+    comment: <span class="hljs-string">'#'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  ruby: {
+    extensions: [ <span class="hljs-string">'rb'</span>, <span class="hljs-string">'rbw'</span>, <span class="hljs-string">'rake'</span>, <span class="hljs-string">'gemspec'</span> ],
+    executables: [ <span class="hljs-string">'ruby'</span> ],
+    names: [ <span class="hljs-string">'rakefile'</span> ],
+    comment: <span class="hljs-string">'#'</span>, multiLine: [ <span class="hljs-regexp">/\=begin/</span>, <span class="hljs-regexp">/\=end/</span> ]
+  },
+  python: {
+    extensions: [ <span class="hljs-string">'py'</span> ],
+    executables: [ <span class="hljs-string">'python'</span> ],
+    comment: <span class="hljs-string">'#'</span> <span class="hljs-comment">// Python has no block commments :-(</span>
+  },
+  perl: {
+    extensions: [ <span class="hljs-string">'pl'</span>, <span class="hljs-string">'pm'</span> ],
+    executables: [ <span class="hljs-string">'perl'</span> ],
+    comment: <span class="hljs-string">'#'</span> <span class="hljs-comment">// Nor (really) does perl.</span>
+  },
+  c: {
+    extensions: [ <span class="hljs-string">'c'</span>, <span class="hljs-string">'h'</span> ],
+    executables: [ <span class="hljs-string">'gcc'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  cpp: {
+    extensions: [ <span class="hljs-string">'cc'</span>, <span class="hljs-string">'cpp'</span> ],
+    executables: [ <span class="hljs-string">'g++'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  vbnet: {
+    extensions: [ <span class="hljs-string">'vb'</span>, <span class="hljs-string">'vbs'</span>, <span class="hljs-string">'bas'</span> ],
+    comment: <span class="hljs-string">"'"</span> <span class="hljs-comment">// No multiline</span>
+  },
+  <span class="hljs-string">'aspx-vb'</span>: {
+    extensions: [ <span class="hljs-string">'asp'</span>, <span class="hljs-string">'aspx'</span>, <span class="hljs-string">'asax'</span>, <span class="hljs-string">'ascx'</span>, <span class="hljs-string">'ashx'</span>, <span class="hljs-string">'asmx'</span>, <span class="hljs-string">'axd'</span> ],
+    comment: <span class="hljs-string">"'"</span> <span class="hljs-comment">// No multiline</span>
+  },
+  csharp: {
+    extensions: [ <span class="hljs-string">'cs'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  <span class="hljs-string">'aspx-cs'</span>: {
+    extensions: [ <span class="hljs-string">'aspx'</span>, <span class="hljs-string">'asax'</span>, <span class="hljs-string">'ascx'</span>, <span class="hljs-string">'ashx'</span>, <span class="hljs-string">'asmx'</span>, <span class="hljs-string">'axd'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  java: {
+    extensions: [ <span class="hljs-string">'java'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  php: {
+    extensions: [ <span class="hljs-string">'php'</span>, <span class="hljs-string">'php3'</span>, <span class="hljs-string">'php4'</span>, <span class="hljs-string">'php5'</span> ],
+    executables: [ <span class="hljs-string">'php'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  actionscript: {
+    extensions: [ <span class="hljs-string">'as'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*/</span>, <span class="hljs-regexp">/\*\//</span> ]
+  },
+  sh: {
+    extensions: [ <span class="hljs-string">'sh'</span>, <span class="hljs-string">'kst'</span>, <span class="hljs-string">'bash'</span> ],
+    names: [ <span class="hljs-string">'.bashrc'</span>, <span class="hljs-string">'bashrc'</span> ],
+    executables: [ <span class="hljs-string">'bash'</span>, <span class="hljs-string">'sh'</span>, <span class="hljs-string">'zsh'</span> ],
+    comment: <span class="hljs-string">'#'</span>
+  },
+  yaml: {
+    extensions: [ <span class="hljs-string">'yaml'</span>, <span class="hljs-string">'yml'</span> ],
+    comment: <span class="hljs-string">'#'</span>
+  },
+  markdown: {
+    extensions: [ <span class="hljs-string">'md'</span>, <span class="hljs-string">'mkd'</span>, <span class="hljs-string">'markdown'</span> ],
+    type: <span class="hljs-string">'markdown'</span>
+  },
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2"></a>
+</div>
+<p>sass: {
+extensions: [ 'sass' ],
+comment: '//' //, multiLine: [ //*/, /*// ]
+},</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">  scss: {
+    extensions: [ <span class="hljs-string">'scss'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  makefile: {
+    names: [ <span class="hljs-string">'makefile'</span> ],
+    comment: <span class="hljs-string">'#'</span>
+  },
+  apache: {
+    names: [ <span class="hljs-string">'.htaccess'</span>, <span class="hljs-string">'apache.conf'</span>, <span class="hljs-string">'apache2.conf'</span> ],
+    comment: <span class="hljs-string">'#'</span>
+  },
+  jade: {
+    extensions: [ <span class="hljs-string">'jade'</span> ],
+    comment: <span class="hljs-string">'//-?'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  groovy: {
+    extensions: [ <span class="hljs-string">'groovy'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ], jsDoc: <span class="hljs-literal">true</span>
+  },
+  gsp: {
+    extensions: [ <span class="hljs-string">'gsp'</span> ],
+</pre>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="docs">
+          <div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3"></a>
+</div>
+<p>comment: '//', gsp only supports multiline comments.</p>
+
+        </td>
+        <td class="code highlight">
+          <pre class="javascript">    multiLine: [ <span class="hljs-regexp">/&lt;%--/</span>, <span class="hljs-regexp">/--%&gt;/</span> ],
+    highlightLanguage: <span class="hljs-string">'html'</span>
+  },
+  stylus: {
+    extensions: [ <span class="hljs-string">'styl'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*/</span>, <span class="hljs-regexp">/\*\//</span> ]
+  },
+  css: {
+    extensions: [ <span class="hljs-string">'css'</span> ],
+    multiLine: [ <span class="hljs-regexp">/\/\*/</span>, <span class="hljs-regexp">/\*\//</span> ],       <span class="hljs-comment">// for when we detect multi-line comments</span>
+    commentStart: <span class="hljs-string">'/*'</span>, commentEnd: <span class="hljs-string">'*/'</span> <span class="hljs-comment">// for when we add multi-line comments</span>
+  },
+  less: {
+    extensions: [ <span class="hljs-string">'less'</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*/</span>, <span class="hljs-regexp">/\*\//</span> ]
+  },
+  html: {
+    extensions: [ <span class="hljs-string">'html'</span>, <span class="hljs-string">'htm'</span> ],
+    multiLine: [ <span class="hljs-regexp">/&lt;!--/</span>, <span class="hljs-regexp">/--&gt;/</span> ],
+    commentStart: <span class="hljs-string">'&lt;!--'</span>, commentEnd: <span class="hljs-string">'--&gt;'</span>
+  },
+  json: {
+    extensions: [ <span class="hljs-string">'json'</span> ],
+    names: [ <span class="hljs-string">'.eslintrc'</span>, <span class="hljs-string">'.jshintrc'</span> <span class="hljs-comment">/* various other .rc's */</span> ],
+    comment: <span class="hljs-string">'//'</span>, multiLine: [ <span class="hljs-regexp">/\/\*\*?/</span>, <span class="hljs-regexp">/\*\//</span> ]
+  }
+};
+
+<span class="hljs-built_in">Object</span>.keys(langs).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">l</span>) </span>{
+  langs[l].language = l;
+});
+
+</pre>
+        </td>
+      </tr>
+    
+  </tbody>
+</table>
+
+  </div>
+</body>
+</html>

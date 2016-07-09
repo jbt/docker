@@ -6,11 +6,16 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = "", thisFile = "README.md", defaultSidebar = true;
+    var relativeDir = "";
+    var thisFile = "README.md";
+    var defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
+
   <script src="fileSearch.js"></script>
+
   <link rel="stylesheet" href="fileSearch.css" />
+
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -20,84 +25,76 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
       <div class="heading h1">
         <a href="#docker">Docker</a>
       </div>
+
       <div class="heading h2">
         <a href="#installation">Installation</a>
       </div>
+
       <div class="heading h2">
         <a href="#usage">Usage</a>
       </div>
+
       <div class="heading h2">
         <a href="#examples">Examples</a>
       </div>
+
       <div class="heading h3">
-        <a href="#process%20every%20file%20in%20the%20current%20directory%20into%20%22doc%22">Process every file in the current directory into "doc"</a>
+        <a href="#process-every-file-in-the-current-directory-into-doc">Process every file in the current directory into &amp;quot;doc&amp;quot;</a>
       </div>
+
       <div class="heading h3">
-        <a href="#process%20files%20in%20%22src%22%20to%20%22documents%22">Process files in "src" to "documents"</a>
+        <a href="#process-files-in-src-to-documents">Process files in &amp;quot;src&amp;quot; to &amp;quot;documents&amp;quot;</a>
       </div>
+
       <div class="heading h3">
-        <a href="#generate%20docker%20docs">Generate Docker docs</a>
+        <a href="#generate-docker-docs">Generate Docker docs</a>
       </div>
+
       <div class="heading h2">
         <a href="#extras">Extras</a>
       </div>
+
       <div class="heading h2">
-        <a href="#colour%20schemes">Colour Schemes</a>
+        <a href="#colour-schemes">Colour Schemes</a>
       </div>
+
       <div class="heading h2">
-        <a href="#important%20note">Important note</a>
+        <a href="#important-note">Important note</a>
       </div>
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container"><div class="docs markdown">
-<div class="pilwrap" id="docker">
+  <div id="container">
+    <div class="docs markdown"><div class="pilwrap" id="docker">
   <h1>
-    <a href="#docker" name="docker" class="pilcrow">&#182;</a>
-    Docker
+    <a href="#docker" name="docker" class="pilcrow"></a>
+Docker
   </h1>
 </div>
-
-
 <p>A documentation generator built on the foundations of <a href="http://jashkenas.github.com/docco/">Docco</a> and <a href="https://github.com/mbrevoort/docco-husky">Docco-Husky</a>.</p>
-
 <p>The support available in Docco and Docco-Husky for larger projects consisting of many hundreds of script files was somewhat lacking, so I decided to create my own.</p>
-
 <p>Take a look at this project's <a href="http://jbt.github.com/docker">public page</a> for an example of what it can do.</p>
-
-
 <div class="pilwrap" id="installation">
   <h2>
-    <a href="#installation" name="installation" class="pilcrow">&#182;</a>
-    Installation
+    <a href="#installation" name="installation" class="pilcrow"></a>
+Installation
   </h2>
 </div>
-
-
 <p>Simple: <code>npm install -g docker</code></p>
-
-<p><strong>Requires <a href="http://pygments.org/">Pygments</a></strong></p>
-
-
 <div class="pilwrap" id="usage">
   <h2>
-    <a href="#usage" name="usage" class="pilcrow">&#182;</a>
-    Usage
+    <a href="#usage" name="usage" class="pilcrow"></a>
+Usage
   </h2>
 </div>
-
-
-
-<div class="highlight"><pre><code><span class="nv">$ </span>docker <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>files ...<span class="o">]</span>
-</code></pre></div>
-
-
-
+<pre><code class="sh">$ docker [options] [files ...]
+</code></pre>
 <p>Available options are:</p>
-
 <ul>
 <li><code>-i</code> or <code>--input_dir</code>: Path to input source directory. Defaults to current directory.</li>
 <li><code>-o</code> or <code>--output_dir</code>: Path to output doc directory. Defaults to <code>./doc</code>.</li>
@@ -113,87 +110,50 @@
 <li><code>--css</code>: Same as for <code>--js</code> but for CSS files</li>
 <li><code>--extras</code>: Comma-separated list of optional extras to activate (see below)</li>
 </ul>
-
 <p>If no file list is given, docker will run recursively on every file in the current directory</p>
-
 <p>Any of the files given can also be directories, in which case it will recurse into them.</p>
-
 <p>Folder structure inside the input directory is preserved into the output directory and file names are simply appended <code>.html</code> for the doc file</p>
-
-
 <div class="pilwrap" id="examples">
   <h2>
-    <a href="#examples" name="examples" class="pilcrow">&#182;</a>
-    Examples
+    <a href="#examples" name="examples" class="pilcrow"></a>
+Examples
   </h2>
 </div>
-
-
 <p>If you haven't installed with <code>-g</code> specified, replace <code>docker</code> with something like <code>$(npm root)/docker/docker</code> in all of the examples below.</p>
-
-
-<div class="pilwrap" id="process%20every%20file%20in%20the%20current%20directory%20into%20%22doc%22">
+<div class="pilwrap" id="process-every-file-in-the-current-directory-into-doc">
   <h3>
-    <a href="#process%20every%20file%20in%20the%20current%20directory%20into%20%22doc%22" name="process%20every%20file%20in%20the%20current%20directory%20into%20%22doc%22" class="pilcrow">&#182;</a>
-    Process every file in the current directory into "doc"
+    <a href="#process-every-file-in-the-current-directory-into-doc" name="process-every-file-in-the-current-directory-into-doc" class="pilcrow"></a>
+Process every file in the current directory into &quot;doc&quot;
   </h3>
 </div>
-
-
-
-<div class="highlight"><pre><code><span class="nv">$ </span>docker
-</code></pre></div>
-
-
-
-
-<div class="pilwrap" id="process%20files%20in%20%22src%22%20to%20%22documents%22">
+<pre><code class="sh">$ docker
+</code></pre>
+<div class="pilwrap" id="process-files-in-src-to-documents">
   <h3>
-    <a href="#process%20files%20in%20%22src%22%20to%20%22documents%22" name="process%20files%20in%20%22src%22%20to%20%22documents%22" class="pilcrow">&#182;</a>
-    Process files in "src" to "documents"
+    <a href="#process-files-in-src-to-documents" name="process-files-in-src-to-documents" class="pilcrow"></a>
+Process files in &quot;src&quot; to &quot;documents&quot;
   </h3>
 </div>
-
-
-
-<div class="highlight"><pre><code><span class="nv">$ </span>docker -i src -o documents
-</code></pre></div>
-
-
-
+<pre><code class="sh">$ docker -i src -o documents
+</code></pre>
 <p>or:</p>
-
-
-<div class="highlight"><pre><code><span class="nv">$ </span>docker -o documents src
-</code></pre></div>
-
-
-
+<pre><code class="sh">$ docker -o documents src
+</code></pre>
 <p>or:</p>
-
-
-<div class="highlight"><pre><code><span class="nv">$ </span>docker -o documents src/*
-</code></pre></div>
-
-
-
+<pre><code class="sh">$ docker -o documents src/*
+</code></pre>
 <p>Note that in the first example, the contents of <code>src</code> will be mapped directly into <code>documents</code> whereas in the second and third
 examples, the files will be created inside <code>documents/src</code></p>
-
-
-<div class="pilwrap" id="generate%20docker%20docs">
+<div class="pilwrap" id="generate-docker-docs">
   <h3>
-    <a href="#generate%20docker%20docs" name="generate%20docker%20docs" class="pilcrow">&#182;</a>
-    Generate Docker docs
+    <a href="#generate-docker-docs" name="generate-docker-docs" class="pilcrow"></a>
+Generate Docker docs
   </h3>
 </div>
-
-
 <p>This is the command I use to generate <a href="http://jbt.github.com/docker">this project's documentation</a>.</p>
-
 <ul>
 <li>Output to a directory on the <code>gh-pages</code> branch of this repo</li>
-<li>Use the "manni" colour scheme</li>
+<li>Use the &quot;manni&quot; colour scheme</li>
 <li>Show the sidebar by default</li>
 <li>Ignore files starting with <code>_</code> or <code>.</code></li>
 <li>Only process updated files</li>
@@ -201,73 +161,35 @@ examples, the files will be created inside <code>documents/src</code></p>
 <li>Watch the directory for further changes as the code is updated.</li>
 <li>Include the File Search extra</li>
 </ul>
-
-
-<div class="highlight"><pre><code><span class="nv">$ </span>docker -o ../docker_gh-pages -c manni -s yes -I -u -x node_modules -w --extras fileSearch
-</code></pre></div>
-
-
-
-
+<pre><code class="sh">$ docker -o ../docker_gh-pages -c atelier-cave.light <span class="hljs-operator">-s</span> yes -I -u -x node_modules -w --extras fileSearch
+</code></pre>
 <div class="pilwrap" id="extras">
   <h2>
-    <a href="#extras" name="extras" class="pilcrow">&#182;</a>
-    Extras
+    <a href="#extras" name="extras" class="pilcrow"></a>
+Extras
   </h2>
 </div>
-
-
 <p>The output of Docker is designed to be fairly lightweight, so doesn't include much other than the bare
 minimum to power the basic features. Optional extras like file searching and line jumping are therefore
 contained in there own files and can be turned on by a specific flag.</p>
-
-<p>If you're viewing this on GitHub, take a look <a href="/jbt/docker/tree/master/extras">here</a>; if you're looking
+<p>If you're viewing this on GitHub, take a look <a href="/jbt/docker/tree/master/extras.html">here</a>; if you're looking
 at the Docker output, look <a href="extras/README.md.html">here</a>, for further explanation.</p>
-
-
-<div class="pilwrap" id="colour%20schemes">
+<div class="pilwrap" id="colour-schemes">
   <h2>
-    <a href="#colour%20schemes" name="colour%20schemes" class="pilcrow">&#182;</a>
-    Colour Schemes
+    <a href="#colour-schemes" name="colour-schemes" class="pilcrow"></a>
+Colour Schemes
   </h2>
 </div>
-
-
-<p>These are exactly as in <code>pygmentize -L styles</code>:</p>
-
-<ul>
-<li>monokai</li>
-<li>manni</li>
-<li>rrt</li>
-<li>perldoc</li>
-<li>borland</li>
-<li>colorful</li>
-<li>default</li>
-<li>murphy</li>
-<li>vs</li>
-<li>trac</li>
-<li>tango</li>
-<li>fruity</li>
-<li>autumn</li>
-<li>bw</li>
-<li>emacs</li>
-<li>vim</li>
-<li>pastie</li>
-<li>friendly</li>
-<li>native</li>
-</ul>
-
-
-<div class="pilwrap" id="important%20note">
+<p>These are the styles available in <code>highlight.js</code>. See the <a href="https://highlightjs.org/static/demo/">highight.js demo</a> for all available options. You should use the name of the CSS file for this option.</p>
+<div class="pilwrap" id="important-note">
   <h2>
-    <a href="#important%20note" name="important%20note" class="pilcrow">&#182;</a>
-    Important note
+    <a href="#important-note" name="important-note" class="pilcrow"></a>
+Important note
   </h2>
 </div>
-
-
 <p>All files must be inside the input directory (specified by <code>-i</code>) or one of its descendant subdirectories. If they're not then various file paths in the output won't work properly and the file will probably get generated
-in the wrong place. Still, it's better than what it used to do, which was to get stuck in an infinite loop.</p></div>
+in the wrong place. Still, it's better than what it used to do, which was to get stuck in an infinite loop.</p>
+</div>
   </div>
 </body>
 </html>

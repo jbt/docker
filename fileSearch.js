@@ -9,8 +9,7 @@
 
 // Wrap everything inside a closure so we don't get any collisions in
 // the global scope
-(function(){
-
+(function() {
   /**
    * ## escapeRegex
    *
@@ -19,8 +18,8 @@
    * @param {string} term String to escape
    * @return {string} Regex-compatible escaped string
    */
-  function escapeRegex(term){
-    return term.replace(/[\[\]\{\}\(\)\^\$\.\*\+\|]/g, function(a){
+  function escapeRegex(term) {
+    return term.replace(/[\[\]\{\}\(\)\^\$\.\*\+\|]/g, function(a) {
       return '\\' + a;
     });
   }
@@ -35,11 +34,11 @@
   // stands out with a factor of 240 compared to lowercase letter.
   // These numbers are pretty much plucked out of thin air.
   var relevanceMatrix = [
-    [  0,   240,   120,   240,   220],
-    [ 20,     0,    20,   120,   120],
-    [140,   140,     0,   140,   140],
-    [120,   120,   120,     0,   120],
-    [120,   120,   120,   160,     0]
+    [   0, 240, 120, 240, 220 ],
+    [  20,   0,  20, 120, 120 ],
+    [ 140, 140,   0, 140, 140 ],
+    [ 120, 120, 120,   0, 120 ],
+    [ 120, 120, 120, 160,   0 ]
   ];
 
   /**
@@ -51,11 +50,11 @@
    * @param {string} c The character to check
    * @return {number} One of the constants defined above
    */
-  function charType(c){
-    if(/[a-z]/.test(c)) return LOWER;
-    if(/[A-Z]/.test(c)) return UPPER;
-    if(/[0-9]/.test(c)) return NUMBER;
-    if(/[\/\-_\.]/.test(c)) return COMMON_DELIMS;
+  function charType(c) {
+    if (/[a-z]/.test(c)) return LOWER;
+    if (/[A-Z]/.test(c)) return UPPER;
+    if (/[0-9]/.test(c)) return NUMBER;
+    if (/[\/\-_\.]/.test(c)) return COMMON_DELIMS;
     return OTHER;
   }
 
@@ -71,12 +70,11 @@
    * @param {string} after The immediately following character
    * @return {number} Score according to how much the character stands out
    */
-  function compareCharacters(theChar, before, after){
-
+  function compareCharacters(theChar, before, after) {
     // Grab the character types of all three characters
     var theType = charType(theChar),
-        beforeType = charType(before),
-        afterType = charType(after);
+      beforeType = charType(before),
+      afterType = charType(after);
 
     // **MAGIC NUMBER ALERT** 0.4 is a number that makes it work best in my tests
     return relevanceMatrix[theType][beforeType] +
@@ -92,18 +90,18 @@
    * @param {string} str The input accented string
    * @return {string} String with accents removed
    */
-  var stripAccents = (function(accented, unaccented){
+  var stripAccents = (function(accented, unaccented) {
     var matchRegex = new RegExp('[' + accented + ']', 'g'),
-        translationTable = {}, i;
-        lookup = function(chr){
-          return translationTable[chr] || chr;
-        };
+      translationTable = {}, i;
+    lookup = function(chr) {
+      return translationTable[chr] || chr;
+    };
 
-    for(i = 0; i < accented.length; i += 1){
+    for (i = 0; i < accented.length; i += 1) {
       translationTable[accented.charAt(i)] = unaccented.charAt(i);
     }
 
-    return function(str){
+    return function(str) {
       return str.replace(matchRegex, lookup);
     };
   })('àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ',
@@ -124,18 +122,17 @@
    * @param {number} startingFrom Ignore the first _n_ characters
    * @return {object} Rank of `item` against `term` with highlights
    */
-  function bestRank(item, term, startingFrom){
-
+  function bestRank(item, term, startingFrom) {
     // If we've reached the end of our search term, add some extra points for being short
-    if(term.length === 0) return startingFrom * 100 / item.length;
+    if (term.length === 0) return startingFrom * 100 / item.length;
 
     // If we've reached the end of the item but not the term, then fail.
-    if(item.length === 0) return -1;
+    if (item.length === 0) return -1;
 
     // Quick sanity check to make sure the remaining item has all the characters we need in order
-    if(!item.slice(startingFrom).match(
-      new RegExp( ('^.*' + escapeRegex(term.split('').join('~~K~~')) + '.*$').split('~~K~~').join('.*'), 'i' )
-    )){
+    if (!item.slice(startingFrom).match(
+      new RegExp(('^.*' + escapeRegex(term.split('').join('~~K~~')) + '.*$').split('~~K~~').join('.*'), 'i')
+    )) {
       return -1;
     }
 
@@ -148,19 +145,19 @@
     var highlights;
 
     // Now loop over the item, and test all instances of `firstSearchChar` (case-insensitive)
-    for(var i = startingFrom; i < item.length; i += 1){
-      if(item.charAt(i).toLowerCase() !== firstSearchChar.toLowerCase()) continue;
+    for (var i = startingFrom; i < item.length; i += 1) {
+      if (item.charAt(i).toLowerCase() !== firstSearchChar.toLowerCase()) continue;
 
       // Find out what the rest of the string scores against the rest of the term
       var subsequentRank = bestRank(item.substr(i), term.slice(1), 1);
-      if(subsequentRank == -1) continue;
+      if (subsequentRank == -1) continue;
 
       // Inverse linear score for the character. Earlier in string = much better
       var characterScore = 400 / Math.max(1, i);
 
       // If, starting at this character, we have the whole of the search term in order, that's really
       // good. And if the term is really long, make it cubically good (quadratic scores added up)
-      if(item.substr(i).toLowerCase().indexOf(term.toLowerCase()) === 0) characterScore += 3 * term.length * term.length;
+      if (item.substr(i).toLowerCase().indexOf(term.toLowerCase()) === 0) characterScore += 3 * term.length * term.length;
 
       // Add on score for how much this character stands out
       characterScore += compareCharacters(
@@ -173,13 +170,13 @@
       characterScore += subsequentRank;
 
       // If we've managed to better what we have so far, store it away
-      if(characterScore > bestRankSoFar){
+      if (characterScore > bestRankSoFar) {
         bestRankSoFar = characterScore;
 
         // Save highlighted characters as well
-        highlights = [i];
+        highlights = [ i ];
         var subsequentHighlights = subsequentRank.highlights || [];
-        for(var j = 0; j < subsequentHighlights.length; j += 1){
+        for (var j = 0; j < subsequentHighlights.length; j += 1) {
           highlights.push(subsequentHighlights[j] + i);
         }
       }
@@ -189,7 +186,7 @@
     // but also stores the highlight indices
     return {
       __score: bestRankSoFar,
-      valueOf: function(){ return this.__score; },
+      valueOf: function() { return this.__score; },
       highlights: highlights
     };
   }
@@ -204,7 +201,7 @@
    * @param {string} term Term against which to search
    * @return {object} Rank of `item` against `term` with highlights
    */
-  function fuzzyScoreStr(item, term){
+  function fuzzyScoreStr(item, term) {
     return bestRank(stripAccents(item), stripAccents(term), 0);
   }
 
@@ -228,21 +225,20 @@
    * @param {object} relevances Object congaining key/val pairs as above
    * @return {object} Rank of `item` against `term` with highlights.
    */
-  function fuzzyScore(item, term, relevances){
-
+  function fuzzyScore(item, term, relevances) {
     // If we have a string, just match it directly
-    if(typeof item == 'string') return fuzzyScoreStr(item, term);
+    if (typeof item == 'string') return fuzzyScoreStr(item, term);
 
     // Initialize the return object
     var result = {
       __score: 0,
-      valueOf: function(){ return this.__score; },
+      valueOf: function() { return this.__score; },
       highlights: {}
     };
 
     // Loop through all the specified properties
-    for(var i in relevances){
-      if(!relevances.hasOwnProperty(i) || !item.hasOwnProperty(i)) continue;
+    for (var i in relevances) {
+      if (!relevances.hasOwnProperty(i) || !item.hasOwnProperty(i)) continue;
 
       // Grab the score for that particular property
       var thatScore = fuzzyScoreStr(item[i], term);
@@ -262,13 +258,13 @@
   // Loop through the tree and parse it all into a big array
   var fileList = [];
 
-  function addDirToList(dir, path){
-    if(dir.dirs){
-      for(var i in dir.dirs)
-        if(dir.dirs.hasOwnProperty(i)) addDirToList(dir.dirs[i], path + i + '/');
+  function addDirToList(dir, path) {
+    if (dir.dirs) {
+      for (var i in dir.dirs)
+        if (dir.dirs.hasOwnProperty(i)) addDirToList(dir.dirs[i], path + i + '/');
     }
-    if(dir.files){
-      for(var i = 0; i < dir.files.length; i += 1) fileList.push(path + dir.files[i]);
+    if (dir.files) {
+      for (var i = 0; i < dir.files.length; i += 1) fileList.push(path + dir.files[i]);
     }
   }
 
@@ -283,15 +279,14 @@
    *
    * Actually perform the file search
    */
-  function doSearch(){
-
+  function doSearch() {
     // Grab the search term from the input
     var term = document.getElementById('searchbox').value;
 
     var items = [];
 
     // Loop through all the files and rank them all
-    for(var i = 0; i < fileList.length; i += 1){
+    for (var i = 0; i < fileList.length; i += 1) {
       var f = fileList[i];
 
       // Split up the file name so we can grab the base name
@@ -312,7 +307,7 @@
       });
 
       // If the file scores positively against the search, add it in
-      if(rank > 0){
+      if (rank > 0) {
         file.highlight = rank.highlights;
         file.score = +rank;
         items.push(file);
@@ -320,9 +315,9 @@
     }
 
     // Sort the items order of decreasing relevance
-    items.sort(function(a, b){
-      if(a.score > b.score) return -1;
-      if(a.score < b.score) return 1;
+    items.sort(function(a, b) {
+      if (a.score > b.score) return -1;
+      if (a.score < b.score) return 1;
       return 0;
     });
 
@@ -339,15 +334,14 @@
    * @param {array} indexes Array of indices to make bold
    * @return {string} HTML of string with given characters made bold
    */
-  function highlightString(str, indexes){
-
+  function highlightString(str, indexes) {
     // If there's nothing to do, return immediately
-    if(!indexes || !indexes.length) return str;
+    if (!indexes || !indexes.length) return str;
 
     var out = '';
 
     // Loop through string one character at a time, highlighting as necessary
-    for(var i = 0; i < str.length; i += 1){
+    for (var i = 0; i < str.length; i += 1) {
       out += indexes.indexOf(i) !== -1 ? str.charAt(i).bold() : str.charAt(i);
     }
     return out;
@@ -361,11 +355,11 @@
    *
    * @param {array} items Search results to render
    */
-  function renderSearchResults(items){
+  function renderSearchResults(items) {
     var html = '';
 
     // Loop through items, building up an HTML string
-    for(var i = 0; i < items.length; i += 1){
+    for (var i = 0; i < items.length; i += 1) {
       var f = items[i];
       html += [
         '<a class="item" data-value="', f.fullPath, '.html">',
@@ -391,17 +385,16 @@
    *
    * @param {number} idx Index of the item to select
    */
-  function selectIndex(idx){
-
+  function selectIndex(idx) {
     // If another item is currently selected, deselect it
-    if(selectedItem) selectedItem.className = selectedItem.className.replace(/\s?selected/,'');
+    if (selectedItem) selectedItem.className = selectedItem.className.replace(/\s?selected/, '');
 
     // Grab the search results straight from the DOM
     var r = document.getElementById('searchresults');
     var items = r.childNodes;
 
     // If we actually have no items, there's not much we can do
-    if(items.length === 0){
+    if (items.length === 0) {
       selectedSearchIndex = -1;
       selectedItem = false;
       return;
@@ -417,9 +410,9 @@
     // Figure out whether or not the item is fully visible inside
     // the scrollable view, and if not, then scroll appropriately
     var o = s.offsetTop - r.offsetTop - r.scrollTop;
-    if(o < 0){
+    if (o < 0) {
       r.scrollTop = s.offsetTop - r.offsetTop;
-    }else if(o > r.offsetHeight - s.offsetHeight){
+    } else if (o > r.offsetHeight - s.offsetHeight) {
       r.scrollTop = o + r.scrollTop - r.offsetHeight + s.offsetHeight;
     }
   }
@@ -430,7 +423,7 @@
    * Selects the result immediately after the currently selected item,
    * or the first item if the currently selected one is last in the list
    */
-  function selectNextItem(){
+  function selectNextItem() {
     var items = document.getElementById('searchresults').childNodes;
     selectIndex((selectedSearchIndex + 1) % items.length);
   }
@@ -441,7 +434,7 @@
    * Selects the result immediately preceding the currently selected item,
    * or the last item if the currently selected one is first in the list
    */
-  function selectPreviousItem(){
+  function selectPreviousItem() {
     var items = document.getElementById('searchresults').childNodes;
     var l = items.length;
     selectIndex((selectedSearchIndex + l - 1) % l);
@@ -455,23 +448,23 @@
    *
    * @param {KeyDownEvent} e The event object
    */
-  function searchFormKeyDown(e){
+  function searchFormKeyDown(e) {
     e = e || window.event;
 
     // 27 = escape, so hide the form
-    if(e.keyCode == 27){
+    if (e.keyCode == 27) {
       document.body.removeChild(document.getElementById('search'));
       searchBoxShown = false;
 
     // 40 = down arrow, select the next item
-    }else if(e.keyCode == 40){
+    } else if (e.keyCode == 40) {
       selectNextItem();
       e.preventDefault();
       e.stopPropagation();
       return false;
 
     // 38 = up arrow, select the previous item
-    }else if(e.keyCode == 38){
+    } else if (e.keyCode == 38) {
       selectPreviousItem();
       e.preventDefault();
       e.stopPropagation();
@@ -479,7 +472,7 @@
 
     // Most likely a letter typed or deleted in the search box.
     // So queue another search
-    }else{
+    } else {
       clearTimeout(searchingTimeout);
       searchingTimeout = setTimeout(doSearch, 150);
     }
@@ -494,15 +487,15 @@
    * @param {string} evt The name of the event to bind to
    * @param {function} func Listener to attach to the event
    */
-  function addEvent(obj, evt, func){
+  function addEvent(obj, evt, func) {
     var a;
 
     // Sensible browsers use `addEventListener`
-    if((a = obj.addEventListener)){
+    if ((a = obj.addEventListener)) {
       a.call(obj, evt, func, false);
 
     // IE uses `attachEvent`
-    }else{
+    } else {
       obj.attachEvent('on' + evt, func);
     }
   }
@@ -515,12 +508,12 @@
    *
    * @param {FormSubmitEvent} e The submit event
    */
-  function searchFormSubmitted(e){
+  function searchFormSubmitted(e) {
     e = e || window.event;
     e.preventDefault();
 
     // If there's no selected item, do nothing
-    if(!selectedItem) return false;
+    if (!selectedItem) return false;
 
     // Otherwise, jump to the page
     window.location.href = relativeDir + selectedItem.getAttribute('data-value');
@@ -536,15 +529,14 @@
    *
    * @param {MouseClickEvent} e The mouse event
    */
-  function itemClicked(e){
-
+  function itemClicked(e) {
     // Maximum number of levels to jump up the DOM tree
     var levels = 5;
     var target = (e || window.event).target;
 
     // The click event may have propagated from a child node,
     // so loop upwards until we actually find the result item
-    while(levels-- && target.tagName !== 'A') target = target.parentNode;
+    while (levels-- && target.tagName !== 'A') target = target.parentNode;
 
     // Set the selected item, then fire off the submit event on the form
     selectedItem = target;
@@ -557,17 +549,16 @@
    * Constructs and shows the search box, optionally pre-populated
    * with a value for the search field
    *
-   * @param {string,optional} val Pre-populated value for the search field
+   * @param {string=} val Pre-populated value for the search field
    */
-  function showSearchBox(val){
-
+  function showSearchBox(val) {
     // If the box is already visible, do nothing
-    if(searchBoxShown) return;
+    if (searchBoxShown) return;
     searchBoxShown = true;
 
     // Create the containing element
     var f = document.createElement('div');
-    f.id = "search";
+    f.id = 'search';
 
     // Construct some basic HTML
     f.innerHTML = [
@@ -592,7 +583,7 @@
     addEvent(document.getElementById('searchresults'), 'click', itemClicked);
 
     // If we have a pre-populated value, also fire off a search immediately
-    if(val) doSearch();
+    if (val) doSearch();
   }
 
   /**
@@ -603,11 +594,11 @@
    *
    * @param {KeyDownEvent} e The key event
    */
-  function fileSearch_kd(e){
+  function fileSearch_kd(e) {
     e = e || window.event;
 
     // 80 = p, so listen for ctrl/cmd+P
-    if(e.keyCode === 80 && (e.ctrlKey || e.metaKey)){
+    if (e.keyCode === 80 && (e.ctrlKey || e.metaKey)) {
       showSearchBox();
       e.preventDefault();
       return false;
@@ -621,20 +612,19 @@
    * was a sensible character, and if so then shows the search box and
    * fires off the first search
    */
-  function fileSearch_kp(e){
+  function fileSearch_kp(e) {
     e = e || window.event;
 
     // If there are any modifiers or if we're already entering text into
     // another input field elsewhere, then do nothing
-    if(e.ctrlKey || e.altKey || e.metaKey || e.target.tagName === 'INPUT') return true;
+    if (e.ctrlKey || e.altKey || e.metaKey || e.target.tagName === 'INPUT') return true;
 
     // Grab the typed character, test it, and show the box if appropriate
     var theChar = String.fromCharCode(e.which);
-    if(/[a-zA-Z0-9\.\/\_\-]/.test(theChar)) showSearchBox(theChar);
+    if (/[a-zA-Z0-9\.\/\_\-]/.test(theChar)) showSearchBox(theChar);
   }
 
   // Attach the global events to the document
   addEvent(document, 'keydown', fileSearch_kd);
   addEvent(document, 'keypress', fileSearch_kp);
-
 })();

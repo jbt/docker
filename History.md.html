@@ -6,11 +6,16 @@
   <link rel="stylesheet" media="all" href="doc-style.css" />
   <script src="doc-filelist.js"></script>
   <script>
-    var relativeDir = "", thisFile = "History.md", defaultSidebar = true;
+    var relativeDir = "";
+    var thisFile = "History.md";
+    var defaultSidebar = true;
   </script>
   <script src="doc-script.js"></script>
+
   <script src="fileSearch.js"></script>
+
   <link rel="stylesheet" href="fileSearch.css" />
+
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -20,453 +25,421 @@
     </div>
     <div id="tree"></div>
     <div id="headings">
+
       <div class="heading h1">
-        <a href="#docker%20version%20history">Docker Version History</a>
+        <a href="#docker-version-history">Docker Version History</a>
       </div>
+
+      <div class="heading h2">
+        <a href="#1.0.0">1.0.0</a>
+      </div>
+
       <div class="heading h2">
         <a href="#0.2.14">0.2.14</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.13">0.2.13</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.12">0.2.12</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.11">0.2.11</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.10">0.2.10</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.9">0.2.9</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.8">0.2.8</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.7">0.2.7</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.6">0.2.6</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.5">0.2.5</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.4">0.2.4</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.3">0.2.3</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.2">0.2.2</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.1">0.2.1</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.2.0">0.2.0</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.8">0.1.8</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.7">0.1.7</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.6">0.1.6</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.5">0.1.5</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.4">0.1.4</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.3">0.1.3</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.2">0.1.2</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.1">0.1.1</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.1.0">0.1.0</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.9">0.0.9</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.8">0.0.8</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.7">0.0.7</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.6">0.0.6</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.5">0.0.5</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.4">0.0.4</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.3">0.0.3</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.2">0.0.2</a>
       </div>
+
       <div class="heading h2">
         <a href="#0.0.1">0.0.1</a>
       </div>
+
     </div>
   </div>
   <div id="sidebar-toggle"></div>
-  <div id="container"><div class="docs markdown">
-<div class="pilwrap" id="docker%20version%20history">
+  <div id="container">
+    <div class="docs markdown"><div class="pilwrap" id="docker-version-history">
   <h1>
-    <a href="#docker%20version%20history" name="docker%20version%20history" class="pilcrow">&#182;</a>
-    Docker Version History
+    <a href="#docker-version-history" name="docker-version-history" class="pilcrow"></a>
+Docker Version History
   </h1>
 </div>
-
-
-
-<div class="pilwrap" id="0.2.14">
+<div class="pilwrap" id="1.0.0">
   <h2>
-    <a href="#0.2.14" name="0.2.14" class="pilcrow">&#182;</a>
-    0.2.14
+    <a href="#1.0.0" name="1.0.0" class="pilcrow"></a>
+1.0.0
   </h2>
 </div>
-
-
+<p>Pretty much a complete rewrite to address many many issues.</p>
+<ul>
+<li>Showdown swapped out for markdown-it</li>
+<li>Pygments swapped out for highlight.js</li>
+<li>Switch from SCSS to LESS for stylesheets</li>
+<li>Uses more third-party modules where appropriate</li>
+<li>Lots of dependencies updated</li>
+<li>Breaking changes to some options as a result (e.g. colour schemes now follow highlight.js rather than Pygments)</li>
+<li>Added support for LESS as a language</li>
+<li>More complete markdown support with markdown-it</li>
+<li>Bugfix: node &gt;=4 would crash when including extras</li>
+<li>Breaking change / improvement: anchor tags in output are now dasherized properly</li>
+<li>Breaking change: relative links all get <code>.html</code> added automatically for cross-compatibility with, for example, viewing markdown files on GitHub</li>
+<li>Proper <code>LICENSE</code> file included in source</li>
+<li>Added global <code>docker.js</code> command in addition to <code>docker</code> (which may be eventually renamed/removed)
+because apparently containers are popular these days.</li>
+</ul>
+<div class="pilwrap" id="0.2.14">
+  <h2>
+    <a href="#0.2.14" name="0.2.14" class="pilcrow"></a>
+0.2.14
+  </h2>
+</div>
 <ul>
 <li>Improvements to handling of literals that shouldn't be matched for comments</li>
 <li>Enable SCSS multiline comments (thanks again <a href="//github.com/jasonseney">jasonseney</a>)</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.13">
   <h2>
-    <a href="#0.2.13" name="0.2.13" class="pilcrow">&#182;</a>
-    0.2.13
+    <a href="#0.2.13" name="0.2.13" class="pilcrow"></a>
+0.2.13
   </h2>
 </div>
-
-
 <ul>
 <li>Minor markup tweaks</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.12">
   <h2>
-    <a href="#0.2.12" name="0.2.12" class="pilcrow">&#182;</a>
-    0.2.12
+    <a href="#0.2.12" name="0.2.12" class="pilcrow"></a>
+0.2.12
   </h2>
 </div>
-
-
 <ul>
 <li>Minor bugfix for jsDoc handling</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.11">
   <h2>
-    <a href="#0.2.11" name="0.2.11" class="pilcrow">&#182;</a>
-    0.2.11
+    <a href="#0.2.11" name="0.2.11" class="pilcrow"></a>
+0.2.11
   </h2>
 </div>
-
-
 <ul>
 <li>Change sidebar loading in produced output to fire on DOMContentLoaded - thanks <a href="//github.com/hhelwich">hhelwich</a></li>
 <li>LiveScript syntax support, thanks to <a href="//github.com/qgustavor">qgustavor</a>.</li>
 <li>Add option to ignore inline comments and only process multiline comments - thanks to <a href="//github.com/jasonseney">jasonseney</a></li>
 <li>Big pile of updates to jsDoc tag handling: alias some types, add default handler for unknown types, and escape HTML properly. Thanks <a href="//github.com/ErisDS">ErisDS</a>!</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.10">
   <h2>
-    <a href="#0.2.10" name="0.2.10" class="pilcrow">&#182;</a>
-    0.2.10
+    <a href="#0.2.10" name="0.2.10" class="pilcrow"></a>
+0.2.10
   </h2>
 </div>
-
-
 <ul>
 <li>Purely a version bump because npm was having issues publishing 0.2.9</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.9">
   <h2>
-    <a href="#0.2.9" name="0.2.9" class="pilcrow">&#182;</a>
-    0.2.9
+    <a href="#0.2.9" name="0.2.9" class="pilcrow"></a>
+0.2.9
   </h2>
 </div>
-
-
 <ul>
 <li>Use bundled version of Pygments (via <a href="https://github.com/rvagg/node-pygmentize-bundled">pygmentize-bundled</a>) and remove the setup scripts (thanks <a href="//github.com/alexindigo">alexindigo</a>)</li>
 <li>Add <code>cakefile</code> filename parsed as CoffeeScript, and tweak Jade comments (thanks <a href="//github.com/alinex">alinex</a>)</li>
 <li>Fix up section separators in languages without multiline comments (thanks <a href="//github.com/tjbaron">tjbaron</a>)</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.8">
   <h2>
-    <a href="#0.2.8" name="0.2.8" class="pilcrow">&#182;</a>
-    0.2.8
+    <a href="#0.2.8" name="0.2.8" class="pilcrow"></a>
+0.2.8
   </h2>
 </div>
-
-
 <ul>
 <li>Warn if Pygments isn't installed</li>
 <li>Changes to ID generation for headings to support extra characters and ensure IDs are unique (thanks to <a href="//github.com/justan">justan</a>)</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.7">
   <h2>
-    <a href="#0.2.7" name="0.2.7" class="pilcrow">&#182;</a>
-    0.2.7
+    <a href="#0.2.7" name="0.2.7" class="pilcrow"></a>
+0.2.7
   </h2>
 </div>
-
-
 <ul>
 <li>Add support for styl, jade, groove and gsp (thanks to <a href="//github.com/mikkel">mikkel</a>)</li>
 <li>Add support for languages without single-line comments (currently CSS and HTML)</li>
 <li>Change white-space to pre-wrap</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.6">
   <h2>
-    <a href="#0.2.6" name="0.2.6" class="pilcrow">&#182;</a>
-    0.2.6
+    <a href="#0.2.6" name="0.2.6" class="pilcrow"></a>
+0.2.6
   </h2>
 </div>
-
-
 <ul>
 <li>Fix a weird bug in SCSS parsing</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.5">
   <h2>
-    <a href="#0.2.5" name="0.2.5" class="pilcrow">&#182;</a>
-    0.2.5
+    <a href="#0.2.5" name="0.2.5" class="pilcrow"></a>
+0.2.5
   </h2>
 </div>
-
-
 <ul>
 <li>Fix for file paths in windows (<code>\</code> as a path separator broke things)</li>
 <li>Throw errors on filesystem exceptions</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.4">
   <h2>
-    <a href="#0.2.4" name="0.2.4" class="pilcrow">&#182;</a>
-    0.2.4
+    <a href="#0.2.4" name="0.2.4" class="pilcrow"></a>
+0.2.4
   </h2>
 </div>
-
-
 <ul>
 <li>Update watchr dependency</li>
 <li>Tweaks to fileSearch extra</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.3">
   <h2>
-    <a href="#0.2.3" name="0.2.3" class="pilcrow">&#182;</a>
-    0.2.3
+    <a href="#0.2.3" name="0.2.3" class="pilcrow"></a>
+0.2.3
   </h2>
 </div>
-
-
 <ul>
 <li>Lots of minor tweaks and improvements</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.2">
   <h2>
-    <a href="#0.2.2" name="0.2.2" class="pilcrow">&#182;</a>
-    0.2.2
+    <a href="#0.2.2" name="0.2.2" class="pilcrow"></a>
+0.2.2
   </h2>
 </div>
-
-
 <ul>
 <li>Fixes for indented multiline comments and indented comments in CoffeeScript</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.1">
   <h2>
-    <a href="#0.2.1" name="0.2.1" class="pilcrow">&#182;</a>
-    0.2.1
+    <a href="#0.2.1" name="0.2.1" class="pilcrow"></a>
+0.2.1
   </h2>
 </div>
-
-
 <ul>
 <li>Temporarily disable multiline comments in SASS and SCSS as <code>/*</code> can be used to open a single-line comment. Will reinstate when I have time to figure it out properly</li>
 </ul>
-
-
 <div class="pilwrap" id="0.2.0">
   <h2>
-    <a href="#0.2.0" name="0.2.0" class="pilcrow">&#182;</a>
-    0.2.0
+    <a href="#0.2.0" name="0.2.0" class="pilcrow"></a>
+0.2.0
   </h2>
 </div>
-
-
 <ul>
 <li>Added <code>--js</code> and <code>--css</code> options to specify extra CSS and JavaScript files to include</li>
 <li>Added optional <code>-n</code> flag to enable line numbers in output</li>
-<li>Added "disable" value for sidebar to hide it completely</li>
+<li>Added &quot;disable&quot; value for sidebar to hide it completely</li>
 <li>Added support for matching files by name rather than just extension (e.g. Makefile)</li>
-<li>Added first two "extras" - optionally enable-able extras for the output
-<ul><li><strong>fileSearch</strong>: performs fuzzy-matching on file names to quickly jump to a file</li>
-<li><strong>goToLine</strong>: quickly jump to a line in the source. Currently only works if line numbers are enabled</li></ul></li>
+<li>Added first two &quot;extras&quot; - optionally enable-able extras for the output
+<ul>
+<li><strong>fileSearch</strong>: performs fuzzy-matching on file names to quickly jump to a file</li>
+<li><strong>goToLine</strong>: quickly jump to a line in the source. Currently only works if line numbers are enabled</li>
+</ul>
+</li>
 <li>Fixed some bugs in Markdown parsing</li>
 <li>Improvements to indentation detection</li>
 <li>Fixed bug where processing only updated files would result in an empty tree</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.8">
   <h2>
-    <a href="#0.1.8" name="0.1.8" class="pilcrow">&#182;</a>
-    0.1.8
+    <a href="#0.1.8" name="0.1.8" class="pilcrow"></a>
+0.1.8
   </h2>
 </div>
-
-
 <ul>
 <li>Removed dependency on dox; wrote more concise version of jsDoc parser based on dox, but which handles headings correctly</li>
 <li>Bugfixes for watch mode.</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.7">
   <h2>
-    <a href="#0.1.7" name="0.1.7" class="pilcrow">&#182;</a>
-    0.1.7
+    <a href="#0.1.7" name="0.1.7" class="pilcrow"></a>
+0.1.7
   </h2>
 </div>
-
-
 <ul>
 <li>Bugfix: indented jsDoc was breaking.</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.6">
   <h2>
-    <a href="#0.1.6" name="0.1.6" class="pilcrow">&#182;</a>
-    0.1.6
+    <a href="#0.1.6" name="0.1.6" class="pilcrow"></a>
+0.1.6
   </h2>
 </div>
-
-
 <ul>
 <li>Added support for VB.NET, ASP C# and ASP VB courtesy of <a href="https://github.com/peterhost">peterhost</a></li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.5">
   <h2>
-    <a href="#0.1.5" name="0.1.5" class="pilcrow">&#182;</a>
-    0.1.5
+    <a href="#0.1.5" name="0.1.5" class="pilcrow"></a>
+0.1.5
   </h2>
 </div>
-
-
 <ul>
 <li>Added smarter handling of symbolic links, allowing for handling of dead links</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.4">
   <h2>
-    <a href="#0.1.4" name="0.1.4" class="pilcrow">&#182;</a>
-    0.1.4
+    <a href="#0.1.4" name="0.1.4" class="pilcrow"></a>
+0.1.4
   </h2>
 </div>
-
-
 <ul>
 <li>Added language type detection from shebangs</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.3">
   <h2>
-    <a href="#0.1.3" name="0.1.3" class="pilcrow">&#182;</a>
-    0.1.3
+    <a href="#0.1.3" name="0.1.3" class="pilcrow"></a>
+0.1.3
   </h2>
 </div>
-
-
 <ul>
 <li>Added <code>-s</code> option to specify default state of the sidebar</li>
 <li>Added <code>-x</code> option to specify paths to exclude</li>
 <li>Renamed <code>tree</code> to <code>sidebar</code> in some of the markup.</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.2">
   <h2>
-    <a href="#0.1.2" name="0.1.2" class="pilcrow">&#182;</a>
-    0.1.2
+    <a href="#0.1.2" name="0.1.2" class="pilcrow"></a>
+0.1.2
   </h2>
 </div>
-
-
 <ul>
 <li>Windows compatibility</li>
 <li>Resolve infinite loop problem when files aren't actually inside the source dir</li>
 <li>A few minor typos</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.1">
   <h2>
-    <a href="#0.1.1" name="0.1.1" class="pilcrow">&#182;</a>
-    0.1.1
+    <a href="#0.1.1" name="0.1.1" class="pilcrow"></a>
+0.1.1
   </h2>
 </div>
-
-
 <ul>
 <li>Fixed problem with comment delimiters being matched inside string literals</li>
 </ul>
-
-
 <div class="pilwrap" id="0.1.0">
   <h2>
-    <a href="#0.1.0" name="0.1.0" class="pilcrow">&#182;</a>
-    0.1.0
+    <a href="#0.1.0" name="0.1.0" class="pilcrow"></a>
+0.1.0
   </h2>
 </div>
-
-
 <ul>
 <li>Added <code>-w</code> flag to watch a directory for changes (experimental). Not sure how useful it'll actually be, but it's cool.</li>
 <li>Added <code>-I</code> switch to ignore hidden files</li>
@@ -474,131 +447,95 @@
 <li>Added automatic title generation for empty-looking files</li>
 <li>Various styling tweaks</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.9">
   <h2>
-    <a href="#0.0.9" name="0.0.9" class="pilcrow">&#182;</a>
-    0.0.9
+    <a href="#0.0.9" name="0.0.9" class="pilcrow"></a>
+0.0.9
   </h2>
 </div>
-
-
 <ul>
 <li>Added support for another pile more languages (added perl, php, actionscript, sh and yaml)</li>
 <li>Ran embedded arrow images through pngcrush.  Saved a load of bytes</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.8">
   <h2>
-    <a href="#0.0.8" name="0.0.8" class="pilcrow">&#182;</a>
-    0.0.8
+    <a href="#0.0.8" name="0.0.8" class="pilcrow"></a>
+0.0.8
   </h2>
 </div>
-
-
 <ul>
 <li>Added support for different colour schemes</li>
 <li>A few more improvements to showdown for GFM-style bits.</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.7">
   <h2>
-    <a href="#0.0.7" name="0.0.7" class="pilcrow">&#182;</a>
-    0.0.7
+    <a href="#0.0.7" name="0.0.7" class="pilcrow"></a>
+0.0.7
   </h2>
 </div>
-
-
 <ul>
 <li>Minor improvements to code structure</li>
 <li>Full comments on public script file</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.6">
   <h2>
-    <a href="#0.0.6" name="0.0.6" class="pilcrow">&#182;</a>
-    0.0.6
+    <a href="#0.0.6" name="0.0.6" class="pilcrow"></a>
+0.0.6
   </h2>
 </div>
-
-
 <ul>
 <li>Added support for a pile more languages (now JS, coffeescript, ruby, python, C, C++, C#, Java and Markdown)</li>
 <li>Tweaks to markdown (particularly, automatic linking of URLs and email addresses)</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.5">
   <h2>
-    <a href="#0.0.5" name="0.0.5" class="pilcrow">&#182;</a>
-    0.0.5
+    <a href="#0.0.5" name="0.0.5" class="pilcrow"></a>
+0.0.5
   </h2>
 </div>
-
-
 <ul>
 <li>Added heading navigation within files</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.4">
   <h2>
-    <a href="#0.0.4" name="0.0.4" class="pilcrow">&#182;</a>
-    0.0.4
+    <a href="#0.0.4" name="0.0.4" class="pilcrow"></a>
+0.0.4
   </h2>
 </div>
-
-
 <ul>
 <li>Added syntax highlighting to fenced code blocks that have a language specified</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.3">
   <h2>
-    <a href="#0.0.3" name="0.0.3" class="pilcrow">&#182;</a>
-    0.0.3
+    <a href="#0.0.3" name="0.0.3" class="pilcrow"></a>
+0.0.3
   </h2>
 </div>
-
-
 <ul>
 <li>Minor improvements to store the scroll position of the folder tree</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.2">
   <h2>
-    <a href="#0.0.2" name="0.0.2" class="pilcrow">&#182;</a>
-    0.0.2
+    <a href="#0.0.2" name="0.0.2" class="pilcrow"></a>
+0.0.2
   </h2>
 </div>
-
-
 <ul>
 <li>Added <code>-u</code> flag to only process files that have been updated</li>
 </ul>
-
-
 <div class="pilwrap" id="0.0.1">
   <h2>
-    <a href="#0.0.1" name="0.0.1" class="pilcrow">&#182;</a>
-    0.0.1
+    <a href="#0.0.1" name="0.0.1" class="pilcrow"></a>
+0.0.1
   </h2>
 </div>
-
-
 <p>Initial version indcluded (among other things):</p>
-
 <ul>
 <li>Folder tree</li>
 <li>Syntax highlighting of javascript files</li>
 <li>Markdown processing of <code>.md</code> files and extracted code comments</li>
-</ul></div>
+</ul>
+</div>
   </div>
 </body>
 </html>
