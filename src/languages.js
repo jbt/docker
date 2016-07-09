@@ -96,11 +96,10 @@ var langs = module.exports = {
     executables: [ 'bash', 'sh', 'zsh' ],
     comment: '#'
   },
-  // not supported by highlightjs :(
-  // yaml: {
-  //   extensions: [ 'yaml', 'yml' ],
-  //   comment: '#'
-  // },
+  yaml: {
+    extensions: [ 'yaml', 'yml' ],
+    comment: '#'
+  },
   markdown: {
     extensions: [ 'md', 'mkd', 'markdown' ],
     type: 'markdown'
