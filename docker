@@ -12,13 +12,15 @@ var pwd = path.resolve('.');
 
 var pkg = require('./package.json');
 
-function list(val){ return val.split(','); }
+function list(val) {
+  return val.split(',');
+}
 
 // All program arguments using commander
 program
   .version(pkg.version)
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
-  .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc') )
+  .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc'))
   .option('-u, --updated_files', 'Only process files that have been changed')
   .option('-c, --colour_scheme [style]', 'Colour scheme to use (as in pygmentize -L styles)')
   .option('-I, --ignore_hidden', 'Ignore hidden files and directories (those starting with . or _)')
@@ -35,10 +37,10 @@ program
 
 // Super-simple function to test if ann argument is vaguely trueish or falseish.
 // Should match `true`, `false`, `0`, `1`, `'0'`, `'1'`, `'y'`, `'n'`, `'yes'`, `'no'`, `'ok'`, `'true'`, `'false'`
-function coerceSidebar(input){
-  if(input === 'disable') return input;
-  if(input === true || input === false) return input;
-  if(typeof input === 'number' || (+input + '' === input + '')) return !!+input;
+function coerceSidebar(input) {
+  if (input === 'disable') return input;
+  if (input === true || input === false) return input;
+  if (typeof input === 'number' || (+input + '' === input + '')) return !!+input;
   input = input.toString();
   return input === '' ? true : /(y(es)?|ok|t(rue)?)/i.test(input);
 }
@@ -63,11 +65,11 @@ var opts = {
 var d = new Docker(opts);
 
 // If no file list is specified, just run on whole directory
-if(program.args.length === 0) program.args = ['./'];
+if (program.args.length === 0) program.args = [ './' ];
 
 // Set it running.
-if(program.watch){
+if (program.watch) {
   d.watch(program.args);
-}else{
+} else {
   d.doc(program.args);
 }

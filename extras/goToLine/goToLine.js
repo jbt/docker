@@ -6,8 +6,7 @@
 
 // Wrap everything inside a closure so we don't get any collisions in
 // the global scope
-(function(){
-
+(function() {
   // Some useful variables
   var jumpBoxShown = false;
   var jumpTimeout;
@@ -20,18 +19,18 @@
    *
    * @param {KeyDownEvent} e The key event
    */
-  function jumpFormKeyDown(e){
+  function jumpFormKeyDown(e) {
     e = e || window.event;
 
     // 27 = esc, so hide the form
-    if(e.keyCode == 27){
+    if (e.keyCode == 27) {
       document.body.removeChild(document.getElementById('jumpto'));
       jumpBoxShown = false;
 
     // Otherwise, most likely the user has typed or deleted on the
     // form, so queue a jump. Don't do it immediately do avoid
     // disorientating jumps during quick typing
-    }else{
+    } else {
       clearTimeout(jumpTimeout);
       jumpTimeout = setTimeout(doJump, 150);
     }
@@ -46,10 +45,10 @@
    * @param {string} evt The name of the event to bind to
    * @param {function} func Listener to attach to the event
    */
-  function addEvent(obj, evt, func, a){
-    if((a = obj.addEventListener)){
+  function addEvent(obj, evt, func, a) {
+    if ((a = obj.addEventListener)) {
       a.call(obj, evt, func, false);
-    }else{
+    } else {
       obj.attachEvent('on' + evt, func);
     }
   }
@@ -62,7 +61,7 @@
    *
    * @param {FormSubmitEvent} e The submit event
    */
-  function jumpFormSubmitted(e){
+  function jumpFormSubmitted(e) {
     e = e || window.event;
     e.preventDefault();
 
@@ -80,8 +79,8 @@
    *
    * Performs the line jump by manipulating the location hash
    */
-  function doJump(){
-    if(!jumpBoxShown) return;
+  function doJump() {
+    if (!jumpBoxShown) return;
 
     // Figure out which line we need to jump to
     var line = document.getElementById('jumpbox').value;
@@ -90,7 +89,7 @@
     var theLine = document.getElementById('line-' + line);
 
     // If it doesn't exist, there's not much we can do
-    if(!theLine) return;
+    if (!theLine) return;
 
     // If it does exist, jump to it
     window.location.hash = 'line-' + line;
@@ -101,23 +100,22 @@
    *
    * Constructs and shows the jump box
    */
-  function showJumpBox(){
-
+  function showJumpBox() {
     // If the box is already visible, do nothing
-    if(jumpBoxShown) return;
+    if (jumpBoxShown) return;
     jumpBoxShown = true;
 
     // Create the containing element
     var f = document.createElement('div');
-    f.id = "jumpto";
+    f.id = 'jumpto';
 
     // Construct some basic HTML
     f.innerHTML = [
       '<div class="overlay"></div>',
       '<div class="box">',
-        '<form id="jumpform">',
-          '<input id="jumpbox" type="text" name="line" placeholder="Go to line..." autocomplete="off" />',
-        '</form>',
+      '<form id="jumpform">',
+      '<input id="jumpbox" type="text" name="line" placeholder="Go to line..." autocomplete="off" />',
+      '</form>',
       '</div>'
     ].join('');
 
@@ -140,11 +138,11 @@
    *
    * @param {KeyDownEvent} e The key event
    */
-  function goToLine_kd(e){
+  function goToLine_kd(e) {
     e = e || window.event;
 
     // 71 = g, so listen for ctrl/cmd+P
-    if(e.keyCode === 71 && (e.ctrlKey || e.metaKey)){
+    if (e.keyCode === 71 && (e.ctrlKey || e.metaKey)) {
       showJumpBox();
       e.preventDefault();
       return false;
@@ -153,5 +151,4 @@
 
   // Attach the global event to the document
   addEvent(document, 'keydown', goToLine_kd);
-
 })();
