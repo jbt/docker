@@ -23,16 +23,16 @@ var cspath = path.resolve(path.dirname(hlpath), '..', 'styles');
  * @param {Array} rules Array of rules parsed by **css**
  * @return {Object} Selctor -> property/value list
  */
-function flattenRules(rules){
+function flattenRules(rules) {
   var out = {};
 
-  rules.forEach(function(rule){
+  rules.forEach(function(rule) {
     // Ignore anything that doesn't look like a CSS rule
-    if(rule.type !== 'rule') return;
-    rule.selectors.forEach(function(sel){
-      if(!out[sel]) out[sel] = {};
+    if (rule.type !== 'rule') return;
+    rule.selectors.forEach(function(sel) {
+      if (!out[sel]) out[sel] = {};
 
-      rule.declarations.forEach(function(decl){
+      rule.declarations.forEach(function(decl) {
         out[sel][decl.property] = decl.value;
       });
     });
@@ -41,7 +41,7 @@ function flattenRules(rules){
   return out;
 }
 
-module.exports = function(cs){
+module.exports = function(cs) {
   // Load and parse the colour scheme file
   var file = path.join(cspath, cs + '.css');
   var ast = css.parse(fs.readFileSync(file).toString());

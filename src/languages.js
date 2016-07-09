@@ -25,7 +25,7 @@ var langs = module.exports = {
     extensions: [ 'coffee' ],
     names: [ 'cakefile' ],
     executables: [ 'coffee' ],
-    comment: '#',  multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true,
+    comment: '#', multiLine: [ /^\s*#{3}\s*$/m, /^\s*#{3}\s*$/m ], jsDoc: true,
     literals: [
       [ /\/(?![\*\/])((?:[^\\\/]|(?:\\\\)*?\\[^\\])*?)\//g, '/./' ]
     ]
@@ -33,13 +33,13 @@ var langs = module.exports = {
   livescript: {
     extensions: [ 'ls' ],
     executables: [ 'lsc' ],
-    comment: '#',  multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
+    comment: '#', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   ruby: {
     extensions: [ 'rb', 'rbw', 'rake', 'gemspec' ],
     executables: [ 'ruby' ],
     names: [ 'rakefile' ],
-    comment: '#',  multiLine: [ /\=begin/, /\=end/ ]
+    comment: '#', multiLine: [ /\=begin/, /\=end/ ]
   },
   python: {
     extensions: [ 'py' ],
@@ -121,11 +121,11 @@ var langs = module.exports = {
     comment: '#'
   },
   jade: {
-    extensions: ['jade'],
+    extensions: [ 'jade' ],
     comment: '//-?', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   groovy: {
-    extensions: ['groovy'],
+    extensions: [ 'groovy' ],
     comment: '//', multiLine: [ /\/\*\*?/, /\*\// ], jsDoc: true
   },
   gsp: {
@@ -159,6 +159,6 @@ var langs = module.exports = {
   }
 };
 
-Object.keys(langs).forEach(function(l){
+Object.keys(langs).forEach(function(l) {
   langs[l].language = l;
 });

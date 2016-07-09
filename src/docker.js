@@ -44,7 +44,6 @@ var stripIndent = require('strip-indent');
 var MarkdownIt = require('markdown-it');
 var highlight = require('highlight.js');
 var repeating = require('repeating');
-var debounce = require('debounce');
 var mkdirp = require('mkdirp');
 var extend = require('extend');
 var watchr = require('watchr');
@@ -64,7 +63,7 @@ var languages = require('./languages');
 var md = new MarkdownIt({
   html: true,
   langPrefix: '',
-  highlight: function (str, lang) {
+  highlight: function(str, lang) {
     if (lang && highlight.getLanguage(lang)) {
       try {
         return highlight.highlight(lang, str).value;
@@ -99,8 +98,7 @@ md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
  *
  * Input is an `opts` containing all the options as specified below.
  */
-var Docker = module.exports = function(opts){
-
+var Docker = module.exports = function(opts) {
   // Initialise all opts with default values
   opts = this.options = extend({
     inDir: path.resolve('.'),
@@ -118,13 +116,13 @@ var Docker = module.exports = function(opts){
   }, opts);
 
   // Generate an exclude regex for the given pattern
-  if(typeof opts.exclude === 'string'){
+  if (typeof opts.exclude === 'string') {
     this.excludePattern = new RegExp('^(' +
       opts.exclude.replace(/\./g, '\\.')
                   .replace(/\*/g, '.*')
                   .replace(/,/g, '|') +
       ')(/|$)');
-  }else{
+  } else {
     this.excludePattern = false;
   }
 
@@ -134,7 +132,7 @@ var Docker = module.exports = function(opts){
   // Load bundled extras
   var extrasRoot = path.resolve(__dirname, '..', 'extras');
 
-  opts.extras.forEach(function(e){
+  opts.extras.forEach(function(e) {
     opts.js.push(path.join(extrasRoot, e, e + '.js'));
     opts.css.push(path.join(extrasRoot, e, e + '.css'));
   });
@@ -149,11 +147,11 @@ var Docker = module.exports = function(opts){
  * @this Docker
  * @param {Array} files Array of file paths relative to the `inDir` to generate documentation for.
  */
-Docker.prototype.doc = function(files){
+Docker.prototype.doc = function(files) {
   this.files = files.concat();
 
   // Start processing, unless we already are
-  if(!this.running) this.run();
+  if (!this.running) this.run();
 };
 
 
@@ -164,15 +162,15 @@ Docker.prototype.doc = function(files){
  *
  * @param {Array} files Array of file paths relative to the `inDir` to generate documentation for.
  */
-Docker.prototype.watch = function(files){
+Docker.prototype.watch = function(files) {
   this.watching = true;
   this.watchFiles = files;
 
   // Function to call when a file is changed. We put this on a timeout to account
   // for several file changes happening in quick succession.
   var uto = false, self = this;
-  function update(){
-    if(self.running) return (uto = setTimeout(update, 250));
+  function update() {
+    if (self.running) return (uto = setTimeout(update, 250));
     self.doc(self.watchFiles);
     uto = false;
   }
@@ -180,8 +178,8 @@ Docker.prototype.watch = function(files){
   // Create a watchr instance to watch all changes in the input directory
   watchr.watch({
     path: this.options.inDir,
-    listener: function(){
-      if(!uto) uto = setTimeout(update, 250);
+    listener: function() {
+      if (!uto) uto = setTimeout(update, 250);
     }
   });
 
@@ -195,20 +193,20 @@ Docker.prototype.watch = function(files){
  *
  * Loops through all the queued file and processes them individually
  */
-Docker.prototype.run = function(){
+Docker.prototype.run = function() {
   var self = this;
 
   this.running = true;
 
   // While we stil have any files to process, take the first one and process it
   async.whilst(
-    function(){
+    function() {
       return self.files.length > 0;
     },
-    function(cb){
+    function(cb) {
       self.process(self.files.shift(), cb);
     },
-    function(){
+    function() {
       // Once we're done, say we're no longer running and copy over all the static stuff
       self.running = false;
       self.copySharedResources();
@@ -224,7 +222,7 @@ Docker.prototype.run = function(){
  *
  * @param {string} filename Name of file to add to the tree
  */
-Docker.prototype.addFileToTree = function(filename){
+Docker.prototype.addFileToTree = function(filename) {
   // Split the file's path into the individual directories
   filename = filename.replace(new RegExp('^' + path.sep.replace(/([\/\\])/g, '\\$1')), '');
   var bits = filename.split(path.sep);
@@ -248,14 +246,14 @@ Docker.prototype.addFileToTree = function(filename){
   var currDir = this.tree;
   var lastBit = bits.pop();
 
-  bits.forEach(function(bit){
-    if(!currDir.dirs) currDir.dirs = {};
-    if(!currDir.dirs[bit]) currDir.dirs[bit] = {};
+  bits.forEach(function(bit) {
+    if (!currDir.dirs) currDir.dirs = {};
+    if (!currDir.dirs[bit]) currDir.dirs[bit] = {};
     currDir = currDir.dirs[bit];
   });
-  if(!currDir.files) currDir.files = [];
+  if (!currDir.files) currDir.files = [];
 
-  if(currDir.files.indexOf(lastBit) === -1) currDir.files.push(lastBit);
+  if (currDir.files.indexOf(lastBit) === -1) currDir.files.push(lastBit);
 };
 
 
@@ -268,10 +266,9 @@ Docker.prototype.addFileToTree = function(filename){
  * @param {string} file Path to the file to process
  * @param {function} cb Callback to call when done
  */
-Docker.prototype.process = function(file, cb){
-
+Docker.prototype.process = function(file, cb) {
   // If we should be ignoring this file, do nothing and immediately callback.
-  if(this.excludePattern && this.excludePattern.test(file)){
+  if (this.excludePattern && this.excludePattern.test(file)) {
     cb();
     return;
   }
@@ -279,16 +276,16 @@ Docker.prototype.process = function(file, cb){
   var self = this;
 
   var resolved = path.resolve(this.options.inDir, file);
-  fs.lstat(resolved, function lstatCb(err, stat){
-    if(err) {
+  fs.lstat(resolved, function lstatCb(err, stat) {
+    if (err) {
       // Something unexpected happened on the filesystem.
       // Nothing really that we can do about it, so throw it and be done with it
       return cb(err);
     }
 
-    if(stat && stat.isSymbolicLink()){
-      fs.readlink(resolved, function(err, link){
-        if(err) {
+    if (stat && stat.isSymbolicLink()) {
+      fs.readlink(resolved, function(err, link) {
+        if (err) {
           // Something unexpected happened on the filesystem.
           // Nothing really that we can do about it, so throw it and be done with it
           return cb(err);
@@ -296,34 +293,33 @@ Docker.prototype.process = function(file, cb){
 
         resolved = path.resolve(path.dirname(resolved), link);
 
-        fs.exists(resolved, function(exists){
-          if(!exists){
-            console.error("Unable to follow symlink to " + currFile + ': file does not exist');
+        fs.exists(resolved, function(exists) {
+          if (!exists) {
+            console.error('Unable to follow symlink to ' + resolved + ': file does not exist');
             cb(null);
-          }else{
+          } else {
             fs.lstat(resolved, lstatCb);
           }
         });
       });
-    }else if(stat && stat.isDirectory()){
-
+    } else if (stat && stat.isDirectory()) {
       // Find all children of the directory and queue those
-      fs.readdir(resolved, function(err, list){
-        if(err) {
+      fs.readdir(resolved, function(err, list) {
+        if (err) {
           // Something unexpected happened on the filesystem.
           // Nothing really that we can do about it, so throw it and be done with it
           return cb(err);
         }
 
-        list.forEach(function(f){
+        list.forEach(function(f) {
           // For everything in the directory, queue it unless it looks hiden and we've
           // been told to ignore hidden files.
-          if(self.options.ignoreHidden && f.charAt(0).match(/[\._]/)) return;
+          if (self.options.ignoreHidden && f.charAt(0).match(/[\._]/)) return;
           self.files.push(path.join(file, f));
         });
         cb();
       });
-    }else{
+    } else {
       // Wahey, we have a normal file. Go ahead and process it then.
       self.processFile(file, cb);
     }
@@ -340,33 +336,33 @@ Docker.prototype.process = function(file, cb){
  * @param {string} file Path to the file to process
  * @param {function} cb Callback to call when done
  */
-Docker.prototype.processFile = function(file, cb){
+Docker.prototype.processFile = function(file, cb) {
   var resolved = path.resolve(this.options.inDir, file);
   var self = this;
 
   // First, check to see whether we actually should be processing this file and bail if not
-  this.decideWhetherToProcess(resolved, function(shouldProcess){
-    if(!shouldProcess) return cb();
+  this.decideWhetherToProcess(resolved, function(shouldProcess) {
+    if (!shouldProcess) return cb();
 
-    fs.readFile(resolved, 'utf-8', function(err, data){
-      if(err) return cb(err);
+    fs.readFile(resolved, 'utf-8', function(err, data) {
+      if (err) return cb(err);
 
       // Grab the language details for the file and bail if we don't understand it.
       var lang = self.detectLanguage(resolved, data);
-      if(lang === false) return cb();
+      if (lang === false) return cb();
 
       self.addFileToTree(file);
 
-      switch(lang.type){
-        case 'markdown':
-          self.renderMarkdownFile(data, resolved, cb);
-          break;
-        default:
-        case 'code':
-          var sections = self.parseSections(data, lang);
-          self.highlight(sections, lang);
-          self.renderCodeFile(sections, lang, resolved, cb);
-          break;
+      switch (lang.type) {
+      case 'markdown':
+        self.renderMarkdownFile(data, resolved, cb);
+        break;
+      default:
+      case 'code':
+        var sections = self.parseSections(data, lang);
+        self.highlight(sections, lang);
+        self.renderCodeFile(sections, lang, resolved, cb);
+        break;
       }
     });
   });
@@ -386,10 +382,9 @@ Docker.prototype.processFile = function(file, cb){
  * @param {string} filename The name of the file to check
  * @param {function} callback Callback function
  */
-Docker.prototype.decideWhetherToProcess = function(filename, callback){
-
+Docker.prototype.decideWhetherToProcess = function(filename, callback) {
   // If we should be processing all files, then yes, we should process this one
-  if(!this.options.onlyUpdated) return callback(true);
+  if (!this.options.onlyUpdated) return callback(true);
 
   // Find the doc this file would be compiled to
   var outFile = this.outFile(filename);
@@ -408,13 +403,12 @@ Docker.prototype.decideWhetherToProcess = function(filename, callback){
  * @param {string} otherFile File to compare to
  * @param {function} callback Callback to fire with true if file is newer than otherFile
  */
-Docker.prototype.fileIsNewer = function(file, otherFile, callback){
-  fs.stat(otherFile, function(err, outStat){
-
+Docker.prototype.fileIsNewer = function(file, otherFile, callback) {
+  fs.stat(otherFile, function(err, outStat) {
     // If the output file doesn't exist, then definitely process this file
-    if(err && err.code == 'ENOENT') return callback(true);
+    if (err && err.code == 'ENOENT') return callback(true);
 
-    fs.stat(file, function(err, inStat){
+    fs.stat(file, function(err, inStat) {
       // Process the file if the input is newer than the output
       callback(+inStat.mtime > +outStat.mtime);
     });
@@ -439,7 +433,7 @@ Docker.prototype.fileIsNewer = function(file, otherFile, callback){
  * @param {object} lang The language data for the script file
  * @return {Array} array of section objects
  */
-Docker.prototype.parseSections = function(data, lang){
+Docker.prototype.parseSections = function(data, lang) {
   var lines = data.split('\n');
 
   var section = {
@@ -458,27 +452,25 @@ Docker.prototype.parseSections = function(data, lang){
   var self = this;
 
 
-  function mark(a, stripParas){
-    var h = md.render(a.replace(/(^\s*|\s*$)/,''));
-    return stripParas ? h.replace(/<\/?p>/g,'') : h;
+  function mark(a, stripParas) {
+    var h = md.render(a.replace(/(^\s*|\s*$)/, ''));
+    return stripParas ? h.replace(/<\/?p>/g, '') : h;
   }
 
-  lines.forEach(function(line, i){
-
+  lines.forEach(function(line, i) {
     // Only match against parts of the line that don't appear in strings
-    var matchable = line.replace(/(["'])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g,'$1$1');
-    if(lang.literals) {
-      lang.literals.forEach(function(replace){
+    var matchable = line.replace(/(["'])((?:[^\\\1]|(?:\\\\)*?\\[^\\])*?)\1/g, '$1$1');
+    if (lang.literals) {
+      lang.literals.forEach(function(replace) {
         matchable = matchable.replace(replace[0], replace[1]);
       });
     }
 
-    if(lang.multiLine){
+    if (lang.multiLine) {
       // If we are currently in a multiline comment, behave differently
-      if(inMultiLineComment){
-
+      if (inMultiLineComment) {
         // End-multiline comments should match regardless of whether they're 'quoted'
-        if(line.match(lang.multiLine[1])){
+        if (line.match(lang.multiLine[1])) {
           // Once we have reached the end of the multiline, take the whole content
           // of the multiline comment, and parse it as jsDoc.
           inMultiLineComment = false;
@@ -496,13 +488,12 @@ Docker.prototype.parseSections = function(data, lang){
           //       outdented properly       */
           // ```
           multiLine = multiLine
-            .replace(lang.multiLine[0], function(a){ return repeating(' ', a.length); })
-            .replace(lang.multiLine[1], function(a){ return repeating(' ', a.length); });
+            .replace(lang.multiLine[0], function(a) { return repeating(' ', a.length); })
+            .replace(lang.multiLine[1], function(a) { return repeating(' ', a.length); });
 
           multiLine = stripIndent(multiLine);
 
-          if(lang.jsDoc){
-
+          if (lang.jsDoc) {
             // Strip off leading * characters.
             multiLine = multiLine.replace(/^[ \t]*\*? ?/gm, '');
 
@@ -511,15 +502,15 @@ Docker.prototype.parseSections = function(data, lang){
             // Put markdown parser on the data so it can be accessed in the template
             jsDocData.md = mark;
             section.docs += self.renderTemplate('jsDoc', jsDocData);
-          }else{
+          } else {
             section.docs += '\n' + multiLine + '\n';
           }
           multiLine = '';
-        }else{
+        } else {
           multiLine += line + '\n';
         }
         return;
-      }else if(
+      } else if (
         // We want to match the start of a multiline comment only if the line doesn't also match the
         // end of the same comment, or if a single-line comment is started before the multiline
         // So for example the following would not be treated as a multiline starter:
@@ -527,12 +518,12 @@ Docker.prototype.parseSections = function(data, lang){
         // alert('foo'); // Alert some foo /* Random open comment thing
         // ```
         matchable.match(lang.multiLine[0]) &&
-        !matchable.replace(lang.multiLine[0],'').match(lang.multiLine[1]) &&
+        !matchable.replace(lang.multiLine[0], '').match(lang.multiLine[1]) &&
         (!lang.comment || !matchable.split(lang.multiLine[0])[0].match(commentRegex))
-      ){
+      ) {
         // Here we start parsing a multiline comment. Store away the current section and start a new one
-        if(section.code){
-          if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
+        if (section.code) {
+          if (!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
           section = { docs: '', code: '' };
         }
         inMultiLineComment = true;
@@ -540,24 +531,23 @@ Docker.prototype.parseSections = function(data, lang){
         return;
       }
     }
-    if(
+    if (
       !self.options.multiLineOnly &&
       lang.comment &&
       matchable.match(commentRegex) &&
       (!lang.commentsIgnore || !matchable.match(lang.commentsIgnore)) &&
       !matchable.match(/#!/)
-    ){
+    ) {
       // This is for single-line comments. Again, store away the last section and start a new one
-      if(section.code){
-        if(!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
+      if (section.code) {
+        if (!section.code.match(/^\s*$/) || !section.docs.match(/^\s*$/)) sections.push(section);
         section = { docs: '', code: '' };
       }
       section.docs += line.replace(commentRegex, '') + '\n';
-    }else if(!lang.commentsIgnore || !line.match(lang.commentsIgnore)){
-
+    } else if (!lang.commentsIgnore || !line.match(lang.commentsIgnore)) {
       // If this is the first line of active code, store it in the section
       // so we can grab it for line numbers later
-      if(!section.firstCodeLine){
+      if (!section.firstCodeLine) {
         section.firstCodeLine = i + 1;
       }
       section.code += line + '\n';
@@ -578,24 +568,23 @@ Docker.prototype.parseSections = function(data, lang){
  * @param {string} contents The contents of the file (to check for shebang)
  * @return {object} Object containing all of the language-specific params
  */
-Docker.prototype.detectLanguage = function(filename, contents){
-
+Docker.prototype.detectLanguage = function(filename, contents) {
   // First try to detect the language from the file extension
   var ext = path.extname(filename);
   ext = ext.replace(/^\./, '');
 
   // Bit of a hacky way of incorporating .C for C++
-  if(ext === '.C') return languages.cpp;
+  if (ext === '.C') return languages.cpp;
   ext = ext.toLowerCase();
 
   var base = path.basename(filename);
   base = base.toLowerCase();
 
-  for(var i in languages){
-    if(!languages.hasOwnProperty(i)) continue;
-    if(languages[i].extensions &&
+  for (var i in languages) {
+    if (!languages.hasOwnProperty(i)) continue;
+    if (languages[i].extensions &&
       languages[i].extensions.indexOf(ext) !== -1) return languages[i];
-    if(languages[i].names &&
+    if (languages[i].names &&
       languages[i].names.indexOf(base) !== -1) return languages[i];
   }
 
@@ -603,10 +592,10 @@ Docker.prototype.detectLanguage = function(filename, contents){
 
   var shebangRegex = /^#!\s*(?:\/usr\/bin\/env)?\s*(?:[^\n]*\/)*([^\/\n]+)(?:\n|$)/;
   var match = shebangRegex.exec(contents);
-  if(match){
-    for(var j in languages){
-      if(!languages.hasOwnProperty(j)) continue;
-      if(languages[j].executables && languages[j].executables.indexOf(match[1]) !== -1) return languages[j];
+  if (match) {
+    for (var j in languages) {
+      if (!languages.hasOwnProperty(j)) continue;
+      if (languages[j].executables && languages[j].executables.indexOf(match[1]) !== -1) return languages[j];
     }
   }
 
@@ -626,8 +615,8 @@ Docker.prototype.detectLanguage = function(filename, contents){
  * @param {Array} sections Array of section objects
  * @param {string} language Language ith which to highlight the file
  */
-Docker.prototype.highlight = function(sections, lang){
-  sections.forEach(function(section){
+Docker.prototype.highlight = function(sections, lang) {
+  sections.forEach(function(section) {
     section.codeHtml = highlight.highlight(lang.highlightLanguage || lang.language, section.code).value;
     section.docHtml = md.render(section.docs);
   });
@@ -643,13 +632,13 @@ Docker.prototype.highlight = function(sections, lang){
  * @param {number} idx The index of the section in the whole array.
  * @param {Object} headings Object in which to keep track of headings for avoiding clashes
  */
-Docker.prototype.addAnchors = function(docHtml, idx, headings){
+Docker.prototype.addAnchors = function(docHtml, idx, headings) {
   var headingRegex = /<h(\d)(\s*[^>]*)>([\s\S]+?)<\/h\1>/gi; // toc.defaults.headers
 
-  if(docHtml.match(headingRegex)){
+  if (docHtml.match(headingRegex)) {
     // If there is a heading tag, pick out the first one (likely the most important), sanitize
     // the name a bit to make it more friendly for IDs, then use that
-    docHtml = docHtml.replace(headingRegex, function(a, level, attrs, content){
+    docHtml = docHtml.replace(headingRegex, function(a, level, attrs, content) {
       var id = toc.unique(headings.ids, toc.anchor(content));
 
       headings.list.push({ id: id, text: toc.untag(content), level: level });
@@ -657,12 +646,12 @@ Docker.prototype.addAnchors = function(docHtml, idx, headings){
         '<div class="pilwrap" id="' + id + '">',
         '  <h' + level + attrs + '>',
         '    <a href="#' + id + '" name="' + id + '" class="pilcrow"></a>',
-             content,
+        content,
         '  </h' + level + '>',
         '</div>'
       ].join('\n');
     });
-  }else{
+  } else {
     // If however we can't find a heading, then just use the section index instead.
     docHtml = [
       '<div class="pilwrap">',
@@ -684,10 +673,10 @@ Docker.prototype.addAnchors = function(docHtml, idx, headings){
  * @param {string} html The code HTML
  * @param {number} first Line number of the first code line
  */
-Docker.prototype.addLineNumbers = function(html, first){
+Docker.prototype.addLineNumbers = function(html, first) {
   var lines = html.split('\n');
 
-  lines = lines.map(function(line, i){
+  lines = lines.map(function(line, i) {
     var n = first + i;
     return '<a class="line-num" href="#line-' + n + '" id="line-' + n + '" data-line="' + n + '"></a>  ' + line;
   });
@@ -706,17 +695,17 @@ Docker.prototype.addLineNumbers = function(html, first){
  * @param {string} filename Name of the file being processed
  * @param {function} cb Callback function to fire when we're done
  */
-Docker.prototype.renderCodeFile = function(sections, language, filename, cb){
+Docker.prototype.renderCodeFile = function(sections, language, filename, cb) {
   var self = this;
 
   var headings = { ids: {}, list: [] };
 
-  sections.forEach(function(section, i){
+  sections.forEach(function(section, i) {
     // Add anchors to all headings in all sections
     section.docHtml = self.addAnchors(section.docHtml, i, headings);
 
     // Add line numbers of we need them
-    if(self.options.lineNums){
+    if (self.options.lineNums) {
       section.codeHtml = self.addLineNumbers(section.codeHtml, section.firstCodeLine);
     }
   });
@@ -740,13 +729,13 @@ Docker.prototype.renderCodeFile = function(sections, language, filename, cb){
  * @param {string} filename Name of the file being processed
  * @param {function} cb Callback function to fire when we're done
  */
-Docker.prototype.renderMarkdownFile = function(data, filename, cb){
+Docker.prototype.renderMarkdownFile = function(data, filename, cb) {
   var content = md.render(data);
 
   var headings = { ids: {}, list: [] };
 
   // Add anchors to all headings
-  content = this.addAnchors(content,0, headings);
+  content = this.addAnchors(content, 0, headings);
 
   // Wrap up with necessary classes
   content = '<div class="docs markdown">' + content + '</div>';
@@ -767,8 +756,7 @@ Docker.prototype.renderMarkdownFile = function(data, filename, cb){
  * @param {Object} headings List of headings + ids
  * @param {function} cb Callback to call when done
  */
-Docker.prototype.makeOutputFile = function(filename, content, headings, cb){
-
+Docker.prototype.makeOutputFile = function(filename, content, headings, cb) {
   // Decide which path to store the output on.
   var outFile = this.outFile(filename);
 
@@ -777,8 +765,8 @@ Docker.prototype.makeOutputFile = function(filename, content, headings, cb){
   // a relative href rather than an absolute one
   var outDir = path.dirname(outFile);
   var relativeOut = path.resolve(outDir)
-                      .replace(path.resolve(this.options.outDir),'')
-                      .replace(/^[\/\\]/,'');
+                      .replace(path.resolve(this.options.outDir), '')
+                      .replace(/^[\/\\]/, '');
   var levels = relativeOut == '' ? 0 : relativeOut.split(path.sep).length;
   var relDir = repeating('../', levels);
 
@@ -789,9 +777,9 @@ Docker.prototype.makeOutputFile = function(filename, content, headings, cb){
     content: content,
     headings: headings,
     sidebar: this.options.sidebarState,
-    filename: filename.replace(this.options.inDir,'').replace(/^[\\\/]/,''),
-    js: this.options.js.map(function(f){ return path.basename(f); }),
-    css: this.options.css.map(function(f){ return path.basename(f); })
+    filename: filename.replace(this.options.inDir, '').replace(/^[\\\/]/, ''),
+    js: this.options.js.map(function(f) { return path.basename(f); }),
+    css: this.options.css.map(function(f) { return path.basename(f); })
   });
 
   // Recursively create the output directory, clean out any old version of the
@@ -805,7 +793,7 @@ Docker.prototype.makeOutputFile = function(filename, content, headings, cb){
  *
  * Copies the shared CSS and JS files to the output directories
  */
-Docker.prototype.copySharedResources = function(){
+Docker.prototype.copySharedResources = function() {
   var self = this;
   self.writeFile(
     path.join(self.options.outDir, 'doc-filelist.js'),
@@ -814,8 +802,7 @@ Docker.prototype.copySharedResources = function(){
   );
 
   // Generate the CSS file using LESS. First, load the less file.
-  fs.readFile(path.join(__dirname, '..', 'res', 'style.less'), function(err, file){
-
+  fs.readFile(path.join(__dirname, '..', 'res', 'style.less'), function(err, file) {
     // Now try to grab the colours out of whichever highlight theme was used
     var hlpath = require.resolve('highlight.js');
     var cspath = path.resolve(path.dirname(hlpath), '..', 'styles');
@@ -823,10 +810,9 @@ Docker.prototype.copySharedResources = function(){
 
     // Now compile the LESS to CSS
     less.render(file.toString().replace('COLOURSCHEME', self.options.colourScheme), {
-      paths: [cspath],
+      paths: [ cspath ],
       globalVars: colours
-    }, function(err, out){
-
+    }, function(err, out) {
       // Now we've got the rendered CSS, write it out.
       self.writeFile(
         path.join(self.options.outDir, 'doc-style.css'),
@@ -836,7 +822,7 @@ Docker.prototype.copySharedResources = function(){
     });
   });
 
-  fs.readFile(path.join(__dirname, '..', 'res', 'script.js'), function(err, file){
+  fs.readFile(path.join(__dirname, '..', 'res', 'script.js'), function(err, file) {
     self.writeFile(
       path.join(self.options.outDir, 'doc-script.js'),
       file,
@@ -844,9 +830,9 @@ Docker.prototype.copySharedResources = function(){
     );
   });
 
-  this.options.js.concat(this.options.css).forEach(function(ext){
+  this.options.js.concat(this.options.css).forEach(function(ext) {
     var fn = path.basename(ext);
-    fs.readFile(path.resolve(ext), function(err, file){
+    fs.readFile(path.resolve(ext), function(err, file) {
       self.writeFile(path.join(self.options.outDir, fn), file, 'Copied ' + fn);
     });
   });
@@ -861,7 +847,7 @@ Docker.prototype.copySharedResources = function(){
  * @param {string} filename Name of the input file
  * @return {string} Name to use for the generated doc file
  */
-Docker.prototype.outFile = function(filename){
+Docker.prototype.outFile = function(filename) {
   return path.normalize(filename.replace(path.resolve(this.options.inDir), this.options.outDir) + '.html');
 };
 
@@ -875,12 +861,12 @@ Docker.prototype.outFile = function(filename){
  * @param {object} obj Object containing parameters for the template
  * @return {string} Rendered output
  */
-Docker.prototype.renderTemplate = function(templateName, obj){
+Docker.prototype.renderTemplate = function(templateName, obj) {
   // If we haven't already loaded the template, load it now.
   // It's a bit messy to be using readFileSync I know, but this
   // is the easiest way for now.
-  if(!this._templates) this._templates = {};
-  if(!this._templates[templateName]){
+  if (!this._templates) this._templates = {};
+  if (!this._templates[templateName]) {
     var tmplFile = path.join(__dirname, '..', 'res', templateName + '.ejs');
     this._templates[templateName] = ejs.compile(fs.readFileSync(tmplFile).toString());
   }
@@ -898,11 +884,11 @@ Docker.prototype.renderTemplate = function(templateName, obj){
  * @param {string} doneLog String to console.log when done
  * @param {function} doneCallback Callback to fire when done
  */
-Docker.prototype.writeFile = function(filename, fileContent, doneLog, doneCallback){
-  mkdirp(path.dirname(filename), function(){
-    fs.writeFile(filename, fileContent, function(){
-      if(doneLog) console.log(doneLog);
-      if(doneCallback) doneCallback();
+Docker.prototype.writeFile = function(filename, fileContent, doneLog, doneCallback) {
+  mkdirp(path.dirname(filename), function() {
+    fs.writeFile(filename, fileContent, function() {
+      if (doneLog) console.log(doneLog);
+      if (doneCallback) doneCallback();
     });
   });
 };
