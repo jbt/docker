@@ -1,5 +1,26 @@
 # Docker Version History
 
+## 1.0.0
+
+Pretty much a complete rewrite to address many many issues.
+
+ * Showdown swapped out for markdown-it
+ * Pygments swapped out for highlight.js
+ * Switch from SCSS to LESS for stylesheets
+ * Uses more third-party modules where appropriate
+ * Lots of dependencies updated
+ * Breaking changes to some options as a result (e.g. colour schemes now follow highlight.js rather than Pygments)
+ * Added support for LESS as a language
+ * More complete markdown support with markdown-it
+ * Bugfix: node >=4 would crash when including extras
+ * Breaking change / improvement: anchor tags in output are now dasherized properly
+ * Breaking change: relative links all get `.html` added automatically for cross-compatibility with, for example, viewing markdown files on GitHub
+ * Proper `LICENSE` file included in source
+ * Added global `docker.js` command in addition to `docker` (which may be eventually renamed/removed)
+ because apparently containers are popular these days.
+
+
+
 ## 0.2.14
 
  * Improvements to handling of literals that shouldn't be matched for comments

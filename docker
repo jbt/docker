@@ -22,7 +22,7 @@ program
   .option('-i, --input_dir [dir]', 'Input directory (defaults to current dir)', pwd)
   .option('-o, --output_dir [dir]', 'Output directory (defaults to ./doc)', path.join(pwd, 'doc'))
   .option('-u, --updated_files', 'Only process files that have been changed')
-  .option('-c, --colour_scheme [style]', 'Colour scheme to use (as in pygmentize -L styles)')
+  .option('-c, --colour_scheme [style]', 'Colour scheme to use (see https://github.com/isagalaev/highlight.js/tree/master/src/styles)')
   .option('-I, --ignore_hidden', 'Ignore hidden files and directories (those starting with . or _)')
   .option('-w, --watch', 'Watch on the input directory for file changes (experimental)')
   .option('-s, --sidebar [state]', 'Whether the sidebar should be open or not by default', 'yes')
