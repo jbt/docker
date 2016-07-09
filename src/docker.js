@@ -601,7 +601,7 @@ Docker.prototype.detectLanguage = function(filename, contents){
 
   // If that doesn't work, see if we can grab a shebang
 
-  var shebangRegex = /^\n*#!\s*(?:\/usr\/bin\/env)?\s*(?:[^\n]*\/)*([^\/\n]+)(?:\n|$)/;
+  var shebangRegex = /^#!\s*(?:\/usr\/bin\/env)?\s*(?:[^\n]*\/)*([^\/\n]+)(?:\n|$)/;
   var match = shebangRegex.exec(contents);
   if(match){
     for(var j in languages){
