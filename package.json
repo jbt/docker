@@ -21,7 +21,8 @@
     "watchr": "~2.3.3"
   },
   "bin": {
-    "docker": "./docker"
+    "docker": "./docker",
+    "docker.js": "./docker"
   },
   "engines": {
     "node": ">=0.10.0"
